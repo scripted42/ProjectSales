@@ -21,6 +21,13 @@ AutoShow Pro adalah platform manajemen showroom mobil modern yang dirancang khus
   <em>Model Card "Break-the-frame" & Form Booking Test Drive</em>
 </p>
 
+<p align="center">
+  <img src="screenshots/footer_preview.png" width="800" alt="Footer and Maps Preview">
+</p>
+<p align="center">
+  <em>Footer Premium dengan Integrasi Social Media & Google Maps</em>
+</p>
+
 ---
 
 ## 🚀 Fitur Utama

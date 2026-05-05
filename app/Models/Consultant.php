@@ -16,6 +16,10 @@ class Consultant extends Model
         'photo',
         'address',
         'bio',
+        'instagram',
+        'facebook',
+        'tiktok',
+        'maps_embed',
     ];
 
     public function getFormattedPhoneAttribute()

@@ -38,6 +38,30 @@ class ConsultantResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\RichEditor::make('bio')
                     ->columnSpanFull(),
+                
+                Forms\Components\Section::make('Social Media')
+                    ->description('Masukkan link profil sosial media Anda')
+                    ->schema([
+                        Forms\Components\TextInput::make('instagram')
+                            ->prefix('https://instagram.com/')
+                            ->placeholder('username'),
+                        Forms\Components\TextInput::make('facebook')
+                            ->prefix('https://facebook.com/')
+                            ->placeholder('username'),
+                        Forms\Components\TextInput::make('tiktok')
+                            ->prefix('https://tiktok.com/@')
+                            ->placeholder('username'),
+                    ])->columns(3),
+
+                Forms\Components\Section::make('Location & Maps')
+                    ->description('Masukkan URL Iframe dari Google Maps')
+                    ->schema([
+                        Forms\Components\Textarea::make('maps_embed')
+                            ->label('Google Maps Embed Code')
+                            ->placeholder('<iframe src="..."></iframe>')
+                            ->rows(3)
+                            ->columnSpanFull(),
+                    ]),
             ]);
     }
 

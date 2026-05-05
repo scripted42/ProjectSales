@@ -27,8 +27,8 @@
     <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100 py-4 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
             <div class="flex items-center">
-                <img src="https://www.hyundai.com/content/dam/hyundai/ww/en/images/common/hyundai-logo-white-small.png" alt="Hyundai" class="h-6 invert">
-                <span class="ml-3 font-bold text-xl tracking-wider text-[#002c5f] uppercase">Showroom</span>
+                <img src="{{ asset('assets/images/hyundai_logo.png') }}" alt="Hyundai" class="h-10 w-auto">
+                <span class="ml-3 font-black text-2xl tracking-[0.2em] text-[#002c5f] uppercase">Hyundai</span>
             </div>
             <div class="hidden md:flex space-x-8 text-sm font-semibold uppercase tracking-widest text-gray-500">
                 <a href="#home" class="hover:text-[#002c5f] transition-colors">Home</a>
@@ -266,8 +266,12 @@
                         allowfullscreen>
                 </iframe>
             </div>
-            <div class="rounded-3xl overflow-hidden shadow-lg h-full min-h-[300px]">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.6919013583567!2d112.6967817748402!3d-7.275883692731089!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7fc6778f8447d%3A0x6794680879612f0f!2sHyundai%20Gowa%20Surabaya!5e0!3m2!1sid!2sid!4v1714876800000!5m2!1sid!2sid" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <div class="rounded-3xl overflow-hidden shadow-lg h-full min-h-[400px]">
+                @if($consultant->maps_embed)
+                    {!! $consultant->maps_embed !!}
+                @else
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.6919013583567!2d112.6967817748402!3d-7.275883692731089!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7fc6778f8447d%3A0x6794680879612f0f!2sHyundai%20Gowa%20Surabaya!5e0!3m2!1sid!2sid!4v1714876800000!5m2!1sid!2sid" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                @endif
             </div>
         </div>
     </section>
@@ -276,39 +280,53 @@
     <footer class="bg-[#002c5f] text-white py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-12">
             <div class="col-span-1 md:col-span-2">
-                <img src="https://www.hyundai.com/content/dam/hyundai/ww/en/images/common/hyundai-logo-white-small.png" alt="Hyundai" class="h-6 mb-6">
+                <div class="flex items-center mb-6">
+                    <img src="{{ asset('assets/images/hyundai_logo.png') }}" alt="Hyundai" class="h-8 w-auto brightness-0 invert">
+                    <span class="ml-3 font-black text-xl tracking-[0.2em] uppercase">Hyundai</span>
+                </div>
                 <p class="text-blue-200 max-w-md mb-8">
-                    Dealer Resmi Hyundai Surabaya menyediakan layanan penjualan unit, bengkel service, dan suku cadang asli Hyundai.
+                    Dealer Resmi Hyundai melayani penjualan unit baru, layanan purna jual, dan suku cadang asli dengan standar pelayanan profesional.
                 </p>
                 <div class="flex space-x-4">
-                    <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
-                    </a>
-                    <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-                    </a>
+                    @if($consultant->instagram)
+                        <a href="https://instagram.com/{{ $consultant->instagram }}" target="_blank" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-pink-600 transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                        </a>
+                    @endif
+                    @if($consultant->facebook)
+                        <a href="https://facebook.com/{{ $consultant->facebook }}" target="_blank" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-blue-600 transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                        </a>
+                    @endif
+                    @if($consultant->tiktok)
+                        <a href="https://tiktok.com/{{ '@' . $consultant->tiktok }}" target="_blank" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-black transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+                        </a>
+                    @endif
                 </div>
             </div>
             <div>
-                <h4 class="font-bold text-lg mb-6 uppercase tracking-widest">Layanan</h4>
-                <ul class="space-y-4 text-blue-200 text-sm">
-                    <li><a href="#" class="hover:text-white transition-colors">Penjualan Unit Baru</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Test Drive Gratis</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Tukar Tambah (Trade-in)</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Bengkel & Suku Cadang</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Simulasi Kredit</a></li>
+                <h4 class="font-bold text-lg mb-6 uppercase tracking-widest text-blue-100">Layanan</h4>
+                <ul class="space-y-4 text-blue-200 text-sm font-medium">
+                    <li><a href="#models" class="hover:text-white transition-colors">Penjualan Unit Baru</a></li>
+                    <li><a href="#booking" class="hover:text-white transition-colors">Test Drive Gratis</a></li>
+                    <li><a href="https://api.whatsapp.com/send/?phone={{ $consultant->formatted_phone }}&text=Halo, saya ingin tanya program Tukar Tambah" class="hover:text-white transition-colors">Tukar Tambah (Trade-in)</a></li>
+                    <li><a href="https://api.whatsapp.com/send/?phone={{ $consultant->formatted_phone }}&text=Halo, saya ingin tanya info Bengkel" class="hover:text-white transition-colors">Bengkel & Suku Cadang</a></li>
+                    <li><a href="https://api.whatsapp.com/send/?phone={{ $consultant->formatted_phone }}&text=Halo, saya ingin dibuatkan Simulasi Kredit" class="hover:text-white transition-colors">Simulasi Kredit</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="font-bold text-lg mb-6 uppercase tracking-widest">Kontak</h4>
-                <p class="text-sm text-blue-200 mb-2">Operational Hours:</p>
-                <p class="text-sm font-bold mb-6">Senin - Minggu: 08.00 - 20.00 WIB</p>
-                <p class="text-sm text-blue-200 mb-2">Support Email:</p>
-                <p class="text-sm font-bold">cs@hyundai-surabaya.com</p>
+                <h4 class="font-bold text-lg mb-6 uppercase tracking-widest text-blue-100">Kontak</h4>
+                <p class="text-xs text-blue-300 uppercase tracking-widest mb-2">Jam Operasional:</p>
+                <p class="text-sm font-bold mb-6">Senin - Minggu<br>08.00 - 20.00 WIB</p>
+                <p class="text-xs text-blue-300 uppercase tracking-widest mb-2">Support Email:</p>
+                <p class="text-sm font-bold text-white hover:text-blue-200 transition-colors">
+                    <a href="mailto:{{ $consultant->email }}">{{ $consultant->email }}</a>
+                </p>
             </div>
         </div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 pt-8 border-t border-white/10 text-center text-xs text-blue-400">
-            &copy; {{ date('Y') }} Hyundai Showroom Surabaya. All Rights Reserved.
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 pt-8 border-t border-white/10 text-center text-[10px] uppercase tracking-[0.2em] text-blue-400">
+            &copy; {{ date('Y') }} Hyundai Dealer. All Rights Reserved.
         </div>
     </footer>
 
