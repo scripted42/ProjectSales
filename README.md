@@ -149,6 +149,64 @@ Untuk melakukan deployment ke VPS/Server:
 
 ---
 
+## 📺 Deployment pada STB (Set Top Box) Linux
+
+Jika Anda menggunakan STB (seperti HG680P/B860H) yang menjalankan **Armbian** atau distro Linux lainnya, ikuti panduan optimasi ini:
+
+### 1. Persiapan Lingkungan (LEMP Stack)
+Pastikan PHP-FPM dan Nginx sudah terpasang untuk menghemat RAM dibandingkan Apache:
+```bash
+sudo apt update
+sudo apt install nginx mariadb-server php-fpm php-mysql php-xml php-curl php-gd php-mbstring php-zip -y
+```
+
+### 2. Optimasi Database (Penting untuk STB)
+STB memiliki RAM terbatas. Batasi penggunaan memory MariaDB:
+```bash
+# Edit /etc/mysql/mariadb.conf.d/50-server.cnf
+# Tambahkan di bawah [mysqld]:
+key_buffer_size = 16M
+max_connections = 20
+query_cache_size = 8M
+```
+
+### 3. Konfigurasi Nginx
+Buat file config di `/etc/nginx/sites-available/autoshow`:
+```nginx
+server {
+    listen 80;
+    server_name autoshow.local;
+    root /var/www/ProjectSales/public;
+
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-Content-Type-Options "nosniff";
+
+    index index.php;
+    charset utf-8;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php/php-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+}
+```
+
+### 4. Swap Memory
+Jika STB Anda hanya memiliki RAM 1GB/2GB, tambahkan Swap untuk mencegah *Out of Memory*:
+```bash
+sudo fallocate -l 1G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+```
+
+---
+
 ## 👤 Kontributor
 - **AutoShow Pro Team** - Developer & Designer.
 
