@@ -2,6 +2,27 @@
 
 AutoShow Pro adalah platform manajemen showroom mobil modern yang dirancang khusus untuk profesional sales. Platform ini menawarkan pengalaman visual "Pro Max" dengan fokus pada konversi tinggi melalui desain clean, integrasi WhatsApp, dan sistem manajemen inventory yang intuitif.
 
+## 📸 Preview
+
+<p align="center">
+  <img src="screenshots/hero_preview.png" width="800" alt="Hero Section Preview">
+</p>
+<p align="center">
+  <em>Sistem Slideshow Hero Banner yang Sinematik</em>
+</p>
+
+<br>
+
+<p align="center">
+  <img src="screenshots/models_preview.png" width="400" alt="Models Section Preview">
+  <img src="screenshots/booking_preview.png" width="400" alt="Booking Form Preview">
+</p>
+<p align="center">
+  <em>Model Card "Break-the-frame" & Form Booking Test Drive</em>
+</p>
+
+---
+
 ## 🚀 Fitur Utama
 
 - **Premium Showroom Landing Page**: Tampilan modern dengan tema clean white dan glassmorphism.
