@@ -39,6 +39,14 @@ class TestDriveForm extends Component
             'status' => 'pending',
         ]);
 
+        \App\Models\SiteLog::create([
+            'log_type' => 'test_drive',
+            'car_id' => $this->car_id,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+            'created_at' => now(),
+        ]);
+
         $this->sendWhatsAppNotification($booking);
 
         $this->reset(['name', 'phone', 'email', 'car_id', 'booking_date', 'notes']);

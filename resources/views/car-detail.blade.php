@@ -149,7 +149,7 @@
                     </div>
 
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <a :href="'https://api.whatsapp.com/send/?phone={{ $consultant->formatted_phone ?? '6281330135013' }}&text=' + encodeURIComponent('Halo, saya tertarik dengan unit {{ $car->name }}.' + (promoCode ? ' Saya memiliki kode promo: ' + promoCode : ''))" 
+                        <a :href="'/track-wa?car_id={{ $car->id }}&text=' + encodeURIComponent('Halo, saya tertarik dengan unit {{ $car->name }}.' + (promoCode ? ' Saya memiliki kode promo: ' + promoCode : ''))" 
                            class="flex-1 bg-[#002c5f] text-white text-center py-4 rounded-2xl font-bold hover:bg-blue-800 transition-all shadow-xl flex items-center justify-center gap-3">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
                             Hubungi Sales

@@ -44,7 +44,7 @@
                         <a href="{{ route('login') }}" class="text-sm font-medium text-gray-400 hover:text-[#002c5f] transition-colors">Login</a>
                     @endauth
                 @endif
-                <a href="https://api.whatsapp.com/send/?phone={{ $consultant->formatted_phone ?? '#' }}" class="bg-[#002c5f] text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-blue-800 transition-all shadow-lg">
+                <a href="{{ route('track.wa') }}" class="bg-[#002c5f] text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-blue-800 transition-all shadow-lg">
                     Hubungi Kami
                 </a>
             </div>
@@ -101,7 +101,7 @@
                     <a :href="'/car/' + cars[current].slug" class="bg-white text-[#002c5f] px-10 py-4 rounded-full font-bold text-center hover:bg-blue-50 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5">
                         Lihat Detail
                     </a>
-                    <a href="https://api.whatsapp.com/send/?phone={{ $consultant->formatted_phone ?? '#' }}" class="bg-white/10 backdrop-blur-md text-white border border-white/30 px-10 py-4 rounded-full font-bold text-center hover:bg-white/20 transition-all">
+                    <a href="{{ route('track.wa') }}" class="bg-white/10 backdrop-blur-md text-white border border-white/30 px-10 py-4 rounded-full font-bold text-center hover:bg-white/20 transition-all">
                         Dapatkan Penawaran
                     </a>
                 </div>
@@ -212,7 +212,7 @@
                         </div>
                     </div>
 
-                    <a href="https://api.whatsapp.com/send/?phone={{ $consultant->formatted_phone ?? '#' }}" class="bg-[#002c5f] text-white text-center py-4 rounded-xl font-bold text-lg hover:bg-blue-800 transition-all flex items-center justify-center gap-3">
+                    <a href="{{ route('track.wa') }}" class="bg-[#002c5f] text-white text-center py-4 rounded-xl font-bold text-lg hover:bg-blue-800 transition-all flex items-center justify-center gap-3">
                          Hubungi {{ explode(' ', $consultant->name ?? 'Konsultan')[0] }}
                     </a>
                 </div>
@@ -310,9 +310,9 @@
                 <ul class="space-y-4 text-blue-200 text-sm font-medium">
                     <li><a href="#models" class="hover:text-white transition-colors">Penjualan Unit Baru</a></li>
                     <li><a href="#booking" class="hover:text-white transition-colors">Test Drive Gratis</a></li>
-                    <li><a href="https://api.whatsapp.com/send/?phone={{ $consultant->formatted_phone }}&text=Halo, saya ingin tanya program Tukar Tambah" class="hover:text-white transition-colors">Tukar Tambah (Trade-in)</a></li>
-                    <li><a href="https://api.whatsapp.com/send/?phone={{ $consultant->formatted_phone }}&text=Halo, saya ingin tanya info Bengkel" class="hover:text-white transition-colors">Bengkel & Suku Cadang</a></li>
-                    <li><a href="https://api.whatsapp.com/send/?phone={{ $consultant->formatted_phone }}&text=Halo, saya ingin dibuatkan Simulasi Kredit" class="hover:text-white transition-colors">Simulasi Kredit</a></li>
+                    <li><a href="{{ route('track.wa', ['text' => 'Halo, saya ingin tanya program Tukar Tambah']) }}" class="hover:text-white transition-colors">Tukar Tambah (Trade-in)</a></li>
+                    <li><a href="{{ route('track.wa', ['text' => 'Halo, saya ingin tanya info Bengkel']) }}" class="hover:text-white transition-colors">Bengkel & Suku Cadang</a></li>
+                    <li><a href="{{ route('track.wa', ['text' => 'Halo, saya ingin dibuatkan Simulasi Kredit']) }}" class="hover:text-white transition-colors">Simulasi Kredit</a></li>
                 </ul>
             </div>
             <div>
@@ -331,7 +331,7 @@
     </footer>
 
     <!-- Floating WhatsApp -->
-    <a href="https://api.whatsapp.com/send/?phone={{ $consultant->formatted_phone ?? '#' }}" class="fixed bottom-8 right-8 z-50 bg-green-500 text-white p-4 rounded-full shadow-2xl hover:bg-green-600 transition-all transform hover:scale-110 flex items-center justify-center animate-bounce">
+    <a href="{{ route('track.wa') }}" class="fixed bottom-8 right-8 z-50 bg-green-500 text-white p-4 rounded-full shadow-2xl hover:bg-green-600 transition-all transform hover:scale-110 flex items-center justify-center animate-bounce">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
     </a>
 
