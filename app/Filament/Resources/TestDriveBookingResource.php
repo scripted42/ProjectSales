@@ -72,8 +72,21 @@ class TestDriveBookingResource extends Resource
                 Tables\Columns\TextColumn::make('car.name')
                     ->label('Unit')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('hot_lead')
+                    ->label('Priority')
+                    ->badge()
+                    ->getStateUsing(function ($record) {
+                        $views = \App\Models\SiteLog::where('ip_address', $record->ip_address)
+                            ->where('car_id', $record->car_id)
+                            ->where('log_type', 'visit')
+                            ->count();
+                        
+                        return $views > 3 ? 'HOT LEAD' : null;
+                    })
+                    ->color('danger')
+                    ->visible(fn ($record) => $record !== null),
                 Tables\Columns\TextColumn::make('booking_date')
-                    ->date()
+                    ->formatStateUsing(fn ($state) => $state ? \Illuminate\Support\Carbon::parse($state)->format('Y-m-d') : null)
                     ->sortable(),
                 Tables\Columns\SelectColumn::make('status')
                     ->options([
@@ -84,9 +97,15 @@ class TestDriveBookingResource extends Resource
                     ])
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->formatStateUsing(fn ($state) => $state?->format('Y-m-d H:i:s'))
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('source')
+                    ->label('Source')
+                    ->badge()
+                    ->color('info')
+                    ->formatStateUsing(fn (string $state): string => ucfirst($state))
+                    ->sortable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')

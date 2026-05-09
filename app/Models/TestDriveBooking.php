@@ -17,6 +17,8 @@ class TestDriveBooking extends Model
         'booking_date',
         'status',
         'notes',
+        'ip_address',
+        'source',
     ];
 
     public function car()

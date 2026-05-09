@@ -54,7 +54,7 @@ class PromoResource extends Resource
                     ->fontFamily('mono')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('end_date')
-                    ->dateTime()
+                    ->formatStateUsing(fn ($state) => $state?->format('Y-m-d H:i:s'))
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_active')
                     ->boolean(),

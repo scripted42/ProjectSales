@@ -53,7 +53,7 @@ class VideoResource extends Resource
                 Tables\Columns\ToggleColumn::make('is_active')
                     ->label('Active'),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->formatStateUsing(fn ($state) => $state?->format('Y-m-d H:i:s'))
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

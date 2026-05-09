@@ -8,9 +8,11 @@ class SiteLog extends Model
 {
     protected $fillable = [
         'log_type',
+        'source',
         'car_id',
         'ip_address',
         'user_agent',
+        'region',
         'created_at',
     ];
 

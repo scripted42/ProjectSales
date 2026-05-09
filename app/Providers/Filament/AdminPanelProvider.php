@@ -33,7 +33,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
-                Pages\Dashboard::class,
+                \App\Filament\Pages\Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
@@ -52,6 +52,19 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+                \App\Http\Middleware\VerifyDeveloperOtp::class,
+            ])
+            ->renderHook(
+                'panels::head.end',
+                fn () => \Illuminate\Support\Facades\Blade::render('<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>')
+            )
+            ->renderHook(
+                'panels::body.start',
+                fn () => view('filament.hooks.blur-css'),
+            )
+            ->renderHook(
+                'panels::body.end',
+                fn () => view('filament.hooks.license-expired-hook'),
+            );
     }
 }

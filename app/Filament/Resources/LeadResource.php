@@ -47,7 +47,7 @@ class LeadResource extends Resource
                     ->label('Promo Code')
                     ->fontFamily('mono'),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->formatStateUsing(fn ($state) => $state?->format('Y-m-d H:i:s'))
                     ->sortable(),
             ])
             ->filters([

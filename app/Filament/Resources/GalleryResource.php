@@ -19,6 +19,15 @@ class GalleryResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function canCreate(): bool
+    {
+        if (\App\Models\Setting::isPro()) {
+            return true;
+        }
+
+        return \App\Models\Gallery::count() < 5;
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -51,11 +60,11 @@ class GalleryResource extends Resource
                 Tables\Columns\TextColumn::make('type')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->formatStateUsing(fn ($state) => $state?->format('Y-m-d H:i:s'))
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->formatStateUsing(fn ($state) => $state?->format('Y-m-d H:i:s'))
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

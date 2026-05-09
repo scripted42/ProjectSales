@@ -37,6 +37,20 @@ class TestDriveForm extends Component
             'booking_date' => $this->booking_date,
             'notes' => $this->notes,
             'status' => 'pending',
+            'ip_address' => request()->ip(),
+            'source' => (function() {
+                $referer = request()->header('referer');
+                $source = 'direct';
+                if (request()->has('utm_source')) {
+                    $source = request()->utm_source;
+                } elseif ($referer) {
+                    if (str_contains($referer, 'google.com')) $source = 'google';
+                    elseif (str_contains($referer, 'facebook.com')) $source = 'facebook';
+                    elseif (str_contains($referer, 'instagram.com')) $source = 'instagram';
+                    elseif (str_contains($referer, 'tiktok.com')) $source = 'tiktok';
+                }
+                return $source;
+            })(),
         ]);
 
         \App\Models\SiteLog::create([

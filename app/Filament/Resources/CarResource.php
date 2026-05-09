@@ -19,6 +19,15 @@ class CarResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function canCreate(): bool
+    {
+        if (\App\Models\Setting::isPro()) {
+            return true;
+        }
+
+        return \App\Models\Car::count() < 3;
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -97,6 +106,7 @@ class CarResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->description(fn () => \App\Models\Setting::isPro() ? 'Paket PRO: Unit tak terbatas.' : 'Paket Regular: ' . \App\Models\Car::count() . ' dari 3 unit digunakan. Upgrade ke PRO untuk unit tak terbatas.')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
@@ -105,18 +115,18 @@ class CarResource extends Resource
                 Tables\Columns\TextColumn::make('category')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('price')
-                    ->money('IDR')
+                    ->formatStateUsing(fn ($state) => 'Rp ' . number_format($state, 0, ',', '.'))
                     ->sortable(),
                 Tables\Columns\ImageColumn::make('image')
                     ->disk('public'),
                 Tables\Columns\IconColumn::make('is_available')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->formatStateUsing(fn ($state) => $state?->format('Y-m-d H:i:s'))
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->formatStateUsing(fn ($state) => $state?->format('Y-m-d H:i:s'))
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

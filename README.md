@@ -38,23 +38,18 @@ AutoShow Pro adalah platform manajemen showroom mobil modern yang dirancang khus
 - **Booking Test Drive System**: Fitur penjadwalan test drive yang terintegrasi langsung dengan notifikasi WhatsApp ke Sales.
 - **Admin Dashboard (Filament PHP)**: Kelola unit mobil, galeri foto, promo, hingga data booking dalam satu dashboard profesional.
 - **WhatsApp Lead Integration**: Memudahkan calon pembeli terhubung langsung dengan Sales melalui satu klik.
+- **SaaS License Control**: Integrasi dengan "Mothership" untuk manajemen lisensi jarak jauh (suspend/activate).
 
 ---
 
 ## 📄 PRD (Product Requirements Document)
 
-### Tujuan
-Membangun portal sales mobil yang memberikan kesan premium, memudahkan customer melihat detail produk, dan mengonversi pengunjung menjadi lead melalui sistem booking dan WhatsApp.
+Dokumentasi kebutuhan produk yang mendalam telah dipindahkan ke file terpisah untuk kemudahan pengelolaan:
 
-### Target Pengguna
-- Calon pembeli mobil (Customer).
-- Sales Consultant (Admin).
+👉 **[Lihat Full PRD.md](PRD.md)**
 
-### Kebutuhan Fungsional
-1.  **Inventory Management**: Menampilkan unit mobil dengan spesifikasi, harga OTR, dan galeri foto.
-2.  **Test Drive Booking**: Form pengisian data diri (KTP, WA, Email) dan pemilihan jadwal test drive.
-3.  **Hero Customization**: Admin dapat mengunggah gambar banner khusus untuk setiap produk.
-4.  **Admin Panel**: CRUD Car, Consultant, Promo, Video, dan Monitoring Leads/Bookings.
+### Ringkasan Eksekutif
+Membangun portal sales mobil yang memberikan kesan premium, memudahkan customer melihat detail produk, dan memberikan kontrol penuh kepada platform owner melalui sistem Mothership.
 
 ---
 
@@ -105,6 +100,19 @@ erDiagram
         string title
         string image
         boolean is_active
+    }
+
+    SETTINGS {
+        bigint id PK
+        string key
+        text value
+    }
+
+    SITE_LOGS {
+        bigint id PK
+        string activity
+        text description
+        timestamp created_at
     }
 ```
 

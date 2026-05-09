@@ -17,9 +17,20 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        User::updateOrCreate(['email' => 'wahyukurniawan101630@gmail.com'], [
+            'name' => 'Super Developer',
+            'password' => bcrypt('Script42hyu42'),
+            'role' => 'developer',
+        ]);
+
+        User::updateOrCreate(['email' => 'sales@autoshow.id'], [
+            'name' => 'Sales Demo',
+            'password' => bcrypt('password'),
+            'role' => 'sales',
+        ]);
+
+        $this->call([
+            \Database\Seeders\AnalyticsSeeder::class,
         ]);
     }
 }
