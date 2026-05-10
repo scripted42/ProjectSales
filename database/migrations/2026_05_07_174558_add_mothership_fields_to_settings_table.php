@@ -11,10 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('settings', function (Blueprint $table) {
-            $table->boolean('is_suspended')->default(false)->after('id');
-            $table->string('mothership_token')->nullable()->after('is_suspended');
-        });
+        // Handled via key-value in main settings table
     }
 
     /**
