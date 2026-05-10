@@ -3,7 +3,7 @@
 @endphp
 
 <x-filament-widgets::widget>
-    <div class="relative overflow-hidden rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+    <div class="license-status-card relative overflow-hidden rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
         <!-- Background Decoration -->
         <div class="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-{{ $info['status_color'] }}-500/5 blur-3xl"></div>
         

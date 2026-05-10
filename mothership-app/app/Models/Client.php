@@ -16,5 +16,6 @@ class Client extends Model
         'status',
         'expired_at',
         'token',
+        'secret_key',
     ];
 }

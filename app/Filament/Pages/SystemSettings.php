@@ -16,20 +16,23 @@ class SystemSettings extends Page
 
     public ?string $otpInput = '';
     public ?string $mothershipToken = '';
+    public ?string $mothershipSecret = '';
     public bool $isVerified = false;
 
     public function mount()
     {
         $this->isVerified = session()->get('developer_verified', false);
         $this->mothershipToken = Setting::where('key', 'mothership_token')->first()?->value;
+        $this->mothershipSecret = Setting::where('key', 'mothership_secret')->first()?->value;
     }
 
     public function saveToken()
     {
         Setting::updateOrCreate(['key' => 'mothership_token'], ['value' => $this->mothershipToken]);
+        Setting::updateOrCreate(['key' => 'mothership_secret'], ['value' => $this->mothershipSecret]);
         
         Notification::make()
-            ->title('Mothership Token Saved')
+            ->title('Mothership Credentials Saved')
             ->success()
             ->send();
     }

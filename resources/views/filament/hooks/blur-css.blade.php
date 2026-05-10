@@ -5,7 +5,7 @@
         transition: all 0.5s ease;
     }
     
-    .fi-wi-widget:not(:has(.upgrade-promo-widget)) {
+    .fi-wi-widget:not(:has(.upgrade-promo-widget)):not(:has(.license-status-card)) {
         filter: blur(8px);
         pointer-events: none;
         user-select: none;

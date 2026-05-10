@@ -65,10 +65,18 @@
                                     placeholder="Paste your secret token here..."
                                 />
                             </x-filament::input.wrapper>
+
+                            <x-filament::input.wrapper label="Mothership HMAC Secret">
+                                <x-filament::input
+                                    type="password"
+                                    wire:model="mothershipSecret"
+                                    placeholder="Paste your HMAC secret key here..."
+                                />
+                            </x-filament::input.wrapper>
                             
                             <div class="flex gap-4">
                                 <x-filament::button wire:click="saveToken">
-                                    Save Token
+                                    Save Credentials
                                 </x-filament::button>
                                 
                                 <x-filament::button wire:click="checkConnection" color="gray" icon="heroicon-m-signal">
