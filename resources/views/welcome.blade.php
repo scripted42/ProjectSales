@@ -176,6 +176,7 @@
     <livewire:test-drive-form />
 
     <!-- Consultant Profile -->
+    @if($consultant)
     <section id="consultant" class="py-24 bg-gray-50">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white rounded-3xl overflow-hidden shadow-lg flex flex-col md:flex-row border border-gray-100">
@@ -220,6 +221,7 @@
             </div>
         </div>
     </section>
+    @endif
 
     <!-- Handover Gallery -->
     <section id="gallery" class="py-24 bg-white">
