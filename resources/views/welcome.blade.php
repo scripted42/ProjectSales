@@ -336,7 +336,7 @@
                 </iframe>
             </div>
             <div class="rounded-3xl overflow-hidden shadow-lg h-full min-h-[400px]">
-                @if($consultant->maps_embed)
+                @if($consultant && $consultant->maps_embed)
                     {!! $consultant->maps_embed !!}
                 @else
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.6919013583567!2d112.6967817748402!3d-7.275883692731089!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7fc6778f8447d%3A0x6794680879612f0f!2sHyundai%20Gowa%20Surabaya!5e0!3m2!1sid!2sid!4v1714876800000!5m2!1sid!2sid" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -357,17 +357,17 @@
                     Dealer Resmi Hyundai melayani penjualan unit baru, layanan purna jual, dan suku cadang asli dengan standar pelayanan profesional.
                 </p>
                 <div class="flex space-x-4">
-                    @if($consultant->instagram)
+                    @if(optional($consultant)->instagram)
                         <a href="https://instagram.com/{{ $consultant->instagram }}" target="_blank" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-pink-600 transition-all">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
                         </a>
                     @endif
-                    @if($consultant->facebook)
+                    @if(optional($consultant)->facebook)
                         <a href="https://facebook.com/{{ $consultant->facebook }}" target="_blank" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-blue-600 transition-all">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
                         </a>
                     @endif
-                    @if($consultant->tiktok)
+                    @if(optional($consultant)->tiktok)
                         <a href="https://tiktok.com/{{ '@' . $consultant->tiktok }}" target="_blank" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-black transition-all">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
                         </a>
@@ -390,7 +390,7 @@
                 <p class="text-sm font-bold mb-6">Senin - Minggu<br>08.00 - 20.00 WIB</p>
                 <p class="text-xs text-blue-300 uppercase tracking-widest mb-2">Support Email:</p>
                 <p class="text-sm font-bold text-white hover:text-blue-200 transition-colors">
-                    <a href="mailto:{{ $consultant->email }}">{{ $consultant->email }}</a>
+                    <a href="mailto:{{ optional($consultant)->email ?? 'sales@hyundai.id' }}">{{ optional($consultant)->email ?? 'sales@hyundai.id' }}</a>
                 </p>
             </div>
         </div>
