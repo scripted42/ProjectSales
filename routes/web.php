@@ -5,6 +5,8 @@ use App\Livewire\OtpChallenge;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LandingPageController::class, 'index']);
+Route::get('/news', [LandingPageController::class, 'postsIndex'])->name('posts.index');
+Route::get('/news/{post:slug}', [LandingPageController::class, 'postsShow'])->name('posts.show');
 Route::get('/admin/otp', OtpChallenge::class)->name('filament.admin.auth.otp');
 Route::get('/car/{car:slug}', [LandingPageController::class, 'show'])->name('car.show');
 

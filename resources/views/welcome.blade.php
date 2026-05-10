@@ -34,6 +34,7 @@
                 <a href="#home" class="hover:text-[#002c5f] transition-colors">Home</a>
                 <a href="#models" class="hover:text-[#002c5f] transition-colors">Models</a>
                 <a href="#gallery" class="hover:text-[#002c5f] transition-colors">Gallery</a>
+                <a href="#news" class="hover:text-[#002c5f] transition-colors">News</a>
                 <a href="#consultant" class="hover:text-[#002c5f] transition-colors">Consultant</a>
             </div>
             <div class="flex items-center space-x-4">
@@ -242,6 +243,72 @@
                         <div class="relative group aspect-square overflow-hidden rounded-2xl bg-gray-100 animate-pulse"></div>
                     @endfor
                 @endforelse
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog / News Section -->
+    <section id="news" class="py-24 bg-white border-t border-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
+                <div>
+                    <h2 class="text-3xl md:text-5xl font-black mb-4">Auto Insight & Exclusive Updates</h2>
+                    <p class="text-gray-400 uppercase tracking-widest text-sm max-w-2xl">Jelajahi dunia otomotif melalui kacamata Hyundai. Dapatkan tips eksklusif, berita teknologi terbaru, dan penawaran yang dipersonalisasi khusus untuk Anda.</p>
+                    <div class="h-1.5 w-24 bg-[#002c5f] rounded-full mt-4"></div>
+                </div>
+                <a href="{{ route('posts.index') }}" class="flex items-center text-[#002c5f] font-bold hover:underline gap-2 group/all">
+                    Explore All Insights
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover/all:translate-x-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                @forelse($posts as $post)
+                    <article class="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:border-blue-100 hover:shadow-xl transition-all duration-500">
+                        <a href="{{ route('posts.show', $post->slug) }}" class="block overflow-hidden aspect-video bg-gray-100">
+                            @if($post->image)
+                                <img src="{{ asset('storage/' . $post->image) }}" 
+                                     alt="{{ $post->title }}" 
+                                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            @else
+                                <div class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 text-gray-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="mb-2"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                                    <span class="text-[10px] uppercase tracking-widest font-bold">Image Preview</span>
+                                </div>
+                            @endif
+                        </a>
+                        <div class="p-5">
+                            <div class="flex items-center gap-3 mb-3">
+                                <span class="bg-blue-50 text-[#002c5f] text-[9px] font-black px-2.5 py-1 rounded-lg uppercase tracking-wider">
+                                    {{ $post->category }}
+                                </span>
+                                <span class="text-gray-400 text-[9px] uppercase tracking-widest font-medium">
+                                    {{ $post->published_at ? $post->published_at->format('d M Y') : $post->created_at->format('d M Y') }}
+                                </span>
+                            </div>
+                            <h3 class="text-base font-bold mb-2 line-clamp-2 group-hover:text-[#002c5f] transition-colors leading-snug">
+                                <a href="{{ route('posts.show', $post->slug) }}">{{ $post->title }}</a>
+                            </h3>
+                            <p class="text-gray-500 text-xs line-clamp-2 mb-4 font-light leading-relaxed">
+                                {{ Str::limit(strip_tags($post->content), 80) }}
+                            </p>
+                            <a href="{{ route('posts.show', $post->slug) }}" class="inline-flex items-center text-[11px] font-bold text-gray-900 group-hover:text-[#002c5f] gap-1.5 uppercase tracking-wider">
+                                Read More
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover:translate-x-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                            </a>
+                        </div>
+                    </article>
+                @empty
+                    @for($i=1; $i<=4; $i++)
+                        <div class="bg-gray-100 rounded-2xl aspect-video animate-pulse"></div>
+                    @endfor
+                @endforelse
+            </div>
+            
+            <div class="mt-12 text-center md:hidden">
+                <a href="{{ route('posts.index') }}" class="inline-flex items-center bg-gray-50 px-8 py-4 rounded-full text-[#002c5f] font-bold gap-2">
+                    Lihat Semua Berita
+                </a>
             </div>
         </div>
     </section>
