@@ -44,8 +44,6 @@ class PromoResource extends Resource
                             ->disk('public')
                             ->visibility('public')
                             ->rules(['mimes:jpg,jpeg,png,webp', 'max:2048'])
-                            ->imageResizeMode('cover')
-                            ->imageCropAspectRatio('16:9')
                             ->label('Background Image (Opsional)'),
                         Forms\Components\Toggle::make('is_active')
                             ->default(true)
