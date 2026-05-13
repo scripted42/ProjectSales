@@ -51,7 +51,7 @@
                             </div>
                         </div>
 
-                        <button @click="open = true" class="group bg-white text-[#002c5f] px-12 py-5 rounded-full font-black text-lg hover:bg-blue-50 transition-all shadow-2xl flex items-center gap-4 mx-auto md:mx-0">
+                        <button @click="open = true" class="group bg-white text-[#002c5f] px-12 py-5 rounded-full font-black text-lg hover:bg-blue-50 transition-all shadow-2xl flex items-center gap-4 mx-auto md:mx-0 cursor-pointer">
                             AMBIL PROMO
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                         </button>
@@ -85,7 +85,7 @@
             
             <!-- Close Button -->
             <button @click="open = false; $wire.set('claimedCode', null)" 
-                    class="absolute top-8 right-8 z-20 text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+                    class="absolute top-8 right-8 z-20 text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
             </button>
 
@@ -112,7 +112,7 @@
                             <input type="email" wire:model="email" class="w-full bg-gray-50 text-gray-900 rounded-2xl p-5 text-sm outline-none border-2 border-transparent focus:border-blue-600">
                         </div>
 
-                        <button type="submit" class="w-full bg-[#002c5f] text-white py-5 rounded-2xl font-black text-sm hover:shadow-xl transition-all">
+                        <button type="submit" class="w-full bg-[#002c5f] text-white py-5 rounded-2xl font-black text-sm hover:shadow-xl transition-all cursor-pointer">
                              <span wire:loading.remove>DAPATKAN KODE</span>
                              <span wire:loading>MEMPROSES...</span>
                         </button>
@@ -130,13 +130,13 @@
                     <div class="bg-gray-50 dark:bg-zinc-800 border-2 border-dashed border-blue-200 p-8 rounded-[2rem] mb-12 relative group" x-data="{ copied: false }">
                         <span class="text-4xl font-black tracking-[0.3em] text-blue-700 dark:text-blue-400">{{ $claimedCode }}</span>
                         <button @click="navigator.clipboard.writeText('{{ $claimedCode }}'); copied = true; setTimeout(() => copied = false, 2000)" 
-                                class="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-white dark:bg-zinc-700 border border-gray-200 px-4 py-1.5 rounded-full text-[10px] font-bold shadow-lg">
+                                class="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-white dark:bg-zinc-700 border border-gray-200 px-4 py-1.5 rounded-full text-[10px] font-bold shadow-lg cursor-pointer">
                              <span x-text="copied ? 'TERSALIN!' : 'KLIK UNTUK SALIN'"></span>
                         </button>
                     </div>
 
                     <button @click="open = false; $wire.set('claimedCode', null)" 
-                            class="w-full bg-gray-900 dark:bg-white dark:text-gray-900 text-white py-5 rounded-2xl font-black text-sm">
+                            class="w-full bg-gray-900 dark:bg-white dark:text-gray-900 text-white py-5 rounded-2xl font-black text-sm cursor-pointer">
                         KEMBALI KE HALAMAN
                     </button>
                 </div>

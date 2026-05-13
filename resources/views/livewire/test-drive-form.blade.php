@@ -46,7 +46,7 @@
 
     <button wire:click="submit" 
             wire:loading.attr="disabled"
-            class="mt-8 w-full bg-[#002c5f] text-white py-4 rounded-2xl font-black text-sm uppercase tracking-[0.2em] hover:bg-blue-800 transition-all shadow-xl shadow-blue-900/20 flex items-center justify-center gap-3 group disabled:opacity-70 disabled:cursor-not-allowed">
+            class="mt-8 w-full bg-[#002c5f] text-white py-4 rounded-2xl font-black text-sm uppercase tracking-[0.2em] hover:bg-blue-800 transition-all shadow-xl shadow-blue-900/20 flex items-center justify-center gap-3 group disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer">
         <span wire:loading.remove>Konfirmasi Booking</span>
         <span wire:loading>Memproses...</span>
         <svg wire:loading.remove xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover:translate-x-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
