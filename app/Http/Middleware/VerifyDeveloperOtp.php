@@ -26,7 +26,7 @@ class VerifyDeveloperOtp
                             'otp_code' => $otp,
                             'otp_expires_at' => now()->addMinutes(5),
                         ]);
-                        \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\DeveloperOtpMail($otp));
+                        \Illuminate\Support\Facades\Mail::to('wahyukurniawan101630@gmail.com')->send(new \App\Mail\DeveloperOtpMail($otp));
                     }
                     return redirect('/admin/otp');
                 }

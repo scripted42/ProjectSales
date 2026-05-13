@@ -8,12 +8,7 @@
             <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
                 Kami telah mengirimkan 6 digit kode OTP ke email Anda. Silakan masukkan kode tersebut di bawah ini.
             </p>
-            @if(auth()->user()->role === 'developer')
-                <div class="mt-4 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl">
-                    <p class="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-widest mb-1">Testing Mode</p>
-                    <p class="text-xl font-black text-amber-900 dark:text-amber-100 font-mono">{{ auth()->user()->otp_code }}</p>
-                </div>
-            @endif
+
         </div>
 
         <x-filament::section>
