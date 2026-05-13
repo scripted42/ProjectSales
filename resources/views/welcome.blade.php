@@ -103,24 +103,24 @@
                 <p class="text-lg text-white/50 mb-2 font-light">Harga OTR mulai dari</p>
                 <p class="text-3xl md:text-4xl font-black text-white mb-10 transition-all duration-500" x-text="cars[current].price"></p>
                 <div class="flex flex-col sm:flex-row gap-4 w-full">
-                    <a :href="'/car/' + cars[current].slug" class="block w-full sm:w-fit bg-white text-[#002c5f] px-8 py-3.5 md:px-10 md:py-4 rounded-full font-bold text-center hover:bg-blue-50 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5">
+                    <a :href="'/car/' + cars[current].slug" class="block w-full sm:w-[260px] bg-white text-[#002c5f] px-6 py-3.5 md:py-4 rounded-full font-bold text-center hover:bg-blue-50 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5">
                         Lihat Detail
                     </a>
-                    <a href="{{ route('track.wa') }}" class="block w-full sm:w-fit bg-white/10 backdrop-blur-md text-white border border-white/30 px-8 py-3.5 md:px-10 md:py-4 rounded-full font-bold text-center hover:bg-white/20 transition-all">
+                    <a href="{{ route('track.wa') }}" class="block w-full sm:w-[260px] bg-white/10 backdrop-blur-md text-white border border-white/30 px-6 py-3.5 md:py-4 rounded-full font-bold text-center hover:bg-white/20 transition-all">
                         Dapatkan Penawaran
                     </a>
                 </div>
-
-                <!-- Slide Indicators -->
-                <div class="flex items-center justify-center sm:justify-start gap-3 mt-8">
-                    <template x-for="(car, index) in cars" :key="index">
-                        <button @click="go(index)" 
-                                class="h-1 rounded-full transition-all duration-500"
-                                :class="current === index ? 'w-12 bg-white' : 'w-3 bg-white/30 hover:bg-white/50'"></button>
-                    </template>
-                    <span class="ml-4 text-[10px] font-bold text-white/40 uppercase tracking-widest" x-text="(current + 1) + ' / ' + cars.length"></span>
-                </div>
             </div>
+        </div>
+
+        <!-- Slide Indicators (Absolute Bottom Center) -->
+        <div class="absolute bottom-6 md:bottom-10 left-0 right-0 z-30 flex items-center justify-center gap-3">
+            <template x-for="(car, index) in cars" :key="index">
+                <button @click="go(index)" 
+                        class="h-1.5 rounded-full transition-all duration-500 shadow-lg"
+                        :class="current === index ? 'w-12 bg-white' : 'w-3 bg-white/40 hover:bg-white/70'"></button>
+            </template>
+            <span class="ml-4 text-[10px] font-black text-white/60 uppercase tracking-[0.3em]" x-text="(current + 1) + ' / ' + cars.length"></span>
         </div>
     </section>
 
