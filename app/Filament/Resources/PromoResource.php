@@ -41,6 +41,7 @@ class PromoResource extends Resource
                             ]),
                         Forms\Components\FileUpload::make('image')
                             ->image()
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/jpg'])
                             ->directory('promos')
                             ->imageResizeMode('cover')
                             ->imageCropAspectRatio('16:9')
