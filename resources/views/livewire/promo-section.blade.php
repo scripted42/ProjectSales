@@ -1,6 +1,6 @@
 <div x-data="{ open: @entangle('showModal') }" class="relative">
     @if($promo)
-        <section class="py-20 bg-[#002c5f] text-white overflow-hidden relative">
+        <section class="py-12 md:py-16 bg-[#002c5f] text-white overflow-hidden relative">
             <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500 rounded-full blur-[120px] opacity-10 -mr-64 -mt-64"></div>
             
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

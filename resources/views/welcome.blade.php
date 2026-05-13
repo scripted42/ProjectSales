@@ -28,11 +28,11 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
             <div class="flex items-center">
                 @if($logo = \App\Models\Setting::get('site_logo'))
-                    <img src="{{ asset('storage/' . $logo) }}" alt="{{ \App\Models\Setting::get('site_name') }}" class="h-10 w-auto">
+                    <img src="{{ asset('storage/' . $logo) }}" alt="{{ \App\Models\Setting::get('site_name') }}" class="h-6 md:h-10 w-auto">
                 @else
-                    <img src="{{ asset('assets/images/hyundai_logo.png') }}" alt="Hyundai" class="h-10 w-auto">
+                    <img src="{{ asset('assets/images/hyundai_logo.png') }}" alt="Hyundai" class="h-6 md:h-10 w-auto">
                 @endif
-                <span class="ml-3 font-black text-2xl tracking-[0.2em] text-[#002c5f] uppercase">{{ \App\Models\Setting::get('site_name', 'Hyundai') }}</span>
+                <span class="ml-2 md:ml-3 font-black text-sm md:text-2xl tracking-[0.2em] text-[#002c5f] uppercase truncate max-w-[120px] md:max-w-none">{{ \App\Models\Setting::get('site_name', 'Hyundai') }}</span>
             </div>
             <div class="hidden md:flex space-x-8 text-sm font-semibold uppercase tracking-widest text-gray-500">
                 <a href="#home" class="hover:text-[#002c5f] transition-colors">Home</a>
@@ -49,7 +49,7 @@
                         <a href="{{ route('login') }}" class="text-sm font-medium text-gray-400 hover:text-[#002c5f] transition-colors">Login</a>
                     @endauth
                 @endif
-                <a href="{{ route('track.wa') }}" class="bg-[#002c5f] text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-blue-800 transition-all shadow-lg">
+                <a href="{{ route('track.wa') }}" class="bg-[#002c5f] text-white px-4 md:px-6 py-2 md:py-2.5 rounded-full text-[10px] md:text-sm font-bold hover:bg-blue-800 transition-all shadow-lg whitespace-nowrap">
                     Hubungi Kami
                 </a>
             </div>
@@ -128,7 +128,7 @@
     <livewire:promo-section />
 
     <!-- Car Models - Break the Frame -->
-    <section id="models" class="py-28 bg-white">
+    <section id="models" class="py-12 md:py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-4">{{ \App\Models\Setting::get('site_name', 'Hyundai') }} Models</h2>
@@ -176,12 +176,46 @@
         </div>
     </section>
 
-    <!-- Test Drive Booking -->
-    <livewire:test-drive-form />
+    <!-- Service Tools Section (Test Drive & Credit) -->
+    <section id="services" class="py-12 md:py-16 bg-gray-50 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+                
+                <!-- Left: Test Drive -->
+                <div class="flex flex-col w-full">
+                    <!-- Header Locked Height -->
+                    <div style="min-height: 90px;" class="mb-2">
+                        <span class="text-[10px] font-black text-blue-600 uppercase tracking-[0.3em] block mb-2">Experience</span>
+                        <h2 class="text-3xl font-black text-gray-900 leading-tight">Booking Test Drive</h2>
+                        <div class="h-1 w-16 bg-[#002c5f] rounded-full mt-3"></div>
+                    </div>
+                    <!-- Card Container -->
+                    <div class="flex-grow flex flex-col h-full">
+                        <livewire:test-drive-form />
+                    </div>
+                </div>
+
+                <!-- Right: Credit Simulation -->
+                <div class="flex flex-col w-full mt-12 md:mt-0">
+                    <!-- Header Locked Height -->
+                    <div style="min-height: 90px;" class="mb-2">
+                        <span class="text-[10px] font-black text-blue-600 uppercase tracking-[0.3em] block mb-2">Financing</span>
+                        <h2 class="text-3xl font-black text-gray-900 leading-tight">Simulasi Kredit</h2>
+                        <div class="h-1 w-16 bg-[#002c5f] rounded-full mt-3"></div>
+                    </div>
+                    <!-- Card Container -->
+                    <div class="flex-grow flex flex-col h-full">
+                        <livewire:credit-calculator />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
 
     <!-- Consultant Profile -->
     @if($consultant)
-    <section id="consultant" class="py-24 bg-gray-50">
+    <section id="consultant" class="py-12 md:py-16 bg-white">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white rounded-3xl overflow-hidden shadow-lg flex flex-col md:flex-row border border-gray-100">
                 <div class="md:w-1/2 relative h-80 md:h-auto overflow-hidden">
@@ -228,7 +262,7 @@
     @endif
 
     <!-- Handover Gallery -->
-    <section id="gallery" class="py-24 bg-white">
+    <section id="gallery" class="py-12 md:py-16 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-5xl font-black mb-4">Galeri Serah Terima</h2>
@@ -254,7 +288,7 @@
     </section>
 
     <!-- Blog / News Section -->
-    <section id="news" class="py-24 bg-white border-t border-gray-50">
+    <section id="news" class="py-12 md:py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
                 <div>
@@ -320,7 +354,7 @@
     </section>
 
     <!-- Video & Map -->
-    <section class="py-24 bg-gray-50">
+    <section class="py-12 md:py-16 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-12">
             <div class="rounded-3xl overflow-hidden shadow-lg aspect-video bg-black">
                 @php
