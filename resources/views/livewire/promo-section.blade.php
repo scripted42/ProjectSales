@@ -3,6 +3,14 @@
         <section class="py-12 md:py-16 bg-[#002c5f] text-white overflow-hidden relative">
             <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500 rounded-full blur-[120px] opacity-10 -mr-64 -mt-64"></div>
             
+            <!-- Decorative Promo Image -->
+            @if($promo->image)
+                <div class="absolute bottom-0 right-0 h-full w-full md:w-1/2 overflow-hidden pointer-events-none z-0">
+                    <img src="{{ asset('storage/' . $promo->image) }}" alt="Promo Background" 
+                         class="absolute bottom-0 right-0 h-[80%] md:h-[110%] w-auto object-contain object-bottom opacity-30 transform md:translate-x-12 translate-y-4 select-none">
+                </div>
+            @endif
+
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div class="flex flex-col md:flex-row items-center justify-between gap-12">
                     <div class="max-w-2xl text-center md:text-left">
@@ -57,14 +65,6 @@
                         </button>
                     </div>
 
-                    <div class="hidden lg:block relative">
-                         @if($promo->image)
-                             <img src="{{ asset('storage/' . $promo->image) }}" alt="Promo Image" 
-                                  class="w-[450px] h-auto object-contain opacity-20 transform translate-x-12 -rotate-12 select-none pointer-events-none">
-                         @else
-                             <svg xmlns="http://www.w3.org/2000/svg" width="280" height="280" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ticket text-white/20"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg>
-                         @endif
-                    </div>
                 </div>
             </div>
         </section>
