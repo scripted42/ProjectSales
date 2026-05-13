@@ -7,7 +7,7 @@
             @if($promo->image)
                 <div class="absolute bottom-0 right-0 h-full w-full md:w-1/2 overflow-hidden pointer-events-none z-0">
                     <img src="{{ asset('storage/' . $promo->image) }}" alt="Promo Background" 
-                         class="absolute bottom-0 right-0 h-[80%] md:h-[110%] w-auto object-contain object-bottom opacity-30 transform md:translate-x-12 translate-y-4 select-none">
+                         class="absolute bottom-0 right-0 h-[80%] md:h-[110%] w-auto object-contain object-bottom opacity-90 transform md:-translate-x-12 translate-y-4 select-none">
                 </div>
             @endif
 
