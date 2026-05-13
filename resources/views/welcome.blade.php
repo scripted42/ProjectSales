@@ -94,7 +94,7 @@
         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
 
         <!-- Content Layer -->
-        <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center">
+        <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center pt-12">
             <div class="w-full max-w-3xl text-center md:text-left">
                 <!-- Badge -->
                 <div class="inline-block bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-full mb-6">
@@ -122,20 +122,17 @@
                     </a>
                 </div>
 
-                <!-- Slide Indicators (Integrated) -->
-                <div class="mt-16 flex flex-col items-center md:items-start gap-4">
-                    <div class="flex items-center gap-2.5">
-                        <template x-for="(car, index) in cars" :key="index">
-                            <button @click="go(index)" 
-                                    class="h-1 rounded-full transition-all duration-500"
-                                    :class="current === index ? 'w-10 bg-white' : 'w-2 bg-white/30 hover:bg-white/50'"></button>
-                        </template>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-[9px] font-bold text-white/40 uppercase tracking-[0.4em]" x-text="'0' + (current + 1)"></span>
-                        <div class="w-6 h-[1px] bg-white/20"></div>
-                        <span class="text-[9px] font-bold text-white/40 uppercase tracking-[0.4em]" x-text="'0' + cars.length"></span>
-                    </div>
+                <!-- Slide Indicators (Luxury Numbered Style) -->
+                <div class="mt-20 flex items-center justify-center md:justify-start gap-8">
+                    <template x-for="(car, index) in cars" :key="index">
+                        <button @click="go(index)" class="group flex flex-col items-center md:items-start gap-2 focus:outline-none">
+                            <span class="text-[10px] font-black transition-all duration-300 tracking-[0.2em]" 
+                                  :class="current === index ? 'text-white translate-y-0' : 'text-white/20 group-hover:text-white/50 translate-y-1'"
+                                  x-text="'0' + (index + 1)"></span>
+                            <div class="h-[2px] transition-all duration-700 rounded-full" 
+                                 :class="current === index ? 'w-10 bg-white opacity-100' : 'w-0 bg-white/0 opacity-0'"></div>
+                        </button>
+                    </template>
                 </div>
             </div>
         </div>
