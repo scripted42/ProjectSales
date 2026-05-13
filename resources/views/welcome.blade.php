@@ -57,7 +57,7 @@
     </nav>
 
     <!-- Hero Section with Banner Slideshow -->
-    <section id="home" class="relative h-screen overflow-hidden"
+    <section id="home" class="relative h-[70vh] md:h-screen overflow-hidden"
              x-data="{
                 current: 0,
                 cars: [
@@ -85,7 +85,7 @@
         <template x-for="(car, index) in cars" :key="index">
             <div class="absolute inset-0 transition-all duration-[1200ms] ease-in-out"
                  :style="current === index ? 'opacity:1; transform: scale(1);' : 'opacity:0; transform: scale(1.05);'">
-                <img :src="car.banner" :alt="car.name" class="w-full h-full object-cover">
+                <img :src="car.banner" :alt="car.name" class="w-full h-full object-cover object-center">
             </div>
         </template>
 
