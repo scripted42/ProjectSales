@@ -3,6 +3,10 @@
 use App\Http\Controllers\LandingPageController;
 use App\Livewire\OtpChallenge;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use App\Models\Setting;
 
 Route::get('/', [LandingPageController::class, 'index']);
 Route::get('/news', [LandingPageController::class, 'postsIndex'])->name('posts.index');
@@ -38,22 +42,58 @@ Route::get('/track-wa', function (\Illuminate\Http\Request $request) {
     return redirect("https://api.whatsapp.com/send/?phone={$phone}&text=" . urlencode($text));
 })->name('track.wa');
 
-// Route khusus untuk hosting tanpa SSH (Hapus jika sudah di-upload ke cPanel dan dijalankan)
+// ==========================================
+// UTILITY ROUTES (FOR HOSTING WITHOUT SSH)
+// ==========================================
+
+// 1. Menjalankan Migrasi Database
 Route::get('/install-db', function () {
     try {
-        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
-        return "Database migrated successfully!<br><pre>" . \Illuminate\Support\Facades\Artisan::output() . "</pre>";
+        Artisan::call('migrate', ['--force' => true]);
+        return "Database migrated successfully!<br><pre>" . Artisan::output() . "</pre>";
     } catch (\Exception $e) {
         return "Error: " . $e->getMessage();
     }
 });
 
-Route::get('/storage-link', function () {
+// 2. Membuat Akun Developer Utama (Akses Full)
+Route::get('/buat-admin', function () {
+    $user = User::updateOrCreate(
+        ['email' => 'admin@showroom.com'],
+        [
+            'name' => 'Admin Developer',
+            'password' => Hash::make('password'),
+            'role' => 'developer', 
+            'plan' => 'pro',       
+            'email_verified_at' => now(),
+        ]
+    );
+    return "User Developer Siap! Email: admin@showroom.com | Password: password";
+});
+
+// 3. Membersihkan Cache & Hapus Sisa Menu Lama
+Route::get('/clear-all', function() {
+    Artisan::call('view:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('config:clear');
+    Artisan::call('route:clear');
+    
+    // Paksa hapus file SystemSettings di hosting jika masih ada
+    $file1 = app_path('Filament/Pages/SystemSettings.php');
+    $file2 = resource_path('views/filament/pages/system-settings.blade.php');
+    
+    if (file_exists($file1)) @unlink($file1);
+    if (file_exists($file2)) @unlink($file2);
+    
+    return "Semua cache berhasil dibersihkan dan menu lama telah dihapus!";
+});
+
+// 4. Memperbaiki Storage Link
+Route::get('/fix-storage', function () {
     try {
-        \Illuminate\Support\Facades\Artisan::call('storage:link');
+        Artisan::call('storage:link');
         return "Storage link created successfully!";
     } catch (\Exception $e) {
-        return "Error: " . $e->getMessage();
+        return "Error Storage: " . $e->getMessage();
     }
 });
-

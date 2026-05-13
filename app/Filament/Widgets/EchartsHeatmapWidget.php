@@ -23,11 +23,11 @@ class EchartsHeatmapWidget extends Widget
         $driverName = DB::connection()->getDriverName();
 
         if ($driverName === 'mysql') {
-            $dayOfWeekSql = "DAYOFWEEK(created_at) - 1"; // MySQL 1=Sun, 7=Sat -> SQLite 0=Sun, 6=Sat
-            $hourOfDaySql = "HOUR(created_at)";
+            $dayOfWeekSql = "DAYOFWEEK(DATE_ADD(created_at, INTERVAL 7 HOUR)) - 1";
+            $hourOfDaySql = "HOUR(DATE_ADD(created_at, INTERVAL 7 HOUR))";
         } else {
-            $dayOfWeekSql = "CAST(strftime('%w', created_at) AS INTEGER)";
-            $hourOfDaySql = "CAST(strftime('%H', created_at) AS INTEGER)";
+            $dayOfWeekSql = "CAST(strftime('%w', datetime(created_at, '+7 hours')) AS INTEGER)";
+            $hourOfDaySql = "CAST(strftime('%H', datetime(created_at, '+7 hours')) AS INTEGER)";
         }
 
         $logs = SiteLog::select(
