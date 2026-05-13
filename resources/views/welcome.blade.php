@@ -57,7 +57,7 @@
     </nav>
 
     <!-- Hero Section with Banner Slideshow -->
-    <section id="home" class="relative h-[70vh] md:h-screen overflow-hidden"
+    <section id="home" class="relative h-screen overflow-hidden"
              x-data="{
                 current: 0,
                 cars: [
@@ -94,7 +94,7 @@
         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
 
         <!-- Content -->
-        <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-end pb-20">
+        <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-end pb-12">
             <div class="max-w-2xl">
                 <div class="inline-block bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-full mb-6">
                     <span class="text-white text-[11px] font-black uppercase tracking-[0.2em]" x-text="cars[current].category">EV</span>
