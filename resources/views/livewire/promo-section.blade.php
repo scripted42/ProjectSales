@@ -99,17 +99,17 @@
                     <form wire:submit.prevent="submit" class="space-y-5">
                         <div class="space-y-1.5">
                             <label class="text-[10px] font-black uppercase text-gray-400 tracking-widest">Nama Lengkap</label>
-                            <input type="text" wire:model="name" class="w-full bg-gray-50 dark:bg-zinc-800 dark:text-white rounded-2xl p-5 text-sm outline-none border-2 border-transparent focus:border-blue-600">
+                            <input type="text" wire:model="name" class="w-full bg-gray-50 text-gray-900 rounded-2xl p-5 text-sm outline-none border-2 border-transparent focus:border-blue-600">
                             @error('name') <span class="text-red-500 text-[10px] font-bold">{{ $message }}</span> @enderror
                         </div>
                         <div class="space-y-1.5">
                             <label class="text-[10px] font-black uppercase text-gray-400 tracking-widest">No. WhatsApp</label>
-                            <input type="text" wire:model="whatsapp" class="w-full bg-gray-50 dark:bg-zinc-800 dark:text-white rounded-2xl p-5 text-sm outline-none border-2 border-transparent focus:border-blue-600">
+                            <input type="text" wire:model="whatsapp" class="w-full bg-gray-50 text-gray-900 rounded-2xl p-5 text-sm outline-none border-2 border-transparent focus:border-blue-600">
                             @error('whatsapp') <span class="text-red-500 text-[10px] font-bold">{{ $message }}</span> @enderror
                         </div>
                         <div class="space-y-1.5 pb-4">
                             <label class="text-[10px] font-black uppercase text-gray-400 tracking-widest">Email (Opsional)</label>
-                            <input type="email" wire:model="email" class="w-full bg-gray-50 dark:bg-zinc-800 dark:text-white rounded-2xl p-5 text-sm outline-none border-2 border-transparent focus:border-blue-600">
+                            <input type="email" wire:model="email" class="w-full bg-gray-50 text-gray-900 rounded-2xl p-5 text-sm outline-none border-2 border-transparent focus:border-blue-600">
                         </div>
 
                         <button type="submit" class="w-full bg-[#002c5f] text-white py-5 rounded-2xl font-black text-sm hover:shadow-xl transition-all">
