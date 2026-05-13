@@ -72,6 +72,16 @@ Route::get('/buat-admin', function () {
 });
 
 // 3. Membersihkan Cache & Hapus Sisa Menu Lama
+Route::get('/storage-link', function () {
+    $target = storage_path('app/public');
+    $link = public_path('storage');
+    if (file_exists($link)) {
+        return "The [public/storage] directory already exists.";
+    }
+    app('files')->link($target, $link);
+    return "The [public/storage] directory has been linked.";
+});
+
 Route::get('/clear-all', function() {
     Artisan::call('view:clear');
     Artisan::call('cache:clear');

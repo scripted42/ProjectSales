@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Hyundai Showroom - Premium Sales Portal</title>
+    <title>{{ \App\Models\Setting::get('site_name', 'Hyundai Showroom') }} - Premium Sales Portal</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,8 +27,12 @@
     <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100 py-4 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
             <div class="flex items-center">
-                <img src="{{ asset('assets/images/hyundai_logo.png') }}" alt="Hyundai" class="h-10 w-auto">
-                <span class="ml-3 font-black text-2xl tracking-[0.2em] text-[#002c5f] uppercase">Hyundai</span>
+                @if($logo = \App\Models\Setting::get('site_logo'))
+                    <img src="{{ asset('storage/' . $logo) }}" alt="{{ \App\Models\Setting::get('site_name') }}" class="h-10 w-auto">
+                @else
+                    <img src="{{ asset('assets/images/hyundai_logo.png') }}" alt="Hyundai" class="h-10 w-auto">
+                @endif
+                <span class="ml-3 font-black text-2xl tracking-[0.2em] text-[#002c5f] uppercase">{{ \App\Models\Setting::get('site_name', 'Hyundai') }}</span>
             </div>
             <div class="hidden md:flex space-x-8 text-sm font-semibold uppercase tracking-widest text-gray-500">
                 <a href="#home" class="hover:text-[#002c5f] transition-colors">Home</a>
@@ -127,7 +131,7 @@
     <section id="models" class="py-28 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-4">Hyundai Models</h2>
+                <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-4">{{ \App\Models\Setting::get('site_name', 'Hyundai') }} Models</h2>
                 <div class="h-1.5 w-24 bg-[#002c5f] mx-auto rounded-full"></div>
             </div>
 
@@ -350,8 +354,12 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-12">
             <div class="col-span-1 md:col-span-2">
                 <div class="flex items-center mb-6">
-                    <img src="{{ asset('assets/images/hyundai_logo.png') }}" alt="Hyundai" class="h-8 w-auto brightness-0 invert">
-                    <span class="ml-3 font-black text-xl tracking-[0.2em] uppercase">Hyundai</span>
+                    @if($logo = \App\Models\Setting::get('site_logo'))
+                        <img src="{{ asset('storage/' . $logo) }}" alt="{{ \App\Models\Setting::get('site_name') }}" class="h-8 w-auto brightness-0 invert">
+                    @else
+                        <img src="{{ asset('assets/images/hyundai_logo.png') }}" alt="Hyundai" class="h-8 w-auto brightness-0 invert">
+                    @endif
+                    <span class="ml-3 font-black text-xl tracking-[0.2em] uppercase">{{ \App\Models\Setting::get('site_name', 'Hyundai') }}</span>
                 </div>
                 <p class="text-blue-200 max-w-md mb-8">
                     Dealer Resmi Hyundai melayani penjualan unit baru, layanan purna jual, dan suku cadang asli dengan standar pelayanan profesional.
@@ -395,7 +403,7 @@
             </div>
         </div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 pt-8 border-t border-white/10 text-center text-[10px] uppercase tracking-[0.2em] text-blue-400">
-            &copy; {{ date('Y') }} Hyundai Dealer. All Rights Reserved.
+            &copy; {{ date('Y') }} {{ \App\Models\Setting::get('site_name', 'Hyundai') }} Dealer. All Rights Reserved.
         </div>
     </footer>
 

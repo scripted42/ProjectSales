@@ -4,6 +4,8 @@ namespace App\Filament\Widgets;
 
 use App\Models\SiteLog;
 use App\Models\TestDriveBooking;
+use App\Models\Gallery;
+use App\Models\Post;
 use App\Models\Setting;
 use Filament\Widgets\Widget;
 use Illuminate\Support\Facades\DB;
@@ -11,85 +13,92 @@ use Illuminate\Support\Facades\DB;
 class AiInsightsWidget extends Widget
 {
     protected static string $view = 'filament.widgets.ai-insights-widget';
-    protected static ?int $sort = 0; // Show very top
+    protected static ?int $sort = 0;
     protected int | string | array $columnSpan = 'full';
 
     public static function canView(): bool
     {
+        // Hanya untuk paket PRO
         return Setting::isPro();
     }
 
     protected function getViewData(): array
     {
         $insights = [];
+        $thirtyDaysAgo = now()->subDays(30);
 
-        // 1. Conversion Insight
-        $totalVisits = SiteLog::where('log_type', 'visit')->count();
-        $totalBookings = TestDriveBooking::count();
+        // 1. DATA DASAR
+        $totalVisits = SiteLog::where('log_type', 'visit')->where('created_at', '>=', $thirtyDaysAgo)->count();
+        $totalBookings = TestDriveBooking::where('created_at', '>=', $thirtyDaysAgo)->count();
+
+        // 2. INSIGHT: PERFORMA PENJUALAN (PRO ONLY)
         if ($totalVisits > 0) {
-            $conversionRate = round(($totalBookings / $totalVisits) * 100, 1);
-            if ($conversionRate >= 5) {
+            $convRate = round(($totalBookings / $totalVisits) * 100, 1);
+            if ($convRate >= 3) {
                 $insights[] = [
-                    'icon' => 'heroicon-o-arrow-trending-up',
+                    'icon' => 'heroicon-o-presentation-chart-line',
                     'color' => 'success',
-                    'title' => 'Konversi Tinggi',
-                    'text' => "Luar biasa! Tingkat konversi website Anda mencapai {$conversionRate}%. Strategi marketing Anda saat ini sangat efektif."
-                ];
-            } elseif ($conversionRate > 0) {
-                $insights[] = [
-                    'icon' => 'heroicon-o-exclamation-triangle',
-                    'color' => 'warning',
-                    'title' => 'Potensi Peningkatan',
-                    'text' => "Tingkat konversi saat ini {$conversionRate}%. Pertimbangkan untuk menawarkan promo khusus pada halaman detail mobil untuk meningkatkan booking."
+                    'title' => 'Strategi Penjualan Efektif',
+                    'text' => "Tingkat konversi Anda ({$convRate}%) sangat baik. Terus bagikan testimoni pelanggan ke media sosial untuk mempertahankan kepercayaan ini."
                 ];
             } else {
                 $insights[] = [
-                    'icon' => 'heroicon-o-information-circle',
-                    'color' => 'info',
-                    'title' => 'Kumpulkan Lebih Banyak Data',
-                    'text' => "Traffic website mulai masuk, namun belum ada konversi booking. Pastikan tombol WhatsApp mudah terlihat."
+                    'icon' => 'heroicon-o-light-bulb',
+                    'color' => 'warning',
+                    'title' => 'Peluang Closing',
+                    'text' => "Traffic Anda cukup baik, namun closing (booking) masih bisa ditingkatkan. Coba buat promo 'Limited Time' untuk unit yang paling sering dilihat."
                 ];
             }
-        } else {
+        }
+
+        // 3. INSIGHT: KESEGARAN KONTEN (SOSIAL MEDIA)
+        $lastGallery = Gallery::orderBy('updated_at', 'desc')->first();
+        if ($lastGallery && $lastGallery->updated_at->diffInDays(now()) > 7) {
             $insights[] = [
-                'icon' => 'heroicon-o-chart-bar',
+                'icon' => 'heroicon-o-camera',
                 'color' => 'info',
-                'title' => 'Belum Ada Traffic',
-                'text' => "Website Anda siap digunakan. Mulailah sebarkan link showroom Anda ke media sosial untuk mendapatkan pengunjung pertama."
+                'title' => 'Update Galeri Diperlukan',
+                'text' => "Sudah lebih dari 7 hari Anda tidak mengupdate foto galeri. Pelanggan lebih tertarik pada unit dengan foto-foto terbaru untuk bahan Story Instagram."
             ];
         }
 
-        // 2. Source Insight
-        $topSource = SiteLog::where('log_type', 'visit')
-            ->select('source', DB::raw('count(*) as total'))
-            ->groupBy('source')
+        // 4. INSIGHT: WAKTU TERBAIK POSTING (WIB)
+        $peakHour = SiteLog::where('log_type', 'visit')
+            ->where('created_at', '>=', $thirtyDaysAgo)
+            ->select(DB::raw('HOUR(DATE_ADD(created_at, INTERVAL 7 HOUR)) as hour'), DB::raw('count(*) as total'))
+            ->groupBy('hour')
             ->orderBy('total', 'desc')
             ->first();
 
-        if ($topSource && $topSource->source) {
-            $sourceName = ucfirst($topSource->source);
+        if ($peakHour) {
+            $hourRange = $peakHour->hour . ":00 - " . ($peakHour->hour + 1) . ":00";
             $insights[] = [
-                'icon' => 'heroicon-o-globe-alt',
+                'icon' => 'heroicon-o-megaphone',
                 'color' => 'primary',
-                'title' => 'Sumber Traffic Terbaik',
-                'text' => "Sebagian besar pengunjung datang dari **{$sourceName}**. Disarankan untuk memfokuskan atau menambah budget promosi di platform tersebut."
+                'title' => 'Jadwal Konten Sosmed',
+                'text' => "Pengunjung paling ramai di jam **{$hourRange} WIB**. Pastikan Anda memposting update galeri atau promo baru di Instagram pada jam tersebut."
             ];
         }
 
-        // 3. Product Insight
-        $topCar = TestDriveBooking::select('car_id', DB::raw('count(*) as total'))
+        // 5. INSIGHT: UNIT TRENDING
+        $trendingCar = SiteLog::where('log_type', 'visit')
+            ->whereNotNull('car_id')
+            ->where('created_at', '>=', now()->subDays(7))
+            ->select('car_id', DB::raw('count(*) as total'))
             ->groupBy('car_id')
             ->orderBy('total', 'desc')
-            ->with('car')
             ->first();
 
-        if ($topCar && $topCar->car) {
-            $insights[] = [
-                'icon' => 'heroicon-o-star',
-                'color' => 'warning',
-                'title' => 'Unit Terpopuler',
-                'text' => "Model **{$topCar->car->name}** menyumbang booking terbanyak. Pastikan unit test drive tersedia dan siapkan penawaran trade-in khusus untuk model ini."
-            ];
+        if ($trendingCar) {
+            $car = \App\Models\Car::find($trendingCar->car_id);
+            if ($car) {
+                $insights[] = [
+                    'icon' => 'heroicon-o-fire',
+                    'color' => 'danger',
+                    'title' => 'Unit Sedang Tren',
+                    'text' => "Mobil **{$car->name}** sedang banyak dicari minggu ini. Fokuskan materi konten Instagram Anda pada unit ini untuk menarik lebih banyak leads."
+                ];
+            }
         }
 
         return [

@@ -15,7 +15,8 @@ class TestDriveBookingResource extends Resource
     protected static ?string $model = TestDriveBooking::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
-    protected static ?string $navigationGroup = 'Sales Management';
+    protected static ?string $navigationGroup = 'Inventory & Sales';
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {

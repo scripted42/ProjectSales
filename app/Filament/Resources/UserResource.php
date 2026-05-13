@@ -17,8 +17,9 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
-    protected static ?string $navigationGroup = 'Settings';
+    protected static ?string $navigationIcon = 'heroicon-o-shield-check';
+    protected static ?string $navigationGroup = 'System Control';
+    protected static ?int $navigationSort = 1;
     protected static ?string $navigationLabel = 'User Management';
 
     public static function canViewAny(): bool

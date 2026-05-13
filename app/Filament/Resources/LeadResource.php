@@ -15,6 +15,8 @@ class LeadResource extends Resource
     protected static ?string $model = Lead::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?string $navigationGroup = 'Inventory & Sales';
+    protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {

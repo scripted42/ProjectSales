@@ -1,6 +1,9 @@
 <x-filament-widgets::widget>
     <x-filament::section>
-        <h2 class="text-lg font-bold tracking-tight text-gray-900 dark:text-white mb-4">Waktu Puncak Interaksi (Heatmap)</h2>
+        <div class="mb-4">
+            <h2 class="text-lg font-bold tracking-tight text-gray-900 dark:text-white">Heatmap</h2>
+            <p class="text-xs text-gray-500 dark:text-gray-400">Peta Aktivitas Kunjungan Per Jam</p>
+        </div>
         
         <div 
             x-data="{
@@ -16,8 +19,9 @@
                         '12p', '1p', '2p', '3p', '4p', '5p',
                         '6p', '7p', '8p', '9p', '10p', '11p'
                     ];
+                    // Gunakan nama singkat agar tidak terpotong di Mobile
                     const days = [
-                        'Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'
+                        'Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'
                     ];
 
                     let option = {
@@ -29,13 +33,18 @@
                         },
                         grid: {
                             height: '70%',
-                            top: '10%',
-                            left: '5%',
-                            right: '5%'
+                            top: '5%',
+                            left: '2%',
+                            right: '2%',
+                            containLabel: true // Memastikan label tidak terpotong
                         },
                         xAxis: {
                             type: 'category',
                             data: hours,
+                            axisLabel: {
+                                interval: 'auto', // Otomatis sembunyikan label jika sempit
+                                fontSize: 9
+                            },
                             splitArea: {
                                 show: true
                             }
@@ -43,6 +52,9 @@
                         yAxis: {
                             type: 'category',
                             data: days,
+                            axisLabel: {
+                                fontSize: 10
+                            },
                             splitArea: {
                                 show: true
                             }
@@ -54,12 +66,14 @@
                             orient: 'horizontal',
                             left: 'center',
                             bottom: '0%',
+                            itemWidth: 10,
+                            itemHeight: 120,
                             inRange: {
-                                color: ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'] // GitHub commit colors
+                                color: ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39']
                             }
                         },
                         series: [{
-                            name: 'Interaksi',
+                            name: 'Kunjungan',
                             type: 'heatmap',
                             data: this.chartData,
                             label: {
@@ -81,7 +95,7 @@
                 }
             }"
         >
-            <div x-ref="heatmapChart" style="width: 100%; height: 350px;"></div>
+            <div x-ref="heatmapChart" class="w-full" style="height: 280px;"></div>
         </div>
     </x-filament::section>
 </x-filament-widgets::widget>

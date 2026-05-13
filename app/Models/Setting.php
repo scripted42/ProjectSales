@@ -51,4 +51,9 @@ class Setting extends Model
         $expiry = \Illuminate\Support\Carbon::parse($data['expired_at'] ?? '2000-01-01');
         return $expiry->isFuture();
     }
+
+    public static function get(string $key, mixed $default = null): mixed
+    {
+        return self::where('key', $key)->first()?->value ?? $default;
+    }
 }

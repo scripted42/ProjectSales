@@ -17,15 +17,13 @@ class GalleryResource extends Resource
 {
     protected static ?string $model = Gallery::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-camera';
+    protected static ?string $navigationGroup = 'Content Management';
+    protected static ?int $navigationSort = 2;
 
     public static function canCreate(): bool
     {
-        if (\App\Models\Setting::isPro()) {
-            return true;
-        }
-
-        return \App\Models\Gallery::count() < 5;
+        return true;
     }
 
     public static function form(Form $form): Form
@@ -72,6 +70,25 @@ class GalleryResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\Action::make('promote')
+                    ->label('Promosikan')
+                    ->icon('heroicon-m-megaphone')
+                    ->color('success')
+                    ->visible(fn () => \App\Models\Setting::isPro())
+                    ->modalHeading('Materi Promosi Instagram')
+                    ->modalDescription('Salin caption di bawah dan gunakan gambar ini untuk postingan Instagram/WhatsApp Anda.')
+                    ->form([
+                        Forms\Components\Placeholder::make('image_preview')
+                            ->label('Gambar yang akan dipromosikan')
+                            ->content(fn ($record) => view('filament.components.image-preview', ['url' => asset('storage/' . $record->image)])),
+                        Forms\Components\Textarea::make('caption')
+                            ->label('Caption Instagram (Salin)')
+                            ->rows(8)
+                            ->default(fn ($record) => "📸 Update Terbaru dari Showroom!\n\n" . ($record->caption ?? "Unit siap dipinang!") . "\n\nCek detail selengkapnya di website kami. Hubungi saya sekarang untuk penawaran terbaik! 🚀\n\n#hyundai #mobilbaru #promoautomotive #showroom")
+                            ->helperText('Klik & salin teks ini, lalu gunakan untuk postingan Anda.'),
+                    ])
+                    ->modalSubmitAction(false)
+                    ->modalCancelActionLabel('Tutup'),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([

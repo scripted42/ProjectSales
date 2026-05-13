@@ -3,42 +3,46 @@
 @endphp
 
 <x-filament-widgets::widget>
-    <div class="license-status-card relative overflow-hidden rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-        <!-- Background Decoration -->
-        <div class="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-{{ $info['status_color'] }}-500/5 blur-3xl"></div>
-        
-        <div class="flex flex-col items-center justify-between gap-4 md:flex-row">
-            <div class="flex items-center gap-4">
-                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-{{ $info['status_color'] }}-100 text-{{ $info['status_color'] }}-600 dark:bg-{{ $info['status_color'] }}-900/30 dark:text-{{ $info['status_color'] }}-400">
+    <div class="license-status-card relative overflow-hidden rounded-lg border border-gray-100 bg-white p-2 md:p-3 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+        <!-- Flex Row dipaksa mendatar di semua device -->
+        <div class="flex items-center justify-between gap-2 px-1">
+            
+            <!-- Kiri: Brand & Status -->
+            <div class="flex items-center gap-2">
+                <div class="flex h-7 w-7 md:h-9 md:w-9 items-center justify-center rounded-md bg-{{ $info['status_color'] }}-100 text-{{ $info['status_color'] }}-600 dark:bg-{{ $info['status_color'] }}-900/30 dark:text-{{ $info['status_color'] }}-400">
                     @if($info['is_expired'])
-                        <x-heroicon-o-x-circle class="h-7 w-7" />
+                        <x-heroicon-o-x-circle class="h-4 w-4 md:h-5 md:w-5" />
                     @elseif($info['is_near_expiry'])
-                        <x-heroicon-o-exclamation-triangle class="h-7 w-7" />
+                        <x-heroicon-o-exclamation-triangle class="h-4 w-4 md:h-5 md:w-5" />
                     @else
-                        <x-heroicon-o-check-badge class="h-7 w-7" />
+                        <x-heroicon-o-check-badge class="h-4 w-4 md:h-5 md:w-5" />
                     @endif
                 </div>
                 <div>
-                    <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">System License Status</h3>
-                    <div class="flex items-center gap-2">
-                        <span class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                            {{ $info['is_pro'] ? 'AutoShow PRO' : 'AutoShow Regular' }}
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-xs md:text-sm font-black tracking-tight text-gray-900 dark:text-white whitespace-nowrap">
+                            {{ $info['is_pro'] ? 'PRO' : 'Regular' }}
                         </span>
-                        <span class="inline-flex items-center rounded-md bg-{{ $info['status_color'] }}-50 px-2 py-1 text-xs font-bold text-{{ $info['status_color'] }}-700 ring-1 ring-inset ring-{{ $info['status_color'] }}-600/20 dark:bg-{{ $info['status_color'] }}-900/30 dark:text-{{ $info['status_color'] }}-400">
+                        <span class="inline-flex items-center rounded bg-{{ $info['status_color'] }}-50 px-1.5 py-0.5 text-[8px] md:text-[10px] font-bold text-{{ $info['status_color'] }}-700 ring-1 ring-inset ring-{{ $info['status_color'] }}-600/20 dark:bg-{{ $info['status_color'] }}-900/30 dark:text-{{ $info['status_color'] }}-400 uppercase">
                             {{ $info['status_label'] }}
                         </span>
                     </div>
                 </div>
             </div>
 
-            <div class="flex flex-col items-end gap-1 text-right">
-                <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Valid Until</p>
-                <p class="text-lg font-black text-gray-900 dark:text-white">{{ $info['expired_at'] }}</p>
-                @if(!$info['is_expired'])
-                    <p class="text-[10px] font-medium text-gray-500">
-                        {{ $info['days_left'] }} days remaining
-                    </p>
-                @endif
+            <!-- Kanan: Masa Berlaku (Super Compact) -->
+            <div class="flex items-center gap-2 text-right">
+                <div class="h-6 w-px bg-gray-100 dark:bg-gray-800"></div>
+                <div>
+                    <div class="flex flex-col md:flex-row md:items-baseline md:gap-2">
+                        <span class="text-[10px] md:text-sm font-bold text-gray-900 dark:text-white whitespace-nowrap">{{ $info['expired_at'] }}</span>
+                        @if(!$info['is_expired'])
+                            <span class="text-[9px] md:text-[10px] font-medium text-gray-400">
+                                ({{ $info['days_left'] }} hr)
+                            </span>
+                        @endif
+                    </div>
+                </div>
             </div>
 
         </div>

@@ -30,6 +30,10 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->brandName(fn () => auth()->check() 
+                ? 'Welcome, ' . explode(' ', auth()->user()->name)[0] 
+                : 'Welcome to ' . \App\Models\Setting::get('site_name', 'AutoShow Pro'))
+            ->favicon(fn () => \App\Models\Setting::get('site_logo') ? asset('storage/' . \App\Models\Setting::get('site_logo')) : null)
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([

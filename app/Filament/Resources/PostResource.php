@@ -19,6 +19,7 @@ class PostResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-newspaper';
     protected static ?string $navigationGroup = 'Content Management';
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
@@ -101,6 +102,25 @@ class PostResource extends Resource
                     ->label('Published Status'),
             ])
             ->actions([
+                Tables\Actions\Action::make('promote')
+                    ->label('Promosikan')
+                    ->icon('heroicon-m-megaphone')
+                    ->color('success')
+                    ->visible(fn () => \App\Models\Setting::isPro())
+                    ->modalHeading('Materi Promosi Instagram')
+                    ->modalDescription('Bagikan berita/promo ini ke media sosial Anda.')
+                    ->form([
+                        Forms\Components\Placeholder::make('image_preview')
+                            ->label('Gambar Berita/Promo')
+                            ->content(fn ($record) => view('filament.components.image-preview', ['url' => asset('storage/' . $record->image)])),
+                        Forms\Components\Textarea::make('caption')
+                            ->label('Caption Berita (Salin)')
+                            ->rows(8)
+                            ->default(fn ($record) => "🔥 [" . strtoupper($record->category) . "] " . $record->title . "\n\nAda kabar terbaru untuk Anda! Klik link di bio untuk baca selengkapnya atau hubungi saya via WhatsApp sekarang! 🚀\n\n#promo #beritaterkini #hyundai #showroomautomotive")
+                            ->helperText('Salin teks ini untuk caption Instagram/Story.'),
+                    ])
+                    ->modalSubmitAction(false)
+                    ->modalCancelActionLabel('Tutup'),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])

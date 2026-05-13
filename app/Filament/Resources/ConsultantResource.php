@@ -17,7 +17,8 @@ class ConsultantResource extends Resource
 {
     protected static ?string $model = Consultant::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user-circle';
+    protected static ?string $navigationGroup = 'Team & Profile';
 
     public static function form(Form $form): Form
     {
