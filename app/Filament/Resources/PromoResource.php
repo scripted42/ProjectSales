@@ -43,7 +43,7 @@ class PromoResource extends Resource
                             ->directory('promos')
                             ->disk('public')
                             ->visibility('public')
-                            ->extensions(['jpg', 'jpeg', 'png', 'webp'])
+                            ->rules(['mimes:jpg,jpeg,png,webp', 'max:2048'])
                             ->imageResizeMode('cover')
                             ->imageCropAspectRatio('16:9')
                             ->label('Background Image (Opsional)'),
