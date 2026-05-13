@@ -39,6 +39,12 @@ class PromoResource extends Resource
                                 Forms\Components\DateTimePicker::make('end_date')
                                     ->required(),
                             ]),
+                        Forms\Components\FileUpload::make('image')
+                            ->image()
+                            ->directory('promos')
+                            ->imageResizeMode('cover')
+                            ->imageCropAspectRatio('16:9')
+                            ->label('Background Image (Opsional)'),
                         Forms\Components\Toggle::make('is_active')
                             ->default(true)
                             ->required(),
