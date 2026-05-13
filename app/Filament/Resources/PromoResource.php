@@ -40,9 +40,10 @@ class PromoResource extends Resource
                                     ->required(),
                             ]),
                         Forms\Components\FileUpload::make('image')
-                            ->image()
-                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/jpg'])
                             ->directory('promos')
+                            ->disk('public')
+                            ->visibility('public')
+                            ->extensions(['jpg', 'jpeg', 'png', 'webp'])
                             ->imageResizeMode('cover')
                             ->imageCropAspectRatio('16:9')
                             ->label('Background Image (Opsional)'),
