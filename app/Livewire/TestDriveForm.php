@@ -20,7 +20,7 @@ class TestDriveForm extends Component
     protected $rules = [
         'name' => 'required|min:3',
         'phone' => 'required|min:10',
-        'email' => 'required|email',
+        'email' => 'nullable|email',
         'car_id' => 'required|exists:cars,id',
         'booking_date' => 'required|date|after_or_equal:today',
     ];
@@ -61,10 +61,22 @@ class TestDriveForm extends Component
             'created_at' => now(),
         ]);
 
-        $this->sendWhatsAppNotification($booking);
+        $car = Car::find($this->car_id);
+        $consultant = Consultant::first();
+        $whatsappNumber = $consultant->formatted_phone ?? '6281236046363';
+
+        $message = "Halo, saya ingin booking Test Drive mobil *{$car->name}*.\n\n"
+                 . "Detail Booking:\n"
+                 . "- Nama: {$this->name}\n"
+                 . "- WhatsApp: {$this->phone}\n"
+                 . "- Rencana Tanggal: " . date('d M Y', strtotime($this->booking_date)) . "\n"
+                 . "- Catatan: " . ($this->notes ?? '-') . "\n\n"
+                 . "Bisa bantu konfirmasi jadwalnya?";
 
         $this->reset(['name', 'phone', 'email', 'car_id', 'booking_date', 'notes']);
-        $this->successMessage = 'Booking Test Drive berhasil dikirim! Sales kami akan segera menghubungi Anda.';
+        $this->successMessage = 'Booking Test Drive berhasil dikirim! Mengalihkan ke WhatsApp...';
+
+        return redirect()->away("https://wa.me/{$whatsappNumber}?text=" . urlencode($message));
     }
 
     protected function sendWhatsAppNotification($booking)
