@@ -94,8 +94,8 @@
         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
 
         <!-- Content Layer -->
-        <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center md:justify-end md:pb-32">
-            <div class="w-full max-w-2xl text-center md:text-left">
+        <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center">
+            <div class="w-full max-w-3xl text-center md:text-left">
                 <!-- Badge -->
                 <div class="inline-block bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-full mb-6">
                     <span class="text-white text-[10px] font-black uppercase tracking-[0.3em]" x-text="cars[current].category"></span>
@@ -113,11 +113,11 @@
                 <!-- Action Buttons -->
                 <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
                     <a :href="'/car/' + cars[current].slug" 
-                       class="w-64 bg-white text-[#002c5f] py-4 rounded-full font-black text-sm uppercase tracking-widest hover:bg-blue-50 transition-all shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:-translate-y-1">
+                       class="w-56 bg-white text-[#002c5f] py-4 rounded-full font-bold text-xs uppercase tracking-[0.2em] hover:bg-blue-50 transition-all shadow-xl hover:-translate-y-1">
                         Lihat Detail
                     </a>
                     <a href="{{ route('track.wa') }}" 
-                       class="w-64 bg-white/10 backdrop-blur-md text-white border border-white/30 py-4 rounded-full font-black text-sm uppercase tracking-widest hover:bg-white/20 transition-all">
+                       class="w-56 bg-black/20 backdrop-blur-md text-white border border-white/20 py-4 rounded-full font-bold text-xs uppercase tracking-[0.2em] hover:bg-black/40 transition-all">
                         Dapatkan Penawaran
                     </a>
                 </div>
@@ -125,18 +125,18 @@
         </div>
 
         <!-- Static Slide Indicators (Bottom Center) -->
-        <div class="absolute bottom-10 left-0 right-0 z-30 flex flex-col items-center gap-4">
-            <div class="flex items-center gap-3">
+        <div class="absolute bottom-12 left-0 right-0 z-30 flex flex-col items-center gap-3">
+            <div class="flex items-center gap-2.5">
                 <template x-for="(car, index) in cars" :key="index">
                     <button @click="go(index)" 
                             class="h-1 rounded-full transition-all duration-500 shadow-lg"
-                            :class="current === index ? 'w-12 bg-white' : 'w-3 bg-white/30 hover:bg-white/50'"></button>
+                            :class="current === index ? 'w-10 bg-white' : 'w-2 bg-white/30 hover:bg-white/50'"></button>
                 </template>
             </div>
             <div class="flex items-center gap-2">
-                <span class="text-[10px] font-black text-white/40 uppercase tracking-[0.4em]" x-text="'0' + (current + 1)"></span>
-                <div class="w-8 h-[1px] bg-white/20"></div>
-                <span class="text-[10px] font-black text-white/40 uppercase tracking-[0.4em]" x-text="'0' + cars.length"></span>
+                <span class="text-[9px] font-bold text-white/40 uppercase tracking-[0.4em]" x-text="'0' + (current + 1)"></span>
+                <div class="w-6 h-[1px] bg-white/20"></div>
+                <span class="text-[9px] font-bold text-white/40 uppercase tracking-[0.4em]" x-text="'0' + cars.length"></span>
             </div>
         </div>
 
