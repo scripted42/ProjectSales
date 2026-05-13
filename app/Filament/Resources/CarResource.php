@@ -21,11 +21,7 @@ class CarResource extends Resource
 
     public static function canCreate(): bool
     {
-        if (\App\Models\Setting::isPro()) {
-            return true;
-        }
-
-        return \App\Models\Car::count() < 3;
+        return true;
     }
 
     public static function form(Form $form): Form
@@ -106,7 +102,6 @@ class CarResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->description(fn () => \App\Models\Setting::isPro() ? 'Paket PRO: Unit tak terbatas.' : 'Paket Regular: ' . \App\Models\Car::count() . ' dari 3 unit digunakan. Upgrade ke PRO untuk unit tak terbatas.')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),

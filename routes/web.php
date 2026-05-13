@@ -37,3 +37,23 @@ Route::get('/track-wa', function (\Illuminate\Http\Request $request) {
     
     return redirect("https://api.whatsapp.com/send/?phone={$phone}&text=" . urlencode($text));
 })->name('track.wa');
+
+// Route khusus untuk hosting tanpa SSH (Hapus jika sudah di-upload ke cPanel dan dijalankan)
+Route::get('/install-db', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        return "Database migrated successfully!<br><pre>" . \Illuminate\Support\Facades\Artisan::output() . "</pre>";
+    } catch (\Exception $e) {
+        return "Error: " . $e->getMessage();
+    }
+});
+
+Route::get('/storage-link', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('storage:link');
+        return "Storage link created successfully!";
+    } catch (\Exception $e) {
+        return "Error: " . $e->getMessage();
+    }
+});
+

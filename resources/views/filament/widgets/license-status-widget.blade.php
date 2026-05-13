@@ -41,19 +41,6 @@
                 @endif
             </div>
 
-            @if(!$info['is_pro'] || $info['is_expired'] || $info['is_near_expiry'])
-                <div class="mt-4 md:mt-0">
-                    <x-filament::button
-                        href="/admin/system-settings"
-                        tag="a"
-                        color="{{ $info['status_color'] }}"
-                        icon="heroicon-m-sparkles"
-                        size="sm"
-                    >
-                        Manage License
-                    </x-filament::button>
-                </div>
-            @endif
         </div>
     </div>
 </x-filament-widgets::widget>

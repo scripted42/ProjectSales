@@ -21,12 +21,14 @@ class DatabaseSeeder extends Seeder
             'name' => 'Super Developer',
             'password' => bcrypt('Script42hyu42'),
             'role' => 'developer',
+            'plan' => 'pro',
         ]);
 
         User::updateOrCreate(['email' => 'sales@autoshow.id'], [
             'name' => 'Sales Demo',
             'password' => bcrypt('password'),
             'role' => 'sales',
+            'plan' => 'regular',
         ]);
 
         $this->call([

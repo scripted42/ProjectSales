@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hyundai Showroom - Premium Sales Portal</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS (Vite) -->
+    <script type="module" src="http://[::1]:5173/@vite/client" data-navigate-track="reload"></script><link rel="stylesheet" href="http://[::1]:5173/resources/css/app.css" data-navigate-track="reload" /><script type="module" src="http://[::1]:5173/resources/js/app.js" data-navigate-track="reload"></script>
+    <style>
+        body { font-family: 'Outfit', sans-serif; }
+        [x-cloak] { display: none !important; }
+        .car-card:hover .car-image { transform: scale(1.05); }
+        .car-image { transition: transform 0.5s ease; }
+    </style>
+    <!-- Livewire Styles --><style >[wire\:loading][wire\:loading], [wire\:loading\.delay][wire\:loading\.delay], [wire\:loading\.inline-block][wire\:loading\.inline-block], [wire\:loading\.inline][wire\:loading\.inline], [wire\:loading\.block][wire\:loading\.block], [wire\:loading\.flex][wire\:loading\.flex], [wire\:loading\.table][wire\:loading\.table], [wire\:loading\.grid][wire\:loading\.grid], [wire\:loading\.inline-flex][wire\:loading\.inline-flex] {display: none;}[wire\:loading\.delay\.none][wire\:loading\.delay\.none], [wire\:loading\.delay\.shortest][wire\:loading\.delay\.shortest], [wire\:loading\.delay\.shorter][wire\:loading\.delay\.shorter], [wire\:loading\.delay\.short][wire\:loading\.delay\.short], [wire\:loading\.delay\.default][wire\:loading\.delay\.default], [wire\:loading\.delay\.long][wire\:loading\.delay\.long], [wire\:loading\.delay\.longer][wire\:loading\.delay\.longer], [wire\:loading\.delay\.longest][wire\:loading\.delay\.longest] {display: none;}[wire\:offline][wire\:offline] {display: none;}[wire\:dirty]:not(textarea):not(input):not(select) {display: none;}:root {--livewire-progress-bar-color: #2299dd;}[x-cloak] {display: none !important;}[wire\:cloak] {display: none !important;}dialog#livewire-error::backdrop {background-color: rgba(0, 0, 0, .6);}</style>
+</head>
+<body class="bg-white text-gray-900 antialiased overflow-x-hidden">
+    
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100 py-4 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <div class="flex items-center">
+                <img src="https://nico.pt-sign.com/assets/images/hyundai_logo.png" alt="Hyundai" class="h-10 w-auto">
+                <span class="ml-3 font-black text-2xl tracking-[0.2em] text-[#002c5f] uppercase">Hyundai</span>
+            </div>
+            <div class="hidden md:flex space-x-8 text-sm font-semibold uppercase tracking-widest text-gray-500">
+                <a href="#home" class="hover:text-[#002c5f] transition-colors">Home</a>
+                <a href="#models" class="hover:text-[#002c5f] transition-colors">Models</a>
+                <a href="#gallery" class="hover:text-[#002c5f] transition-colors">Gallery</a>
+                <a href="#news" class="hover:text-[#002c5f] transition-colors">News</a>
+                <a href="#consultant" class="hover:text-[#002c5f] transition-colors">Consultant</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                                <a href="https://nico.pt-sign.com/track-wa" class="bg-[#002c5f] text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-blue-800 transition-all shadow-lg">
+                    Hubungi Kami
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Banner Slideshow -->
+    <section id="home" class="relative h-screen overflow-hidden"
+             x-data="{
+                current: 0,
+                cars: [
+                                        {
+                        name: 'PALISADE',
+                        category: 'SUV',
+                        price: 'Rp 910.000.000',
+                        banner: 'https://nico.pt-sign.com/storage/cars/hero/01KRARNGA9P0VZZH62B9DTZ27X.avif',
+                        slug: 'palisade'
+                    },
+                                        {
+                        name: 'The New CRETA',
+                        category: 'SUV',
+                        price: 'Rp 312.650.000',
+                        banner: 'https://nico.pt-sign.com/storage/cars/hero/01KRART7FJY6PS43EDAP28G6YN.jpg',
+                        slug: 'the-new-creta'
+                    },
+                                        {
+                        name: 'STARGAZER Cartenz X',
+                        category: 'SUV',
+                        price: 'Rp 265.000.000',
+                        banner: 'https://nico.pt-sign.com/storage/cars/hero/01KRAS21CQF83ZGH5MH9HBRTZP.avif',
+                        slug: 'stargazer'
+                    }
+                                    ],
+                go(index) {
+                    this.current = index;
+                },
+                init() {
+                    setInterval(() => {
+                        this.go((this.current + 1) % this.cars.length);
+                    }, 6000);
+                }
+             }">
+
+        <!-- Banner Images -->
+        <template x-for="(car, index) in cars" :key="index">
+            <div class="absolute inset-0 transition-all duration-[1200ms] ease-in-out"
+                 :style="current === index ? 'opacity:1; transform: scale(1);' : 'opacity:0; transform: scale(1.05);'">
+                <img :src="car.banner" :alt="car.name" class="w-full h-full object-cover">
+            </div>
+        </template>
+
+        <!-- Gradient Overlays -->
+        <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent z-10"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
+
+        <!-- Content -->
+        <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-end pb-20">
+            <div class="max-w-2xl">
+                <div class="inline-block bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-full mb-6">
+                    <span class="text-white text-[11px] font-black uppercase tracking-[0.2em]" x-text="cars[current].category">EV</span>
+                </div>
+                <h1 class="text-5xl md:text-8xl font-black text-white leading-[1.05] mb-4 transition-all duration-500" x-text="cars[current].name"></h1>
+                <p class="text-lg text-white/50 mb-2 font-light">Harga OTR mulai dari</p>
+                <p class="text-3xl md:text-4xl font-black text-white mb-10 transition-all duration-500" x-text="cars[current].price"></p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a :href="'/car/' + cars[current].slug" class="bg-white text-[#002c5f] px-10 py-4 rounded-full font-bold text-center hover:bg-blue-50 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5">
+                        Lihat Detail
+                    </a>
+                    <a href="https://nico.pt-sign.com/track-wa" class="bg-white/10 backdrop-blur-md text-white border border-white/30 px-10 py-4 rounded-full font-bold text-center hover:bg-white/20 transition-all">
+                        Dapatkan Penawaran
+                    </a>
+                </div>
+
+                <!-- Slide Indicators -->
+                <div class="flex items-center gap-3 mt-12">
+                    <template x-for="(car, index) in cars" :key="index">
+                        <button @click="go(index)" 
+                                class="h-1 rounded-full transition-all duration-500"
+                                :class="current === index ? 'w-12 bg-white' : 'w-3 bg-white/30 hover:bg-white/50'"></button>
+                    </template>
+                    <span class="ml-4 text-[10px] font-bold text-white/40 uppercase tracking-widest" x-text="(current + 1) + ' / ' + cars.length"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Promo Section (Livewire) -->
+    <div wire:snapshot="{&quot;data&quot;:{&quot;name&quot;:null,&quot;whatsapp&quot;:null,&quot;email&quot;:null,&quot;showModal&quot;:false,&quot;claimedCode&quot;:null},&quot;memo&quot;:{&quot;id&quot;:&quot;iEnpFGP3g2l3BiiCUKOj&quot;,&quot;name&quot;:&quot;promo-section&quot;,&quot;path&quot;:&quot;\/&quot;,&quot;method&quot;:&quot;GET&quot;,&quot;release&quot;:&quot;a-a-a&quot;,&quot;children&quot;:[],&quot;scripts&quot;:[],&quot;assets&quot;:[],&quot;errors&quot;:[],&quot;locale&quot;:&quot;en&quot;},&quot;checksum&quot;:&quot;aacbb2e7b2fbf2e5093370bccbf42bd9c3c03ee8431f6721fa04561854e6e45f&quot;}" wire:effects="[]" wire:id="iEnpFGP3g2l3BiiCUKOj" x-data="{ open: window.Livewire.find('iEnpFGP3g2l3BiiCUKOj').entangle('showModal') }" class="relative">
+    <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->
+    <!-- Lead Modal -->
+    <div x-show="open" 
+         x-cloak
+         class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/90 backdrop-blur-md"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         x-cloak>
+        
+        <!-- Backdrop Close Trigger -->
+        <div class="absolute inset-0 z-0" @click="open = false; $wire.set('claimedCode', null)"></div>
+
+        <div class="bg-white dark:bg-zinc-900 w-full max-w-lg rounded-[2.5rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.5)] relative z-10" 
+             @click.stop>
+            
+            <!-- Close Button -->
+            <button @click="open = false; $wire.set('claimedCode', null)" 
+                    class="absolute top-8 right-8 z-20 text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+
+            <!--[if BLOCK]><![endif]-->                <div class="p-12">
+                    <div class="mb-10 text-center">
+                        <h3 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Verifikasi Data</h3>
+                        <p class="text-gray-500 text-sm">Lengkapi data untuk mendapatkan kode penawaran.</p>
+                    </div>
+
+                    <form wire:submit.prevent="submit" class="space-y-5">
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-black uppercase text-gray-400 tracking-widest">Nama Lengkap</label>
+                            <input type="text" wire:model="name" class="w-full bg-gray-50 dark:bg-zinc-800 rounded-2xl p-5 text-sm outline-none border-2 border-transparent focus:border-blue-600">
+                            <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-black uppercase text-gray-400 tracking-widest">No. WhatsApp</label>
+                            <input type="text" wire:model="whatsapp" class="w-full bg-gray-50 dark:bg-zinc-800 rounded-2xl p-5 text-sm outline-none border-2 border-transparent focus:border-blue-600">
+                            <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->                        </div>
+                        <div class="space-y-1.5 pb-4">
+                            <label class="text-[10px] font-black uppercase text-gray-400 tracking-widest">Email (Opsional)</label>
+                            <input type="email" wire:model="email" class="w-full bg-gray-50 dark:bg-zinc-800 rounded-2xl p-5 text-sm outline-none border-2 border-transparent focus:border-blue-600">
+                        </div>
+
+                        <button type="submit" class="w-full bg-[#002c5f] text-white py-5 rounded-2xl font-black text-sm hover:shadow-xl transition-all">
+                             <span wire:loading.remove>DAPATKAN KODE</span>
+                             <span wire:loading>MEMPROSES...</span>
+                        </button>
+                    </form>
+                </div>
+            <!--[if ENDBLOCK]><![endif]-->        </div>
+    </div>
+</div>
+
+    <!-- Car Models - Break the Frame -->
+    <section id="models" class="py-28 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-4">Hyundai Models</h2>
+                <div class="h-1.5 w-24 bg-[#002c5f] mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10 justify-items-center">
+                                    <a href="https://nico.pt-sign.com/car/palisade" class="group block w-full max-w-[280px]">
+                        <div class="relative overflow-visible">
+                            <!-- Card with 9:11 aspect ratio -->
+                            <div class="relative bg-gray-50 rounded-[2rem] border border-gray-100 group-hover:border-blue-200 group-hover:shadow-2xl transition-all duration-500" style="aspect-ratio: 9/11;">
+                                
+                                <!-- Car Image - top 60%, breaks out of frame -->
+                                <div class="absolute inset-x-0 top-0 flex items-center justify-center pointer-events-none" style="height: 58%; overflow: visible;">
+                                    <img src="https://nico.pt-sign.com/storage/cars/01KRARNG8ZQBW4K6JGJR6BX691.png" 
+                                         alt="PALISADE" 
+                                         class="w-[115%] max-w-none h-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.15)] transition-all duration-500 group-hover:scale-110 group-hover:-translate-y-2">
+                                </div>
+
+                                <!-- Bottom Content - 42% height, all inside card -->
+                                <div class="absolute inset-x-0 bottom-0 px-5 pb-5 flex flex-col items-center justify-end" style="height: 42%;">
+                                    <!-- Name Badge -->
+                                    <span class="bg-[#002c5f] text-white text-[11px] font-black px-5 py-2 rounded-xl uppercase tracking-wider shadow-lg mb-2">
+                                        PALISADE
+                                    </span>
+
+                                    <!-- Category -->
+                                    <p class="text-[10px] text-gray-400 uppercase tracking-[0.15em] font-semibold mb-1">SUV</p>
+
+                                    <!-- Price -->
+                                    <p class="text-base font-black text-gray-900 mb-3">Rp 910.000.000</p>
+
+                                    <!-- CTA Button -->
+                                    <span class="bg-[#002c5f] text-white text-[11px] font-bold px-6 py-2 rounded-full uppercase tracking-wider group-hover:bg-blue-700 transition-all inline-flex items-center gap-1.5">
+                                        Lihat Detail
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-300 group-hover:translate-x-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                                    <a href="https://nico.pt-sign.com/car/the-new-creta" class="group block w-full max-w-[280px]">
+                        <div class="relative overflow-visible">
+                            <!-- Card with 9:11 aspect ratio -->
+                            <div class="relative bg-gray-50 rounded-[2rem] border border-gray-100 group-hover:border-blue-200 group-hover:shadow-2xl transition-all duration-500" style="aspect-ratio: 9/11;">
+                                
+                                <!-- Car Image - top 60%, breaks out of frame -->
+                                <div class="absolute inset-x-0 top-0 flex items-center justify-center pointer-events-none" style="height: 58%; overflow: visible;">
+                                    <img src="https://nico.pt-sign.com/storage/cars/01KRART7FEWZFBGQ0VDK5Y4PNG.png" 
+                                         alt="The New CRETA" 
+                                         class="w-[115%] max-w-none h-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.15)] transition-all duration-500 group-hover:scale-110 group-hover:-translate-y-2">
+                                </div>
+
+                                <!-- Bottom Content - 42% height, all inside card -->
+                                <div class="absolute inset-x-0 bottom-0 px-5 pb-5 flex flex-col items-center justify-end" style="height: 42%;">
+                                    <!-- Name Badge -->
+                                    <span class="bg-[#002c5f] text-white text-[11px] font-black px-5 py-2 rounded-xl uppercase tracking-wider shadow-lg mb-2">
+                                        The New CRETA
+                                    </span>
+
+                                    <!-- Category -->
+                                    <p class="text-[10px] text-gray-400 uppercase tracking-[0.15em] font-semibold mb-1">SUV</p>
+
+                                    <!-- Price -->
+                                    <p class="text-base font-black text-gray-900 mb-3">Rp 312.650.000</p>
+
+                                    <!-- CTA Button -->
+                                    <span class="bg-[#002c5f] text-white text-[11px] font-bold px-6 py-2 rounded-full uppercase tracking-wider group-hover:bg-blue-700 transition-all inline-flex items-center gap-1.5">
+                                        Lihat Detail
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-300 group-hover:translate-x-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                                    <a href="https://nico.pt-sign.com/car/stargazer" class="group block w-full max-w-[280px]">
+                        <div class="relative overflow-visible">
+                            <!-- Card with 9:11 aspect ratio -->
+                            <div class="relative bg-gray-50 rounded-[2rem] border border-gray-100 group-hover:border-blue-200 group-hover:shadow-2xl transition-all duration-500" style="aspect-ratio: 9/11;">
+                                
+                                <!-- Car Image - top 60%, breaks out of frame -->
+                                <div class="absolute inset-x-0 top-0 flex items-center justify-center pointer-events-none" style="height: 58%; overflow: visible;">
+                                    <img src="https://nico.pt-sign.com/storage/cars/01KRAS21CN5ZT7N64VCM53DBF7.png" 
+                                         alt="STARGAZER Cartenz X" 
+                                         class="w-[115%] max-w-none h-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.15)] transition-all duration-500 group-hover:scale-110 group-hover:-translate-y-2">
+                                </div>
+
+                                <!-- Bottom Content - 42% height, all inside card -->
+                                <div class="absolute inset-x-0 bottom-0 px-5 pb-5 flex flex-col items-center justify-end" style="height: 42%;">
+                                    <!-- Name Badge -->
+                                    <span class="bg-[#002c5f] text-white text-[11px] font-black px-5 py-2 rounded-xl uppercase tracking-wider shadow-lg mb-2">
+                                        STARGAZER Cartenz X
+                                    </span>
+
+                                    <!-- Category -->
+                                    <p class="text-[10px] text-gray-400 uppercase tracking-[0.15em] font-semibold mb-1">SUV</p>
+
+                                    <!-- Price -->
+                                    <p class="text-base font-black text-gray-900 mb-3">Rp 265.000.000</p>
+
+                                    <!-- CTA Button -->
+                                    <span class="bg-[#002c5f] text-white text-[11px] font-bold px-6 py-2 rounded-full uppercase tracking-wider group-hover:bg-blue-700 transition-all inline-flex items-center gap-1.5">
+                                        Lihat Detail
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-300 group-hover:translate-x-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                            </div>
+        </div>
+    </section>
+
+    <!-- Test Drive Booking -->
+    <div wire:snapshot="{&quot;data&quot;:{&quot;name&quot;:null,&quot;phone&quot;:null,&quot;email&quot;:null,&quot;car_id&quot;:null,&quot;booking_date&quot;:null,&quot;notes&quot;:null,&quot;successMessage&quot;:null},&quot;memo&quot;:{&quot;id&quot;:&quot;6ZT7hG5g0PbaZIRXHotW&quot;,&quot;name&quot;:&quot;test-drive-form&quot;,&quot;path&quot;:&quot;\/&quot;,&quot;method&quot;:&quot;GET&quot;,&quot;release&quot;:&quot;a-a-a&quot;,&quot;children&quot;:[],&quot;scripts&quot;:[],&quot;assets&quot;:[],&quot;errors&quot;:[],&quot;locale&quot;:&quot;en&quot;},&quot;checksum&quot;:&quot;d4d6219be10f8ac0803c642c4aaadf619a84b97a56fca5d69136dcb412a374ac&quot;}" wire:effects="[]" wire:id="6ZT7hG5g0PbaZIRXHotW" id="booking" class="py-24 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-[2.5rem] p-8 md:p-16 shadow-2xl border border-gray-100">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-5xl font-black text-[#002c5f] mb-4">Booking Test Drive</h2>
+                <p class="text-gray-500 font-medium">Rasakan sensasi berkendara dengan Hyundai pilihan Anda. Tentukan jadwalnya sekarang.</p>
+                <div class="h-1.5 w-24 bg-[#002c5f] mx-auto rounded-full mt-6"></div>
+            </div>
+
+            <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->
+            <form wire:submit.prevent="submit" class="space-y-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Nama Sesuai KTP -->
+                    <div class="space-y-2">
+                        <label class="block text-xs font-black uppercase text-gray-400 tracking-widest ml-1">Nama Lengkap (Sesuai KTP)</label>
+                        <input type="text" wire:model="name" placeholder="Masukkan nama lengkap Anda"
+                               class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 text-sm focus:border-[#002c5f] focus:bg-white focus:ring-0 transition-all">
+                        <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->                    </div>
+
+                    <!-- Nomor WhatsApp -->
+                    <div class="space-y-2">
+                        <label class="block text-xs font-black uppercase text-gray-400 tracking-widest ml-1">Nomor WhatsApp</label>
+                        <input type="tel" wire:model="phone" placeholder="Contoh: 0812xxxxxxxx"
+                               class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 text-sm focus:border-[#002c5f] focus:bg-white focus:ring-0 transition-all">
+                        <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->                    </div>
+
+                    <!-- Email -->
+                    <div class="space-y-2">
+                        <label class="block text-xs font-black uppercase text-gray-400 tracking-widest ml-1">Email</label>
+                        <input type="email" wire:model="email" placeholder="Masukkan alamat email Anda"
+                               class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 text-sm focus:border-[#002c5f] focus:bg-white focus:ring-0 transition-all">
+                        <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->                    </div>
+
+                    <!-- Pilih Produk -->
+                    <div class="space-y-2">
+                        <label class="block text-xs font-black uppercase text-gray-400 tracking-widest ml-1">Pilih Unit Mobil</label>
+                        <select wire:model="car_id" 
+                                class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 text-sm focus:border-[#002c5f] focus:bg-white focus:ring-0 transition-all">
+                            <option value="">Pilih Unit Hyundai</option>
+                            <!--[if BLOCK]><![endif]-->                                <option value="1">PALISADE</option>
+                                                            <option value="3">The New CRETA</option>
+                                                            <option value="4">STARGAZER Cartenz X</option>
+                            <!--[if ENDBLOCK]><![endif]-->                        </select>
+                        <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->                    </div>
+
+                    <!-- Tanggal Booking -->
+                    <div class="space-y-2 md:col-span-2">
+                        <label class="block text-xs font-black uppercase text-gray-400 tracking-widest ml-1">Rencana Tanggal Test Drive</label>
+                        <input type="date" wire:model="booking_date"
+                               class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 text-sm focus:border-[#002c5f] focus:bg-white focus:ring-0 transition-all">
+                        <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->                    </div>
+
+                    <!-- Catatan -->
+                    <div class="space-y-2 md:col-span-2">
+                        <label class="block text-xs font-black uppercase text-gray-400 tracking-widest ml-1">Catatan Tambahan (Opsional)</label>
+                        <textarea wire:model="notes" rows="3" placeholder="Berikan catatan jika ada permintaan khusus"
+                                  class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 text-sm focus:border-[#002c5f] focus:bg-white focus:ring-0 transition-all"></textarea>
+                    </div>
+                </div>
+
+                <div class="pt-4">
+                    <button type="submit" 
+                            class="w-full bg-[#002c5f] text-white py-5 rounded-[1.5rem] font-black uppercase tracking-widest hover:bg-blue-900 transition-all shadow-xl hover:shadow-2xl flex items-center justify-center gap-3 group">
+                        <span>Konfirmasi Booking</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </button>
+                    <p class="text-center text-[10px] text-gray-400 mt-6 uppercase tracking-widest">Data Anda aman dan hanya akan digunakan untuk keperluan konfirmasi test drive.</p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+    <!-- Consultant Profile -->
+        <section id="consultant" class="py-24 bg-gray-50">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-3xl overflow-hidden shadow-lg flex flex-col md:flex-row border border-gray-100">
+                <div class="md:w-1/2 relative h-80 md:h-auto overflow-hidden">
+                    <img src="https://nico.pt-sign.com/storage/consultants/01KRAS8Y8FG2FPKR8BVGZ6Y60P.png" 
+                         alt="Consultant" 
+                         class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 text-white md:hidden">
+                        <h3 class="text-2xl font-bold">NICO</h3>
+                        <p class="text-blue-400 text-sm tracking-widest uppercase">Expert Advisor</p>
+                    </div>
+                </div>
+                <div class="md:w-1/2 p-10 md:p-16 flex flex-col justify-center">
+                    <h2 class="text-blue-600 font-bold tracking-widest uppercase mb-4 text-sm">Sales Consultant</h2>
+                    <h3 class="text-4xl font-black mb-6">NICO</h3>
+                    
+                    <div class="space-y-6 mb-10">
+                        <div class="flex items-start">
+                            <div class="bg-blue-50 p-3 rounded-xl mr-4 text-blue-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold uppercase tracking-wider text-gray-400">Lokasi Dealer</p>
+                                <p class="text-gray-600">Jl. Mayjen HR. Muhammad No.35C, Kec. Sukomanunggal, Surabaya.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-green-50 p-3 rounded-xl mr-4 text-green-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold uppercase tracking-wider text-gray-400">WhatsApp</p>
+                                <p class="text-gray-600">081330135013</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="https://nico.pt-sign.com/track-wa" class="bg-[#002c5f] text-white text-center py-4 rounded-xl font-bold text-lg hover:bg-blue-800 transition-all flex items-center justify-center gap-3">
+                         Hubungi NICO
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Handover Gallery -->
+    <section id="gallery" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-black mb-4">Galeri Serah Terima</h2>
+                <p class="text-gray-400 uppercase tracking-widest text-sm">Kebahagiaan Pelanggan Kami</p>
+                <div class="h-1.5 w-24 bg-[#002c5f] mx-auto rounded-full mt-4"></div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    <div class="relative group aspect-square overflow-hidden rounded-2xl bg-gray-50">
+                        <img src="https://nico.pt-sign.com/storage/gallery/01KRASC0J6XFTGNDPFGJ5GA3S6.png" alt="Handover" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <p class="text-white text-xs font-medium">Serah Terima Pembelian Unit Hyundai</p>
+                        </div>
+                    </div>
+                            </div>
+        </div>
+    </section>
+
+    <!-- Blog / News Section -->
+    <section id="news" class="py-24 bg-white border-t border-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
+                <div>
+                    <h2 class="text-3xl md:text-5xl font-black mb-4">Auto Insight & Exclusive Updates</h2>
+                    <p class="text-gray-400 uppercase tracking-widest text-sm max-w-2xl">Jelajahi dunia otomotif melalui kacamata Hyundai. Dapatkan tips eksklusif, berita teknologi terbaru, dan penawaran yang dipersonalisasi khusus untuk Anda.</p>
+                    <div class="h-1.5 w-24 bg-[#002c5f] rounded-full mt-4"></div>
+                </div>
+                <a href="https://nico.pt-sign.com/news" class="flex items-center text-[#002c5f] font-bold hover:underline gap-2 group/all">
+                    Explore All Insights
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover/all:translate-x-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                                    <article class="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:border-blue-100 hover:shadow-xl transition-all duration-500">
+                        <a href="https://nico.pt-sign.com/news/5-rahasia-agar-performa-mesin-mobil-tetap-prima-di-segala-kondisi-jalan" class="block overflow-hidden aspect-video bg-gray-100">
+                                                            <img src="https://nico.pt-sign.com/storage/posts/thumbnails/01KRASQR366BW9WXB4YJG46AKP.avif" 
+                                     alt="5 Rahasia Agar Performa Mesin Mobil Tetap Prima di Segala Kondisi Jalan" 
+                                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                                    </a>
+                        <div class="p-5">
+                            <div class="flex items-center gap-3 mb-3">
+                                <span class="bg-blue-50 text-[#002c5f] text-[9px] font-black px-2.5 py-1 rounded-lg uppercase tracking-wider">
+                                    News
+                                </span>
+                                <span class="text-gray-400 text-[9px] uppercase tracking-widest font-medium">
+                                    11 May 2026
+                                </span>
+                            </div>
+                            <h3 class="text-base font-bold mb-2 line-clamp-2 group-hover:text-[#002c5f] transition-colors leading-snug">
+                                <a href="https://nico.pt-sign.com/news/5-rahasia-agar-performa-mesin-mobil-tetap-prima-di-segala-kondisi-jalan">5 Rahasia Agar Performa Mesin Mobil Tetap Prima di Segala Kondisi Jalan</a>
+                            </h3>
+                            <p class="text-gray-500 text-xs line-clamp-2 mb-4 font-light leading-relaxed">
+                                Menjaga performa mesin tidak harus sulit. Kuncinya ada pada konsistensi perawata...
+                            </p>
+                            <a href="https://nico.pt-sign.com/news/5-rahasia-agar-performa-mesin-mobil-tetap-prima-di-segala-kondisi-jalan" class="inline-flex items-center text-[11px] font-bold text-gray-900 group-hover:text-[#002c5f] gap-1.5 uppercase tracking-wider">
+                                Read More
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover:translate-x-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                            </a>
+                        </div>
+                    </article>
+                                    <article class="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:border-blue-100 hover:shadow-xl transition-all duration-500">
+                        <a href="https://nico.pt-sign.com/news/masa-depan-berkendara-menjelajahi-teknologi-e-gmp-pada-hyundai-ioniq-series" class="block overflow-hidden aspect-video bg-gray-100">
+                                                            <img src="https://nico.pt-sign.com/storage/posts/thumbnails/01KRASJGJW18K7F3Z8PYGBP4KH.jfif" 
+                                     alt="Masa Depan Berkendara: Menjelajahi Teknologi E-GMP pada Hyundai Ioniq Series" 
+                                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                                    </a>
+                        <div class="p-5">
+                            <div class="flex items-center gap-3 mb-3">
+                                <span class="bg-blue-50 text-[#002c5f] text-[9px] font-black px-2.5 py-1 rounded-lg uppercase tracking-wider">
+                                    News
+                                </span>
+                                <span class="text-gray-400 text-[9px] uppercase tracking-widest font-medium">
+                                    11 May 2026
+                                </span>
+                            </div>
+                            <h3 class="text-base font-bold mb-2 line-clamp-2 group-hover:text-[#002c5f] transition-colors leading-snug">
+                                <a href="https://nico.pt-sign.com/news/masa-depan-berkendara-menjelajahi-teknologi-e-gmp-pada-hyundai-ioniq-series">Masa Depan Berkendara: Menjelajahi Teknologi E-GMP pada Hyundai Ioniq Series</a>
+                            </h3>
+                            <p class="text-gray-500 text-xs line-clamp-2 mb-4 font-light leading-relaxed">
+                                Hyundai terus memimpin revolusi kendaraan listrik dengan platform E-GMP (Electri...
+                            </p>
+                            <a href="https://nico.pt-sign.com/news/masa-depan-berkendara-menjelajahi-teknologi-e-gmp-pada-hyundai-ioniq-series" class="inline-flex items-center text-[11px] font-bold text-gray-900 group-hover:text-[#002c5f] gap-1.5 uppercase tracking-wider">
+                                Read More
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover:translate-x-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                            </a>
+                        </div>
+                    </article>
+                            </div>
+            
+            <div class="mt-12 text-center md:hidden">
+                <a href="https://nico.pt-sign.com/news" class="inline-flex items-center bg-gray-50 px-8 py-4 rounded-full text-[#002c5f] font-bold gap-2">
+                    Lihat Semua Berita
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video & Map -->
+    <section class="py-24 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-12">
+            <div class="rounded-3xl overflow-hidden shadow-lg aspect-video bg-black">
+                                <iframe class="w-full h-full" 
+                        src="https://www.youtube.com/embed/gAXz8h9nmug" 
+                        title="Hyundai" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen>
+                </iframe>
+            </div>
+            <div class="rounded-3xl overflow-hidden shadow-lg h-full min-h-[400px]">
+                                    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3327.613306979237!2d112.74203934060316!3d-7.329010520038585!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7fb3e8791fd25%3A0x97c96e4059756f67!2sHyundai%20Jemur%20Andayani%20Official!5e0!3m2!1sen!2sid!4v1777993601502!5m2!1sen!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#002c5f] text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div class="col-span-1 md:col-span-2">
+                <div class="flex items-center mb-6">
+                    <img src="https://nico.pt-sign.com/assets/images/hyundai_logo.png" alt="Hyundai" class="h-8 w-auto brightness-0 invert">
+                    <span class="ml-3 font-black text-xl tracking-[0.2em] uppercase">Hyundai</span>
+                </div>
+                <p class="text-blue-200 max-w-md mb-8">
+                    Dealer Resmi Hyundai melayani penjualan unit baru, layanan purna jual, dan suku cadang asli dengan standar pelayanan profesional.
+                </p>
+                <div class="flex space-x-4">
+                                            <a href="https://instagram.com/dhocin21" target="_blank" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-pink-600 transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                        </a>
+                                                                                    <a href="https://tiktok.com/@offensive215" target="_blank" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-black transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+                        </a>
+                                    </div>
+            </div>
+            <div>
+                <h4 class="font-bold text-lg mb-6 uppercase tracking-widest text-blue-100">Layanan</h4>
+                <ul class="space-y-4 text-blue-200 text-sm font-medium">
+                    <li><a href="#models" class="hover:text-white transition-colors">Penjualan Unit Baru</a></li>
+                    <li><a href="#booking" class="hover:text-white transition-colors">Test Drive Gratis</a></li>
+                    <li><a href="https://nico.pt-sign.com/track-wa?text=Halo%2C%20saya%20ingin%20tanya%20program%20Tukar%20Tambah" class="hover:text-white transition-colors">Tukar Tambah (Trade-in)</a></li>
+                    <li><a href="https://nico.pt-sign.com/track-wa?text=Halo%2C%20saya%20ingin%20tanya%20info%20Bengkel" class="hover:text-white transition-colors">Bengkel & Suku Cadang</a></li>
+                    <li><a href="https://nico.pt-sign.com/track-wa?text=Halo%2C%20saya%20ingin%20dibuatkan%20Simulasi%20Kredit" class="hover:text-white transition-colors">Simulasi Kredit</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-lg mb-6 uppercase tracking-widest text-blue-100">Kontak</h4>
+                <p class="text-xs text-blue-300 uppercase tracking-widest mb-2">Jam Operasional:</p>
+                <p class="text-sm font-bold mb-6">Senin - Minggu<br>08.00 - 20.00 WIB</p>
+                <p class="text-xs text-blue-300 uppercase tracking-widest mb-2">Support Email:</p>
+                <p class="text-sm font-bold text-white hover:text-blue-200 transition-colors">
+                    <a href="mailto:nico@pt-sign.com">nico@pt-sign.com</a>
+                </p>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 pt-8 border-t border-white/10 text-center text-[10px] uppercase tracking-[0.2em] text-blue-400">
+            &copy; 2026 Hyundai Dealer. All Rights Reserved.
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp -->
+    <a href="https://nico.pt-sign.com/track-wa" class="fixed bottom-8 right-8 z-50 bg-green-500 text-white p-4 rounded-full shadow-2xl hover:bg-green-600 transition-all transform hover:scale-110 flex items-center justify-center animate-bounce">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+    </a>
+
+    <script>
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-lg', 'py-2');
+                nav.classList.remove('py-4');
+            } else {
+                nav.classList.remove('shadow-lg', 'py-2');
+                nav.classList.add('py-4');
+            }
+        });
+    </script>
+    <script src="/livewire/livewire.min.js?id=a60c5ee6"   data-csrf="cSwcxxinVoErLwhPVFibQZWB2N5oRygEMlThv0eC" data-update-uri="/livewire/update" data-navigate-once="true"></script>
+</body>
+</html>

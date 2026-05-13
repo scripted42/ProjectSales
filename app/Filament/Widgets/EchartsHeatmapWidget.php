@@ -20,12 +20,19 @@ class EchartsHeatmapWidget extends Widget
 
     protected function getViewData(): array
     {
-        // Fetch logs and group by Day of Week (0=Sun, 6=Sat) and Hour (0-23)
-        // Note: SQLite strftime('%w', created_at) returns 0-6 (Sun-Sat)
-        // SQLite strftime('%H', created_at) returns 00-23
+        $driverName = DB::connection()->getDriverName();
+
+        if ($driverName === 'mysql') {
+            $dayOfWeekSql = "DAYOFWEEK(created_at) - 1"; // MySQL 1=Sun, 7=Sat -> SQLite 0=Sun, 6=Sat
+            $hourOfDaySql = "HOUR(created_at)";
+        } else {
+            $dayOfWeekSql = "CAST(strftime('%w', created_at) AS INTEGER)";
+            $hourOfDaySql = "CAST(strftime('%H', created_at) AS INTEGER)";
+        }
+
         $logs = SiteLog::select(
-                DB::raw("CAST(strftime('%w', created_at) AS INTEGER) as day_of_week"),
-                DB::raw("CAST(strftime('%H', created_at) AS INTEGER) as hour_of_day"),
+                DB::raw("$dayOfWeekSql as day_of_week"),
+                DB::raw("$hourOfDaySql as hour_of_day"),
                 DB::raw('count(*) as total')
             )
             ->groupBy('day_of_week', 'hour_of_day')

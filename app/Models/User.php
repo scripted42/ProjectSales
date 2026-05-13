@@ -8,10 +8,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
+
+class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        // Izinkan developer, sales, atau admin untuk masuk panel
+        return in_array($this->role, ['developer', 'sales', 'admin']);
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -21,8 +30,10 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'whatsapp_number',
         'password',
         'role',
+        'plan',
         'otp_code',
         'otp_expires_at',
     ];

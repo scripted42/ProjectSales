@@ -2,12 +2,7 @@
     <div class="upgrade-promo-widget" style="position: relative; z-index: 99; margin-bottom: 2rem; font-family: sans-serif;">
         <div style="text-align: center; margin-bottom: 2rem;">
             <h2 style="font-size: 2.25rem; font-weight: 900; color: #1e1b4b; margin-bottom: 0.5rem;">Pilih Paket Keunggulan Anda</h2>
-            @php $count = \App\Models\Car::count(); @endphp
-            @if($count >= 3)
-                <p style="color: #e11d48; font-size: 1.125rem; font-weight: 700;" class="animate-pulse">⚠️ Anda telah mencapai batas {{ $count }}/3 unit untuk Paket Regular.</p>
-            @else
-                <p style="color: #64748b; font-size: 1.125rem;">Tingkatkan performa penjualan Anda dengan fitur intelligence.</p>
-            @endif
+            <p style="color: #64748b; font-size: 1.125rem;">Tingkatkan performa penjualan Anda dengan fitur Intelligence & Analytics.</p>
         </div>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1000px; margin: 0 auto;">
@@ -21,22 +16,22 @@
                 
                 <ul style="flex-grow: 1; margin-bottom: 2rem; list-style: none; padding: 0; display: flex; flex-direction: column; gap: 1rem;">
                     <li style="display: flex; align-items: center; gap: 0.75rem; color: #475569;">
-                        <span style="color: #10b981;">✔</span> Katalog Produk Premium
+                        <span style="color: #10b981;">✔</span> Katalog Produk UNLIMITED
                     </li>
                     <li style="display: flex; align-items: center; gap: 0.75rem; color: #475569;">
-                        <span style="color: #10b981;">✔</span> Booking Test Drive Standar
+                        <span style="color: #10b981;">✔</span> Landing Page & SEO Friendly
                     </li>
                     <li style="display: flex; align-items: center; gap: 0.75rem; color: #475569;">
-                        <span style="color: #10b981;">✔</span> Galeri Handover (Limit)
+                        <span style="color: #10b981;">✔</span> Galeri Handover Pelanggan
                     </li>
                     <li style="display: flex; align-items: center; gap: 0.75rem; color: #cbd5e1; text-decoration: line-through;">
-                        <span>🔒</span> Analytics Lanjutan
+                        <span>🔒</span> Analytics & Grafik Tren
                     </li>
                     <li style="display: flex; align-items: center; gap: 0.75rem; color: #cbd5e1; text-decoration: line-through;">
-                        <span>🔒</span> Identifikasi "Hot Lead"
+                        <span>🔒</span> Source Tracking (FB/IG/Google)
                     </li>
                     <li style="display: flex; align-items: center; gap: 0.75rem; color: #cbd5e1; text-decoration: line-through;">
-                        <span>🔒</span> Source Tracking Iklan
+                        <span>🔒</span> Laporan Lead Detail
                     </li>
                 </ul>
                 
@@ -62,13 +57,13 @@
                         <span style="color: #facc15;">★</span> Analytics & Grafik Tren
                     </li>
                     <li style="display: flex; align-items: center; gap: 0.75rem; font-weight: 600;">
-                        <span style="color: #facc15;">★</span> Identifikasi "Hot Lead" Otomatis
-                    </li>
-                    <li style="display: flex; align-items: center; gap: 0.75rem; font-weight: 600;">
                         <span style="color: #facc15;">★</span> Source Tracking (FB/IG/Google)
                     </li>
                     <li style="display: flex; align-items: center; gap: 0.75rem; font-weight: 600;">
-                        <span style="color: #facc15;">★</span> Smart Follow-up Dashboard
+                        <span style="color: #facc15;">★</span> Laporan Lead & Booking Detail
+                    </li>
+                    <li style="display: flex; align-items: center; gap: 0.75rem; font-weight: 600;">
+                        <span style="color: #facc15;">★</span> Identifikasi "Hot Lead" Otomatis
                     </li>
                     <li style="display: flex; align-items: center; gap: 0.75rem; font-weight: 600;">
                         <span style="color: #facc15;">★</span> Prioritas Support Developer
