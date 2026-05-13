@@ -94,53 +94,41 @@
         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
 
         <!-- Content Layer -->
-        <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-end pb-24 md:pb-32">
-            <div class="w-full max-w-3xl text-center md:text-left" 
-                 x-data="{ show: true }"
-                 x-init="$watch('current', () => { show = false; $nextTick(() => show = true) })">
+        <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center">
+            <div class="w-full max-w-3xl text-center md:text-left">
+                <!-- Badge -->
+                <div class="inline-block bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-full mb-6">
+                    <span class="text-white text-[10px] font-black uppercase tracking-[0.3em]" x-text="cars[current].category"></span>
+                </div>
+
+                <!-- Car Title -->
+                <h1 class="text-5xl md:text-8xl font-black text-white leading-[1.05] mb-4 drop-shadow-2xl" x-text="cars[current].name"></h1>
                 
-                <div x-show="show"
-                     x-transition:enter="transition ease-out duration-700"
-                     x-transition:enter-start="opacity-0 translate-y-10"
-                     x-transition:enter-end="opacity-100 translate-y-0"
-                     x-transition:leave="transition ease-in duration-300"
-                     x-transition:leave-start="opacity-100"
-                     x-transition:leave-end="opacity-0">
-                    
-                    <!-- Badge -->
-                    <div class="inline-block bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-full mb-6">
-                        <span class="text-white text-[10px] font-black uppercase tracking-[0.3em]" x-text="cars[current].category"></span>
-                    </div>
+                <!-- Price Label -->
+                <div class="mb-10">
+                    <p class="text-sm md:text-lg text-white/50 mb-1 font-light tracking-wide">Harga OTR mulai dari</p>
+                    <p class="text-3xl md:text-5xl font-black text-white" x-text="cars[current].price"></p>
+                </div>
 
-                    <!-- Car Title -->
-                    <h1 class="text-5xl md:text-8xl font-black text-white leading-[1.05] mb-4 drop-shadow-2xl" x-text="cars[current].name"></h1>
-                    
-                    <!-- Price Label -->
-                    <div class="mb-8">
-                        <p class="text-sm md:text-lg text-white/50 mb-1 font-light tracking-wide">Harga OTR mulai dari</p>
-                        <p class="text-3xl md:text-5xl font-black text-white" x-text="cars[current].price"></p>
-                    </div>
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
+                    <a :href="'/car/' + cars[current].slug" 
+                       class="inline-flex items-center justify-center px-12 py-4 bg-white text-[#002c5f] rounded-full font-bold text-[13px] uppercase tracking-widest hover:bg-blue-50 transition-all shadow-xl hover:-translate-y-1">
+                        Lihat Detail
+                    </a>
+                    <a href="{{ route('track.wa') }}" 
+                       class="inline-flex items-center justify-center px-12 py-4 bg-white/10 backdrop-blur-md text-white border border-white/30 rounded-full font-bold text-[13px] uppercase tracking-widest hover:bg-white/20 transition-all">
+                        Dapatkan Penawaran
+                    </a>
+                </div>
 
-                    <!-- Action Buttons -->
-                    <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
-                        <a :href="'/car/' + cars[current].slug" 
-                           class="inline-flex items-center justify-center px-12 py-4 bg-white text-[#002c5f] rounded-full font-bold text-[13px] uppercase tracking-widest hover:bg-blue-50 transition-all shadow-xl hover:-translate-y-1">
-                            Lihat Detail
-                        </a>
-                        <a href="{{ route('track.wa') }}" 
-                           class="inline-flex items-center justify-center px-12 py-4 bg-white/10 backdrop-blur-md text-white border border-white/30 rounded-full font-bold text-[13px] uppercase tracking-widest hover:bg-white/20 transition-all">
-                            Dapatkan Penawaran
-                        </a>
-                    </div>
-
-                    <!-- Slide Indicators (Restored below buttons) -->
-                    <div class="mt-12 flex items-center justify-center md:justify-start gap-3">
-                        <template x-for="(car, index) in cars" :key="index">
-                            <button @click="go(index)" 
-                                    class="h-1 rounded-full transition-all duration-500 shadow-lg"
-                                    :class="current === index ? 'w-12 bg-white' : 'w-3 bg-white/30 hover:bg-white/50'"></button>
-                        </template>
-                    </div>
+                <!-- Slide Indicators (Classic Morphing Pills) -->
+                <div class="mt-16 flex items-center justify-center md:justify-start gap-3">
+                    <template x-for="(car, index) in cars" :key="index">
+                        <button @click="go(index)" 
+                                class="h-1 rounded-full transition-all duration-500 shadow-lg"
+                                :class="current === index ? 'w-12 bg-white' : 'w-3 bg-white/30 hover:bg-white/50'"></button>
+                    </template>
                 </div>
             </div>
         </div>
