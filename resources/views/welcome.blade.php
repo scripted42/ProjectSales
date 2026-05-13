@@ -95,19 +95,24 @@
 
         <!-- Content Layer -->
         <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-end pb-24 md:pb-32">
-            <div class="w-full max-w-3xl text-center md:text-left">
+            <div class="w-full max-w-3xl text-center md:text-left" 
+                 :key="current"
+                 x-transition:enter="transition ease-out duration-700"
+                 x-transition:enter-start="opacity-0 translate-y-8"
+                 x-transition:enter-end="opacity-100 translate-y-0">
+                
                 <!-- Badge -->
                 <div class="inline-block bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-full mb-6">
                     <span class="text-white text-[10px] font-black uppercase tracking-[0.3em]" x-text="cars[current].category"></span>
                 </div>
 
                 <!-- Car Title -->
-                <h1 class="text-5xl md:text-8xl font-black text-white leading-[1.05] mb-4 transition-all duration-500 drop-shadow-2xl" x-text="cars[current].name"></h1>
+                <h1 class="text-5xl md:text-8xl font-black text-white leading-[1.05] mb-4 drop-shadow-2xl" x-text="cars[current].name"></h1>
                 
                 <!-- Price Label -->
                 <div class="mb-10">
                     <p class="text-sm md:text-lg text-white/50 mb-1 font-light tracking-wide">Harga OTR mulai dari</p>
-                    <p class="text-3xl md:text-5xl font-black text-white transition-all duration-500" x-text="cars[current].price"></p>
+                    <p class="text-3xl md:text-5xl font-black text-white" x-text="cars[current].price"></p>
                 </div>
 
                 <!-- Action Buttons -->
@@ -122,15 +127,12 @@
                     </a>
                 </div>
 
-                <!-- Slide Indicators (Dynamic Progress Bars) -->
+                <!-- Slide Indicators (Classic Morphing Pills) -->
                 <div class="mt-20 flex items-center justify-center md:justify-start gap-3">
                     <template x-for="(car, index) in cars" :key="index">
                         <button @click="go(index)" 
-                                class="relative h-[2px] bg-white/20 rounded-full overflow-hidden transition-all duration-500"
-                                :class="current === index ? 'w-20' : 'w-8 hover:bg-white/40'">
-                            <div class="absolute inset-y-0 left-0 bg-white transition-all duration-[6000ms] ease-linear"
-                                 :style="current === index ? 'width: 100%' : 'width: 0%'"></div>
-                        </button>
+                                class="h-1 rounded-full transition-all duration-500 shadow-lg"
+                                :class="current === index ? 'w-12 bg-white' : 'w-3 bg-white/30 hover:bg-white/50'"></button>
                     </template>
                 </div>
             </div>
