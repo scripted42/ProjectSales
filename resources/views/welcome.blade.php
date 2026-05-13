@@ -94,7 +94,7 @@
         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
 
         <!-- Content Layer -->
-        <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center pt-12">
+        <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center pt-32">
             <div class="w-full max-w-3xl text-center md:text-left">
                 <!-- Badge -->
                 <div class="inline-block bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-full mb-6">
@@ -122,15 +122,14 @@
                     </a>
                 </div>
 
-                <!-- Slide Indicators (Luxury Numbered Style) -->
-                <div class="mt-20 flex items-center justify-center md:justify-start gap-8">
+                <!-- Slide Indicators (Dynamic Progress Bars) -->
+                <div class="mt-20 flex items-center justify-center md:justify-start gap-3">
                     <template x-for="(car, index) in cars" :key="index">
-                        <button @click="go(index)" class="group flex flex-col items-center md:items-start gap-2 focus:outline-none">
-                            <span class="text-[10px] font-black transition-all duration-300 tracking-[0.2em]" 
-                                  :class="current === index ? 'text-white translate-y-0' : 'text-white/20 group-hover:text-white/50 translate-y-1'"
-                                  x-text="'0' + (index + 1)"></span>
-                            <div class="h-[2px] transition-all duration-700 rounded-full" 
-                                 :class="current === index ? 'w-10 bg-white opacity-100' : 'w-0 bg-white/0 opacity-0'"></div>
+                        <button @click="go(index)" 
+                                class="relative h-[2px] bg-white/20 rounded-full overflow-hidden transition-all duration-500"
+                                :class="current === index ? 'w-20' : 'w-8 hover:bg-white/40'">
+                            <div class="absolute inset-y-0 left-0 bg-white transition-all duration-[6000ms] ease-linear"
+                                 :style="current === index ? 'width: 100%' : 'width: 0%'"></div>
                         </button>
                     </template>
                 </div>
