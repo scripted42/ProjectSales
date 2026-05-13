@@ -102,17 +102,17 @@
                 <h1 class="text-5xl md:text-8xl font-black text-white leading-[1.05] mb-4 transition-all duration-500" x-text="cars[current].name"></h1>
                 <p class="text-lg text-white/50 mb-2 font-light">Harga OTR mulai dari</p>
                 <p class="text-3xl md:text-4xl font-black text-white mb-10 transition-all duration-500" x-text="cars[current].price"></p>
-                <div class="flex flex-col sm:flex-row gap-4">
-                    <a :href="'/car/' + cars[current].slug" class="w-full sm:w-auto bg-white text-[#002c5f] px-10 py-4 rounded-full font-bold text-center hover:bg-blue-50 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5">
+                <div class="flex flex-col sm:flex-row gap-4 w-full">
+                    <a :href="'/car/' + cars[current].slug" class="block w-full sm:w-fit bg-white text-[#002c5f] px-8 py-3.5 md:px-10 md:py-4 rounded-full font-bold text-center hover:bg-blue-50 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5">
                         Lihat Detail
                     </a>
-                    <a href="{{ route('track.wa') }}" class="w-full sm:w-auto bg-white/10 backdrop-blur-md text-white border border-white/30 px-10 py-4 rounded-full font-bold text-center hover:bg-white/20 transition-all">
+                    <a href="{{ route('track.wa') }}" class="block w-full sm:w-fit bg-white/10 backdrop-blur-md text-white border border-white/30 px-8 py-3.5 md:px-10 md:py-4 rounded-full font-bold text-center hover:bg-white/20 transition-all">
                         Dapatkan Penawaran
                     </a>
                 </div>
 
                 <!-- Slide Indicators -->
-                <div class="flex items-center justify-center sm:justify-start gap-3 mt-12">
+                <div class="flex items-center justify-center sm:justify-start gap-3 mt-8">
                     <template x-for="(car, index) in cars" :key="index">
                         <button @click="go(index)" 
                                 class="h-1 rounded-full transition-all duration-500"
