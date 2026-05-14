@@ -428,9 +428,15 @@
 
     <!-- Video Popup Promotion -->
     @if($popupVideo && ($popupVideo->video_path || $popupVideo->external_video_url))
+    @php
+        $popupUrl = $popupVideo->video_path ? asset('storage/' . $popupVideo->video_path) : $popupVideo->external_video_url;
+        $isYouTube = preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $popupUrl, $matches);
+        $youtubeId = $isYouTube ? $matches[1] : null;
+    @endphp
     <div x-data="{ 
             showPopup: false, 
-            isMuted: true,
+            isMuted: false,
+            isYoutube: {{ $isYouTube ? 'true' : 'false' }},
             init() {
                 setTimeout(() => {
                     this.showPopup = true;
@@ -438,13 +444,15 @@
             },
             closePopup() {
                 this.showPopup = false;
-                if (this.$refs.promoVideo) {
+                if (!this.isYoutube && this.$refs.promoVideo) {
                     this.$refs.promoVideo.pause();
                 }
             },
             toggleMute() {
                 this.isMuted = !this.isMuted;
-                this.$refs.promoVideo.muted = this.isMuted;
+                if (this.$refs.promoVideo) {
+                    this.$refs.promoVideo.muted = this.isMuted;
+                }
             }
          }" 
          x-show="showPopup"
@@ -472,31 +480,52 @@
             </button>
 
             <!-- Video Container -->
-            <div class="relative bg-black">
-                <video x-ref="promoVideo" 
-                       src="{{ $popupVideo->video_path ? asset('storage/' . $popupVideo->video_path) : $popupVideo->external_video_url }}" 
-                       class="w-full h-auto max-h-[70vh] object-contain"
-                       autoplay 
-                       muted 
-                       loop 
-                       playsinline></video>
-                
-                <!-- Unmute Button -->
-                <button @click="toggleMute()" 
-                        class="absolute bottom-6 right-6 z-20 bg-white/20 backdrop-blur-md border border-white/30 text-white px-4 py-2 rounded-full flex items-center gap-2 hover:bg-white/40 transition-all text-[10px] font-bold uppercase tracking-widest">
-                    <template x-if="isMuted">
-                        <div class="flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <span>Unmute</span>
-                        </div>
-                    </template>
-                    <template x-if="!isMuted">
-                        <div class="flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                            <span>Mute</span>
-                        </div>
-                    </template>
-                </button>
+            <div class="relative bg-black aspect-video">
+                <template x-if="showPopup">
+                    <div class="w-full h-full">
+                        @if($isYouTube)
+                            <iframe 
+                                class="w-full h-full"
+                                src="https://www.youtube.com/embed/{{ $youtubeId }}?autoplay=1&mute=1&loop=1&playlist={{ $youtubeId }}&controls=1&rel=0&enablejsapi=1" 
+                                title="{{ $popupVideo->title }}" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen>
+                            </iframe>
+                        @else
+                            <video x-ref="promoVideo" 
+                                   src="{{ $popupUrl }}" 
+                                   class="w-full h-full object-contain"
+                                   autoplay 
+                                   loop 
+                                   playsinline
+                                   x-init="$nextTick(() => { 
+                                       $el.play().catch(() => {
+                                           $el.muted = true;
+                                           $el.play();
+                                           isMuted = true;
+                                       });
+                                   })"></video>
+                            
+                            <!-- Unmute Button (for non-youtube) -->
+                            <button @click="toggleMute()" 
+                                    class="absolute bottom-6 right-6 z-20 bg-white/20 backdrop-blur-md border border-white/30 text-white px-4 py-2 rounded-full flex items-center gap-2 hover:bg-white/40 transition-all text-[10px] font-bold uppercase tracking-widest">
+                                <template x-if="isMuted">
+                                    <div class="flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                                        <span>Unmute</span>
+                                    </div>
+                                </template>
+                                <template x-if="!isMuted">
+                                    <div class="flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                                        <span>Mute</span>
+                                    </div>
+                                </template>
+                            </button>
+                        @endif
+                    </div>
+                </template>
             </div>
 
             <!-- Info Section -->

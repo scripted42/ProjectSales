@@ -27,8 +27,8 @@ class VideoResource extends Resource
                     ->schema([
                         Forms\Components\Select::make('type')
                             ->options([
-                                'youtube' => 'YouTube (Section Home)',
-                                'popup' => 'Popup Promotion (.mp4)',
+                                'youtube' => 'Section Home Video (YouTube Only)',
+                                'popup' => 'Popup Promotion (MP4 / YouTube)',
                             ])
                             ->default('youtube')
                             ->required()
@@ -55,11 +55,11 @@ class VideoResource extends Resource
                             ->preserveFilenames(),
 
                         Forms\Components\TextInput::make('external_video_url')
-                            ->label('Atau Link Video MP4 (Direct Link)')
-                            ->placeholder('https://domain.com/video.mp4')
+                            ->label('Link Video (MP4 / YouTube)')
+                            ->placeholder('https://www.youtube.com/watch?v=... atau https://domain.com/video.mp4')
                             ->url()
                             ->visible(fn (Forms\Get $get) => $get('type') === 'popup')
-                            ->helperText('Masukkan link langsung ke file .mp4 jika file terlalu besar untuk diunggah.'),
+                            ->helperText('Masukkan link YouTube atau link langsung ke file .mp4.'),
 
                         Forms\Components\Toggle::make('is_active')
                             ->label('Active Status')
