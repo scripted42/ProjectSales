@@ -25,27 +25,7 @@
 </head>
 <body class="bg-white text-gray-900 antialiased overflow-x-hidden pt-24">
     
-    <!-- Navbar -->
-    <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100 py-4 transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-            <div class="flex items-center cursor-pointer" onclick="window.location='/'">
-                <img src="{{ asset('assets/images/hyundai_logo.png') }}" alt="Hyundai" class="h-10 w-auto">
-                <span class="ml-3 font-black text-2xl tracking-[0.2em] text-[#002c5f] uppercase">Hyundai</span>
-            </div>
-            <div class="hidden md:flex space-x-8 text-sm font-semibold uppercase tracking-widest text-gray-500">
-                <a href="/#home" class="hover:text-[#002c5f] transition-colors">Home</a>
-                <a href="/#models" class="hover:text-[#002c5f] transition-colors">Models</a>
-                <a href="/#gallery" class="hover:text-[#002c5f] transition-colors">Gallery</a>
-                <a href="{{ route('posts.index') }}" class="text-[#002c5f] transition-colors">News</a>
-                <a href="/#consultant" class="hover:text-[#002c5f] transition-colors">Consultant</a>
-            </div>
-            <div class="flex items-center space-x-4">
-                <a href="{{ route('track.wa') }}" class="bg-[#002c5f] text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-blue-800 transition-all shadow-lg">
-                    Hubungi Kami
-                </a>
-            </div>
-        </div>
-    </nav>
+    <x-navbar />
 
     <main class="py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -19,25 +19,7 @@
 
 <body class="bg-white text-gray-900 antialiased overflow-x-hidden pt-24">
 
-    <!-- Navbar -->
-    <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100 py-4 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-            <a href="/" class="flex items-center group">
-                <img src="{{ asset('assets/images/hyundai_logo.png') }}" alt="Hyundai"
-                    class="h-10 w-auto transition-transform group-hover:scale-105">
-                <span class="ml-3 font-black text-2xl tracking-[0.2em] text-[#002c5f] uppercase">Hyundai</span>
-            </a>
-            <div class="hidden md:flex space-x-8 text-sm font-semibold uppercase tracking-widest text-gray-500">
-                <a href="/#home" class="hover:text-[#002c5f] transition-colors">Home</a>
-                <a href="/#models" class="hover:text-[#002c5f] transition-colors">Models</a>
-                <a href="{{ route('posts.index') }}" class="text-[#002c5f] font-bold">News</a>
-            </div>
-            <a href="{{ route('track.wa') }}"
-                class="bg-[#002c5f] text-white px-7 py-3 rounded-full text-sm font-bold hover:bg-blue-800 transition-all shadow-lg">
-                Hubungi Kami
-            </a>
-        </div>
-    </nav>
+    <x-navbar />
 
     <header class="py-24 bg-gray-50 relative overflow-hidden">
         <div class="absolute inset-0 opacity-5">

@@ -23,38 +23,7 @@
 </head>
 <body class="bg-white text-gray-900 antialiased overflow-x-hidden">
     
-    <!-- Navbar -->
-    <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100 py-4 transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-            <div class="flex items-center">
-                @if($logo = \App\Models\Setting::get('site_logo'))
-                    <img src="{{ asset('storage/' . $logo) }}" alt="{{ \App\Models\Setting::get('site_name') }}" class="h-6 md:h-10 w-auto">
-                @else
-                    <img src="{{ asset('assets/images/hyundai_logo.png') }}" alt="Hyundai" class="h-6 md:h-10 w-auto">
-                @endif
-                <span class="ml-2 md:ml-3 font-black text-sm md:text-2xl tracking-[0.2em] text-[#002c5f] uppercase truncate max-w-[120px] md:max-w-none">{{ \App\Models\Setting::get('site_name', 'Hyundai') }}</span>
-            </div>
-            <div class="hidden md:flex space-x-8 text-sm font-semibold uppercase tracking-widest text-gray-500">
-                <a href="#home" class="hover:text-[#002c5f] transition-colors">Home</a>
-                <a href="#models" class="hover:text-[#002c5f] transition-colors">Models</a>
-                <a href="#gallery" class="hover:text-[#002c5f] transition-colors">Gallery</a>
-                <a href="#news" class="hover:text-[#002c5f] transition-colors">News</a>
-                <a href="#consultant" class="hover:text-[#002c5f] transition-colors">Consultant</a>
-            </div>
-            <div class="flex items-center space-x-4">
-                @if (Route::has('login'))
-                    @auth
-                        <a href="{{ url('/admin') }}" class="text-sm font-medium text-blue-600 hover:underline">Admin</a>
-                    @else
-                        <a href="{{ route('login') }}" class="text-sm font-medium text-gray-400 hover:text-[#002c5f] transition-colors">Login</a>
-                    @endauth
-                @endif
-                <a href="{{ route('track.wa') }}" class="bg-[#002c5f] text-white px-4 md:px-6 py-2 md:py-2.5 rounded-full text-[10px] md:text-sm font-bold hover:bg-blue-800 transition-all shadow-lg whitespace-nowrap">
-                    Hubungi Kami
-                </a>
-            </div>
-        </div>
-    </nav>
+    <x-navbar />
 
     <!-- Hero Section with Banner Slideshow -->
     <section id="home" class="relative h-screen overflow-hidden"
@@ -457,18 +426,93 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
     </a>
 
-    <script>
-        window.addEventListener('scroll', function() {
-            const nav = document.querySelector('nav');
-            if (window.scrollY > 50) {
-                nav.classList.add('shadow-lg', 'py-2');
-                nav.classList.remove('py-4');
-            } else {
-                nav.classList.remove('shadow-lg', 'py-2');
-                nav.classList.add('py-4');
+    <!-- Video Popup Promotion -->
+    @if($popupVideo && ($popupVideo->video_path || $popupVideo->external_video_url))
+    <div x-data="{ 
+            showPopup: false, 
+            isMuted: true,
+            init() {
+                setTimeout(() => {
+                    this.showPopup = true;
+                }, 1000);
+            },
+            closePopup() {
+                this.showPopup = false;
+                if (this.$refs.promoVideo) {
+                    this.$refs.promoVideo.pause();
+                }
+            },
+            toggleMute() {
+                this.isMuted = !this.isMuted;
+                this.$refs.promoVideo.muted = this.isMuted;
             }
-        });
-    </script>
+         }" 
+         x-show="showPopup"
+         x-cloak
+         class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0">
+        
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" @click="closePopup()"></div>
+
+        <!-- Popup Content -->
+        <div class="relative bg-white rounded-3xl overflow-hidden shadow-2xl w-full max-w-3xl transform transition-all"
+             x-transition:enter="transition ease-out duration-500"
+             x-transition:enter-start="opacity-0 scale-90 translate-y-10"
+             x-transition:enter-end="opacity-100 scale-100 translate-y-0">
+            
+            <!-- Close Button -->
+            <button @click="closePopup()" class="absolute top-4 right-4 z-20 bg-black/50 text-white p-2 rounded-full hover:bg-black transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+
+            <!-- Video Container -->
+            <div class="relative bg-black">
+                <video x-ref="promoVideo" 
+                       src="{{ $popupVideo->video_path ? asset('storage/' . $popupVideo->video_path) : $popupVideo->external_video_url }}" 
+                       class="w-full h-auto max-h-[70vh] object-contain"
+                       autoplay 
+                       muted 
+                       loop 
+                       playsinline></video>
+                
+                <!-- Unmute Button -->
+                <button @click="toggleMute()" 
+                        class="absolute bottom-6 right-6 z-20 bg-white/20 backdrop-blur-md border border-white/30 text-white px-4 py-2 rounded-full flex items-center gap-2 hover:bg-white/40 transition-all text-[10px] font-bold uppercase tracking-widest">
+                    <template x-if="isMuted">
+                        <div class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                            <span>Unmute</span>
+                        </div>
+                    </template>
+                    <template x-if="!isMuted">
+                        <div class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                            <span>Mute</span>
+                        </div>
+                    </template>
+                </button>
+            </div>
+
+            <!-- Info Section -->
+            <div class="p-6 bg-white flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div class="text-center sm:text-left">
+                    <h4 class="text-xl font-black text-[#002c5f] uppercase tracking-tight">{{ $popupVideo->title ?? 'Promo Eksklusif' }}</h4>
+                    <p class="text-gray-400 text-[10px] uppercase tracking-widest font-bold mt-1">Special Announcement</p>
+                </div>
+                <a href="{{ route('track.wa') }}" class="bg-[#002c5f] text-white px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-800 transition-all shadow-lg shadow-blue-900/20">
+                    Hubungi Kami
+                </a>
+            </div>
+        </div>
+    </div>
+    @endif
+
     @livewireScripts
 </body>
 </html>

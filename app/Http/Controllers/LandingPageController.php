@@ -16,13 +16,14 @@ class LandingPageController extends Controller
         $cars = Car::where('is_available', true)->get();
         $galleries = Gallery::all();
         $consultant = Consultant::first();
-        $video = Video::where('is_active', true)->latest()->first();
+        $video = Video::where('type', 'youtube')->where('is_active', true)->latest()->first();
+        $popupVideo = Video::where('type', 'popup')->where('is_active', true)->latest()->first();
         $posts = Post::where('is_published', true)
             ->where('published_at', '<=', now())
             ->latest('published_at')
             ->get();
 
-        return view('welcome', compact('cars', 'galleries', 'consultant', 'video', 'posts'));
+        return view('welcome', compact('cars', 'galleries', 'consultant', 'video', 'popupVideo', 'posts'));
     }
 
     public function show(Car $car)
