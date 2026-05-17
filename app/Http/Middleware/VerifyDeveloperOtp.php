@@ -15,6 +15,10 @@ class VerifyDeveloperOtp
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if (app()->environment('local')) {
+            return $next($request);
+        }
+
         $user = \Illuminate\Support\Facades\Auth::user();
 
         if ($user && $user->role === 'developer') {
