@@ -40,6 +40,7 @@ class PromoResource extends Resource
                                     ->required(),
                             ]),
                         Forms\Components\FileUpload::make('image')
+                            ->image()
                             ->directory('promos')
                             ->disk('public')
                             ->visibility('public')
@@ -56,6 +57,9 @@ class PromoResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('image')
+                    ->label('Foto / Background')
+                    ->circular(),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('code')
