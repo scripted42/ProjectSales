@@ -14,6 +14,22 @@
     </style>
 
     <x-filament::section class="!p-0 overflow-hidden shadow-sm">
+        @if(auth()->user()?->role === 'developer')
+            <div class="flex justify-between items-center p-3 border-b border-gray-100 dark:border-gray-800 bg-amber-50/40 dark:bg-amber-950/10">
+                <div class="flex items-center gap-2">
+                    <span class="flex h-2 w-2 rounded-full bg-amber-500 animate-pulse"></span>
+                    <span class="text-[11px] font-bold text-amber-800 dark:text-amber-400 tracking-wider uppercase">⚡ Developer Analytics Sandbox</span>
+                </div>
+                <div class="flex gap-2">
+                    <x-filament::button wire:click="populateDummyData" size="xs" color="gray" icon="heroicon-o-arrow-path" class="text-xs">
+                        Isi Data Dummy
+                    </x-filament::button>
+                    <x-filament::button wire:click="resetToRealData" size="xs" color="danger" icon="heroicon-o-trash" class="text-xs">
+                        Reset Data Real (Kosong)
+                    </x-filament::button>
+                </div>
+            </div>
+        @endif
         
         <!-- Stats Header -->
         <div class="flex flex-wrap items-center border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50">

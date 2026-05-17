@@ -131,6 +131,39 @@ class PlausibleAnalyticsWidget extends Widget
         ];
     }
 
+    public function populateDummyData(): void
+    {
+        if (auth()->user()?->role !== 'developer') {
+            return;
+        }
+
+        SiteLog::truncate();
+        TestDriveBooking::truncate();
+
+        $seeder = new \Database\Seeders\AnalyticsSeeder();
+        $seeder->run();
+
+        \Filament\Notifications\Notification::make()
+            ->title('Demo Dummy Data Populated!')
+            ->success()
+            ->send();
+    }
+
+    public function resetToRealData(): void
+    {
+        if (auth()->user()?->role !== 'developer') {
+            return;
+        }
+
+        SiteLog::truncate();
+        TestDriveBooking::truncate();
+
+        \Filament\Notifications\Notification::make()
+            ->title('Analytics Reset to Clean State!')
+            ->warning()
+            ->send();
+    }
+
     private function calculateTrend($current, $prev, $inverse = false): array
     {
         if ($prev == 0) return ['dir' => 'up', 'pct' => '100%', 'color' => 'text-emerald-500'];
