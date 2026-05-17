@@ -292,10 +292,32 @@ sudo swapon /swapfile
 
 Jika Anda ingin meng-onlinekan server lokal (seperti STB Linux, PC XAMPP, atau VM lokal) agar dapat diakses dengan domain publik tanpa perlu membuka port (*Port Forwarding*) pada router/modem ISP, gunakan **Cloudflare Tunnel**:
 
-### 1. Hubungkan Domain ke Cloudflare
-1. Daftar atau masuk ke dashboard **Cloudflare**.
-2. Tambahkan situs baru dengan memasukkan domain Anda (misal: `hyundaisurabaya.com`).
-3. Di registrar domain Anda (seperti Niagahoster, Domainesia, GoDaddy), ganti Name Servers (NS) bawaan menjadi Name Servers yang disediakan oleh Cloudflare. Tunggu masa propagasi DNS selesai.
+### 1. Registrasi Domain Baru & Hubungkan ke Cloudflare
+
+Sebelum memasang Cloudflare Tunnel, Anda harus memiliki nama domain aktif dan mendelegasikannya ke Cloudflare:
+
+#### A. Pembelian / Registrasi Domain Baru:
+1. Kunjungi penyedia registrasi domain pilihan Anda (seperti **Domainesia**, **Niagahoster**, **Dewaweb**, atau **Namecheap**).
+2. Cari nama domain yang Anda inginkan (misalnya: `hyundaisurabaya.com`).
+3. Lakukan pembelian dan selesaikan proses verifikasi kepemilikan domain di portal registrar tersebut.
+
+#### B. Menambahkan Domain ke Akun Cloudflare:
+1. Daftar atau masuk ke dashboard **[Cloudflare](https://dash.cloudflare.com/)**.
+2. Klik tombol **Add a Site** / **Tambahkan Situs**, lalu masukkan nama domain Anda (tanpa `www` atau `https`, cukup `hyundaisurabaya.com`).
+3. Pilih paket layanan **Free** (Gratis), lalu klik **Continue**.
+4. Cloudflare akan secara otomatis memindai DNS record bawaan domain Anda. Klik **Continue** lagi.
+
+#### C. Mengubah Nameserver di Portal Registrar Domain:
+1. Cloudflare akan menampilkan sepasang **Cloudflare Nameservers** baru (contohnya: `heather.ns.cloudflare.com` dan `darren.ns.cloudflare.com`).
+2. Buka tab baru, masuk ke **Client Area / Portal Member** tempat Anda membeli domain tadi (misal portal Domainesia).
+3. Cari menu **Domain Management** / **Kelola Domain** -> cari submenu **Nameservers**.
+4. Ubah setelan Nameservers dari *"Use Default Nameservers"* menjadi *"Use Custom Nameservers"*.
+5. Masukkan kedua Nameservers yang diberikan oleh Cloudflare tadi ke kolom yang tersedia (misal Nameserver 1 dan Nameserver 2). Hapus nameserver lain jika ada.
+6. Klik **Save / Update Nameservers**.
+7. Kembali ke dashboard Cloudflare Anda, lalu klik **Check Nameservers** -> **Finish**.
+
+> [!NOTE]
+> Proses perubahan Nameservers (disebut propagasi DNS) biasanya memakan waktu antara **5 menit hingga maksimal 24 jam** tergantung dari ISP dan registrar Anda. Anda dapat memantau status propagasi secara global menggunakan layanan seperti [DNSChecker](https://dnschecker.org/).
 
 ### 2. Instalasi Cloudflared di Server Lokal
 Unduh dan pasang agen `cloudflared` di server Anda:
