@@ -8,6 +8,8 @@
     <!-- Favicon -->
     @if($logo = \App\Models\Setting::get('site_logo'))
         <link rel="icon" type="image/png" href="{{ asset('storage/' . $logo) }}">
+    @else
+        <link rel="icon" type="image/png" href="{{ asset('assets/images/hyundai_logo.png') }}">
     @endif
 
     <title>News & Insights - Hyundai Showroom</title>
