@@ -288,6 +288,72 @@ sudo swapon /swapfile
 
 ---
 
+## ☁️ Deployment dengan Cloudflare Tunnel (Zero Trust)
+
+Jika Anda ingin meng-onlinekan server lokal (seperti STB Linux, PC XAMPP, atau VM lokal) agar dapat diakses dengan domain publik tanpa perlu membuka port (*Port Forwarding*) pada router/modem ISP, gunakan **Cloudflare Tunnel**:
+
+### 1. Hubungkan Domain ke Cloudflare
+1. Daftar atau masuk ke dashboard **Cloudflare**.
+2. Tambahkan situs baru dengan memasukkan domain Anda (misal: `hyundaisurabaya.com`).
+3. Di registrar domain Anda (seperti Niagahoster, Domainesia, GoDaddy), ganti Name Servers (NS) bawaan menjadi Name Servers yang disediakan oleh Cloudflare. Tunggu masa propagasi DNS selesai.
+
+### 2. Instalasi Cloudflared di Server Lokal
+Unduh dan pasang agen `cloudflared` di server Anda:
+- **Untuk Linux Debian/Ubuntu (STB/Server):**
+  ```bash
+  curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-arm.deb # (Ganti arm dengan amd64 jika di PC/VPS biasa)
+  sudo dpkg -i cloudflared.deb
+  ```
+
+### 3. Autentikasi Cloudflared
+Hubungkan agen lokal server Anda dengan akun Cloudflare Anda:
+```bash
+cloudflared tunnel login
+```
+*Salin tautan URL yang muncul di terminal, buka di browser Anda, lalu setujui otorisasi domain pilihan Anda.*
+
+### 4. Membuat Tunnel Baru
+```bash
+cloudflared tunnel create hyundai-tunnel
+```
+*Perintah ini akan menghasilkan ID Tunnel berupa string UUID yang unik dan menyimpan file rahasia kredensial JSON di folder `/root/.cloudflared/`.*
+
+### 5. Membuat Konfigurasi `config.yml`
+Buat berkas konfigurasi di direktori `/root/.cloudflared/config.yml`:
+```bash
+nano /root/.cloudflared/config.yml
+```
+Masukkan konfigurasi berikut (sesuaikan UUID dan domain Anda):
+```yaml
+tunnel: <UUID_TUNNEL_ANDA>
+credentials-file: /root/.cloudflared/<UUID_TUNNEL_ANDA>.json
+
+ingress:
+  - hostname: hyundaisurabaya.com
+    service: http://localhost:8000  # Arahkan ke port php artisan serve atau Nginx Anda
+  - service: http_status:404
+```
+
+### 6. Menghubungkan Subdomain / Domain via DNS
+Jalankan perintah ini agar domain utama Anda terhubung secara otomatis melalui DNS CNAME Cloudflare:
+```bash
+cloudflared tunnel route dns hyundai-tunnel hyundaisurabaya.com
+```
+
+### 7. Menjalankan Tunnel Sebagai Layanan Sistem (Service)
+Agar tunnel tetap berjalan secara otomatis di latar belakang saat server/STB dinyalakan kembali:
+```bash
+# Install sebagai service sistem Linux
+sudo cloudflared service install
+
+# Jalankan dan aktifkan layanannya
+sudo systemctl start cloudflared
+sudo systemctl enable cloudflared
+```
+*Sekarang, server lokal Anda sudah terhubung secara aman di balik jaringan Cloudflare, lengkap dengan enkripsi SSL gratis (HTTPS) tanpa perlu setting IP Publik Statis!*
+
+---
+
 ## 👤 Kontributor & Hak Cipta
 - **AutoShow Pro Team** - Developer & Designer.
 
