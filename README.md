@@ -266,7 +266,7 @@ Jika Anda menggunakan STB **ZTE ZXV10 B860H v2.1 (2GB RAM)** untuk dijadikan ser
    * Masukkan password bawaan: **`1234`** atau **`password`** (sesuaikan dengan image Armbian yang Anda unduh).
    * Sistem akan langsung mewajibkan Anda membuat kata sandi root baru (masukkan sandi yang kuat dan mudah Anda ingat), membuat akun pengguna baru non-root, serta memilih setelan zona waktu lokal (pilih **`Asia/Jakarta`**).
 
-### 4. Instalasi Web Server & PHP (LEMP Stack)
+### 4. Metode Alternatif A: Instalasi Manual CLI (Nginx, PHP, MariaDB)
 Setelah masuk ke prompt terminal Armbian, jalankan perintah instalasi berikut:
 ```bash
 # Perbarui daftar paket aplikasi server
@@ -276,7 +276,7 @@ sudo apt update && sudo apt upgrade -y
 sudo apt install nginx mariadb-server php-fpm php-mysql php-xml php-curl php-gd php-mbstring php-zip -y
 ```
 
-### 5. Optimasi Penggunaan RAM MariaDB (Penting untuk STB 2GB)
+#### Optimasi Penggunaan RAM MariaDB (Penting untuk STB 2GB)
 Agar database MariaDB berjalan sangat ringan di STB Anda, batasi pemakaian memory-nya:
 1. Buka file konfigurasi server MariaDB:
    ```bash
@@ -289,6 +289,48 @@ Agar database MariaDB berjalan sangat ringan di STB Anda, batasi pemakaian memor
    query_cache_size = 8M
    ```
 3. Simpan dengan menekan `Ctrl + O` -> `Enter`, lalu keluar dengan `Ctrl + X`.
+
+---
+
+### 5. Metode Alternatif B: Instalasi Praktis Menggunakan aaPanel (Web GUI - Sangat Direkomendasikan)
+Jika Anda tidak ingin ribet berurusan dengan baris perintah hitam (CLI) di terminal, gunakan **aaPanel** untuk mengelola server web, mengunggah berkas zip, mengedit file `.env`, dan mengelola database MySQL langsung lewat tampilan browser laptop Anda:
+
+#### A. Langkah Instalasi aaPanel di Terminal STB:
+1. Hubungkan SSH STB Anda lewat PuTTY/Termius.
+2. Jalankan perintah instalasi resmi aaPanel untuk Debian/Ubuntu ARM64 berikut:
+   ```bash
+   wget -O install.sh http://www.aapanel.com/script/install-ubuntu_6.0_en.sh && sudo bash install.sh aapanel
+   ```
+3. Ketik **`y`** saat diminta konfirmasi instalasi, lalu tekan **Enter**. Proses instalasi berkisar 5 s/d 10 menit.
+4. Di akhir proses, terminal akan menampilkan **alamat IP Login Panel, Username, dan Password**. Catat detail tersebut dengan aman!
+
+#### B. Pemasangan Paket LNMP Ringan (Penting untuk STB RAM 2GB):
+1. Buka browser laptop Anda, masuk ke alamat IP login aaPanel Anda (misalnya: `http://192.168.1.100:8888/login_key`).
+2. Masukkan username dan password panel Anda.
+3. Setelah masuk, jendela pop-up **One-Click Installation** akan mendeteksi server baru. **PILIH SETELAN BERIKUT AGAR SUPER RINGAN DI STB:**
+   * Nginx: **1.22 atau 1.24**
+   * MySQL: **MySQL 5.6** atau **MariaDB 10.4** (*JANGAN pilih MySQL 8.0 karena sangat berat untuk RAM 2GB!*)
+   * PHP: **8.2** atau **8.3**
+   * phpMyAdmin: **5.2**
+   * **SANGAT PENTING:** Pilih metode **`Fast` (RPM/Package)**. *JANGAN pernah memilih metode `Compiled` karena proses compile mandiri di STB memakan waktu berjam-jam dan memberatkan CPU.*
+4. Klik **One-Key Install** dan tunggu hingga indikator selesai semua.
+
+#### C. Menambahkan Website & Konfigurasi Laravel di aaPanel:
+1. Masuk ke menu **Website** di panel sebelah kiri -> klik **Add Site**.
+2. Masukkan domain utama Anda: `hyundaisurabaya.com`.
+3. Pada opsi **Database**, pilih **MySQL** (ini akan otomatis membuat database dan user baru untuk proyek Anda). Klik **Submit**.
+4. Masuk ke menu **Files** -> buka folder website Anda di `/www/wwwroot/hyundaisurabaya.com`.
+5. Klik **Upload** -> unggah file `.zip` proyek Anda -> klik kanan file zip -> pilih **Unzip** untuk ekstrak file proyek sales.
+6. **Setting Running Directory Laravel:**
+   * Kembali ke menu **Website** -> klik nama domain Anda -> klik **Site Directory**.
+   * Ubah nilai **Running Directory** dari `/` menjadi **`/public`** -> klik **Save** (ini wajib agar index Laravel terbaca dengan benar).
+7. **Setting URL Rewrite (Routing Laravel):**
+   * Di dalam setelan domain tersebut, pilih menu **URL Rewrite**.
+   * Pilih template preset **`laravel`** dari menu dropdown yang tersedia -> klik **Save** (ini wajib agar semua link halaman detail mobil, blog, dll. tidak menghasilkan error 404).
+
+> [!TIP]
+> Semua paket yang diinstal melalui aaPanel secara bawaan sudah langsung dikonfigurasi aktif secara otomatis saat booting (*auto-startenabled*). Anda hanya perlu mengaktifkan otomatisasi Cloudflare Tunnel saja lewat terminal SSH STB Anda:
+> `sudo systemctl enable cloudflared`
 
 ### 6. Otomatisasi Service-Service (Auto-Start saat Mati Lampu / Reboot)
 Langkah krusial ini memastikan jika listrik mati lalu menyala kembali, atau jika STB di-restart, seluruh server web, database, dan Cloudflare Tunnel Anda **akan otomatis menyala sendiri di latar belakang tanpa Anda perlu mengetik perintah apapun lagi**:
