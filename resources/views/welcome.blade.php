@@ -619,18 +619,7 @@
                         scale: 1,
                         opacity: 1,
                         duration: 1.0,
-                        ease: 'back.out(1.4)', // Efek memantul premium saat muncul
-                        onComplete: () => {
-                            // Jalankan animasi melayang (floating) terus-menerus yang sangat halus
-                            gsap.to(img, {
-                                y: -6,
-                                duration: 2,
-                                yoyo: true,
-                                repeat: -1,
-                                ease: 'sine.inOut',
-                                delay: index * 0.15 // Delay staggered agar mobil mengambang bergantian secara organik
-                            });
-                        }
+                        ease: 'back.out(1.4)' // Efek memantul premium saat muncul
                     }, '-=0.5'); // Menumpuk animasi kartu dan mobil agar mengalir mulus
                 }
             });
