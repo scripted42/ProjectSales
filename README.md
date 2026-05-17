@@ -235,18 +235,20 @@ Karena Shared Hosting tidak memiliki akses terminal untuk menjalankan `php artis
 Jika Anda menggunakan STB **ZTE ZXV10 B860H v2.1 (2GB RAM)** untuk dijadikan server lokal mandiri di rumah, ikuti tutorial lengkap dari nol ini:
 
 ### 1. Persiapan Alat & Bahan (Flashing OS)
-1. **MicroSD Card:** Siapkan kartu MicroSD minimal ukuran **8GB** (sangat disarankan Class 10 untuk kecepatan membaca data OS yang optimal).
+1. **Media Penyimpanan (Pilih Salah Satu):**
+   * **MicroSD Card (Sangat Disarankan):** Minimal ukuran **8GB** (disarankan Class 10 untuk kecepatan optimal). Keunggulan: Booting lebih cepat karena menggunakan bus SDIO internal STB, menyisakan port USB kosong untuk keperluan HDD/SSD eksternal tambahan.
+   * **USB Flashdisk:** Minimal ukuran **8GB** (gunakan merk tepercaya seperti SanDisk atau Kingston). Keunggulan: Sangat mudah ditemukan, murah, dan memiliki ketahanan tulis (*write endurance*) yang baik untuk operasi server 24 jam.
 2. **Perangkat Lunak Flashing:** Unduh dan pasang aplikasi **BalenaEtcher** atau **Rufus** di laptop Anda.
 3. **Image OS Armbian Linux:** Unduh berkas image Armbian khusus untuk chipset **Amlogic S905X** (bisa menggunakan distro berbasis Debian Bullseye atau Ubuntu Focal).
 
-### 2. Proses Flashing OS Armbian ke MicroSD
-1. Hubungkan MicroSD ke laptop Anda menggunakan Card Reader.
+### 2. Proses Flashing OS Armbian ke Media Penyimpanan
+1. Hubungkan MicroSD (menggunakan Card Reader) atau USB Flashdisk ke laptop Anda.
 2. Buka aplikasi **BalenaEtcher**, klik **Flash from file** dan pilih file image `.img` Armbian yang sudah diunduh.
-3. Klik **Select target** dan pilih kartu MicroSD Anda, kemudian klik **Flash!**. Tunggu hingga proses verifikasi selesai.
+3. Klik **Select target** dan pilih MicroSD atau USB Flashdisk Anda, kemudian klik **Flash!**. Tunggu hingga proses verifikasi selesai.
 4. **Sangat Penting (Konfigurasi DTB Chipset):** 
    Setelah flashing selesai, buka partisi drive bernama `BOOT` di laptop Anda.
    * Masuk ke folder `/dtb/` -> cari file bernama `meson-gxl-s905x-p212.dtb` atau `meson-gxl-s905x-b860h.dtb`.
-   * Salin file tersebut, lalu letakkan di direktori utama (root) MicroSD.
+   * Salin file tersebut, lalu letakkan di direktori utama (root) media penyimpanan (MicroSD atau Flashdisk) Anda.
    * Ubah nama file salinan tersebut menjadi **`dtb.img`** (ini agar STB mengenali spesifikasi hardware layar dan port B860H Anda dengan tepat).
 
 ### 3. Booting Pertama Kali di STB
