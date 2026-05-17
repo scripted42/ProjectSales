@@ -405,6 +405,13 @@ sudo swapon /swapfile
 
 Jika Anda ingin meng-onlinekan server lokal (seperti STB Linux, PC XAMPP, atau VM lokal) agar dapat diakses dengan domain publik tanpa perlu membuka port (*Port Forwarding*) pada router/modem ISP, gunakan **Cloudflare Tunnel**:
 
+> [!IMPORTANT]
+> **💡 TIPS PENTING: BYPASS VERIFIKASI KARTU KREDIT CLOUDFLARE**
+> Jika Anda mencoba membuat tunnel melalui Dashboard Web Cloudflare Zero Trust di browser, Cloudflare akan **mewajibkan Anda memasukkan informasi kartu kredit/debit** untuk verifikasi (meskipun layanannya 100% gratis).
+>
+> **CARA BYPASS (100% GRATIS TANPA KARTU KREDIT):**
+> Ikuti panduan di bawah ini secara **STRICT / KETAT menggunakan metode lokal CLI (`cloudflared` lewat terminal SSH)**. Dengan membuat tunnel langsung melalui perintah terminal `cloudflared tunnel create`, Cloudflare akan **sepenuhnya melewatkan (bypass) syarat kartu kredit** dan Anda bisa meng-onlinekan server lokal Anda secara gratis tanpa hambatan pembayaran!
+
 ### 1. Registrasi Domain Baru & Hubungkan ke Cloudflare
 
 Sebelum memasang Cloudflare Tunnel, Anda harus memiliki nama domain aktif dan mendelegasikannya ke Cloudflare:
