@@ -63,15 +63,25 @@ class AiInsightsWidget extends Widget
         }
 
         // 4. INSIGHT: WAKTU TERBAIK POSTING (WIB)
-        $peakHour = SiteLog::where('log_type', 'visit')
-            ->where('created_at', '>=', $thirtyDaysAgo)
-            ->select(DB::raw('HOUR(DATE_ADD(created_at, INTERVAL 7 HOUR)) as hour'), DB::raw('count(*) as total'))
-            ->groupBy('hour')
-            ->orderBy('total', 'desc')
-            ->first();
+        if (DB::connection()->getDriverName() === 'sqlite') {
+            $peakHour = SiteLog::where('log_type', 'visit')
+                ->where('created_at', '>=', $thirtyDaysAgo)
+                ->select(DB::raw("strftime('%H', datetime(created_at, '+7 hours')) as hour"), DB::raw('count(*) as total'))
+                ->groupBy('hour')
+                ->orderBy('total', 'desc')
+                ->first();
+        } else {
+            $peakHour = SiteLog::where('log_type', 'visit')
+                ->where('created_at', '>=', $thirtyDaysAgo)
+                ->select(DB::raw('HOUR(DATE_ADD(created_at, INTERVAL 7 HOUR)) as hour'), DB::raw('count(*) as total'))
+                ->groupBy('hour')
+                ->orderBy('total', 'desc')
+                ->first();
+        }
 
         if ($peakHour) {
-            $hourRange = $peakHour->hour . ":00 - " . ($peakHour->hour + 1) . ":00";
+            $formattedHour = (int) $peakHour->hour;
+            $hourRange = sprintf("%02d:00 - %02d:00", $formattedHour, ($formattedHour + 1) % 24);
             $insights[] = [
                 'icon' => 'heroicon-o-megaphone',
                 'color' => 'primary',
