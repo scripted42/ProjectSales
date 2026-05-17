@@ -230,33 +230,102 @@ Karena Shared Hosting tidak memiliki akses terminal untuk menjalankan `php artis
 
 ---
 
-## 📺 Deployment pada STB (Set Top Box) Linux
+## 📺 Panduan Lengkap Oprek STB ZTE B860H Menjadi Server (Dari Awal)
 
-Jika Anda menggunakan STB (seperti HG680P/B860H) yang menjalankan **Armbian** atau distro Linux lainnya, ikuti panduan optimasi ini:
+Jika Anda menggunakan STB **ZTE ZXV10 B860H v2.1 (2GB RAM)** untuk dijadikan server lokal mandiri di rumah, ikuti tutorial lengkap dari nol ini:
 
-### 1. Persiapan Lingkungan (LEMP Stack)
-Pastikan PHP-FPM dan Nginx sudah terpasang untuk menghemat RAM dibandingkan Apache:
+### 1. Persiapan Alat & Bahan (Flashing OS)
+1. **MicroSD Card:** Siapkan kartu MicroSD minimal ukuran **8GB** (sangat disarankan Class 10 untuk kecepatan membaca data OS yang optimal).
+2. **Perangkat Lunak Flashing:** Unduh dan pasang aplikasi **BalenaEtcher** atau **Rufus** di laptop Anda.
+3. **Image OS Armbian Linux:** Unduh berkas image Armbian khusus untuk chipset **Amlogic S905X** (bisa menggunakan distro berbasis Debian Bullseye atau Ubuntu Focal).
+
+### 2. Proses Flashing OS Armbian ke MicroSD
+1. Hubungkan MicroSD ke laptop Anda menggunakan Card Reader.
+2. Buka aplikasi **BalenaEtcher**, klik **Flash from file** dan pilih file image `.img` Armbian yang sudah diunduh.
+3. Klik **Select target** dan pilih kartu MicroSD Anda, kemudian klik **Flash!**. Tunggu hingga proses verifikasi selesai.
+4. **Sangat Penting (Konfigurasi DTB Chipset):** 
+   Setelah flashing selesai, buka partisi drive bernama `BOOT` di laptop Anda.
+   * Masuk ke folder `/dtb/` -> cari file bernama `meson-gxl-s905x-p212.dtb` atau `meson-gxl-s905x-b860h.dtb`.
+   * Salin file tersebut, lalu letakkan di direktori utama (root) MicroSD.
+   * Ubah nama file salinan tersebut menjadi **`dtb.img`** (ini agar STB mengenali spesifikasi hardware layar dan port B860H Anda dengan tepat).
+
+### 3. Booting Pertama Kali di STB
+1. Cabut kabel adaptor daya dari STB ZTE B860H Anda.
+2. Hubungkan kabel **LAN** dari modem/router wifi ke port LAN STB (kabel LAN menjamin koneksi server stabil tanpa putus dibanding Wi-Fi).
+3. Hubungkan kabel **HDMI** dari STB ke TV atau monitor untuk melihat proses text terminal booting.
+4. Masukkan kartu MicroSD yang sudah terisi OS Armbian tadi ke slot MicroSD STB.
+5. **Metode Reset Jack AV:** 
+   * Siapkan tusuk gigi atau klip kertas. Masukkan ke dalam lubang **jack AV** di belakang STB secara perlahan hingga menyentuh tombol klik kecil di dalamnya.
+   * **Tekan dan tahan** tombol reset tersebut.
+   * Sambil tetap menahan tombol reset, colokkan adaptor daya 12V ke STB.
+   * Tetap tahan tombol reset selama **5-10 detik** hingga TV/monitor Anda menampilkan baris teks Linux berjalan, kemudian lepaskan tusuk gigi.
+6. **Login Awal Server:**
+   * Di layar terminal, ketik username bawaan: **`root`**
+   * Masukkan password bawaan: **`1234`** atau **`password`** (sesuaikan dengan image Armbian yang Anda unduh).
+   * Sistem akan langsung mewajibkan Anda membuat kata sandi root baru (masukkan sandi yang kuat dan mudah Anda ingat), membuat akun pengguna baru non-root, serta memilih setelan zona waktu lokal (pilih **`Asia/Jakarta`**).
+
+### 4. Instalasi Web Server & PHP (LEMP Stack)
+Setelah masuk ke prompt terminal Armbian, jalankan perintah instalasi berikut:
 ```bash
-sudo apt update
+# Perbarui daftar paket aplikasi server
+sudo apt update && sudo apt upgrade -y
+
+# Install Nginx, Database MariaDB, dan Modul PHP 8.2/8.3
 sudo apt install nginx mariadb-server php-fpm php-mysql php-xml php-curl php-gd php-mbstring php-zip -y
 ```
 
-### 2. Optimasi Database (Penting untuk STB)
-STB memiliki RAM terbatas. Batasi penggunaan memory MariaDB:
+### 5. Optimasi Penggunaan RAM MariaDB (Penting untuk STB 2GB)
+Agar database MariaDB berjalan sangat ringan di STB Anda, batasi pemakaian memory-nya:
+1. Buka file konfigurasi server MariaDB:
+   ```bash
+   sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
+   ```
+2. Temukan baris di bawah `[mysqld]` dan tambahkan batasan memori berikut:
+   ```ini
+   key_buffer_size = 16M
+   max_connections = 20
+   query_cache_size = 8M
+   ```
+3. Simpan dengan menekan `Ctrl + O` -> `Enter`, lalu keluar dengan `Ctrl + X`.
+
+### 6. Otomatisasi Service-Service (Auto-Start saat Mati Lampu / Reboot)
+Langkah krusial ini memastikan jika listrik mati lalu menyala kembali, atau jika STB di-restart, seluruh server web, database, dan Cloudflare Tunnel Anda **akan otomatis menyala sendiri di latar belakang tanpa Anda perlu mengetik perintah apapun lagi**:
+
+Jalankan perintah pengaktifan layanan *Systemd* berikut di terminal:
 ```bash
-# Edit /etc/mysql/mariadb.conf.d/50-server.cnf
-# Tambahkan di bawah [mysqld]:
-key_buffer_size = 16M
-max_connections = 20
-query_cache_size = 8M
+# 1. Mengaktifkan Nginx agar otomatis menyala saat booting
+sudo systemctl enable nginx
+
+# 2. Mengaktifkan MariaDB agar otomatis menyala saat booting
+sudo systemctl enable mariadb
+
+# 3. Mengaktifkan PHP-FPM (sesuaikan dengan versi PHP terinstal, misal php8.2-fpm atau php8.3-fpm)
+sudo systemctl enable php8.2-fpm
+
+# 4. Mengaktifkan Cloudflare Tunnel agar koneksi web domain otomatis tersambung kembali
+sudo systemctl enable cloudflared
 ```
 
-### 3. Konfigurasi Nginx
-Buat file config di `/etc/nginx/sites-available/autoshow`:
+#### Cara Menguji Status Layanan:
+Untuk memastikan semua layanan berjalan otomatis dan sehat, lakukan reboot pada STB Anda:
+```bash
+sudo reboot
+```
+Setelah STB menyala kembali, masuk via SSH dan cek status masing-masing layanan dengan perintah:
+```bash
+sudo systemctl status nginx
+sudo systemctl status mariadb
+sudo systemctl status php8.2-fpm
+sudo systemctl status cloudflared
+```
+*Jika statusnya berwarna hijau dan tertulis **active (running)**, berarti server STB mandiri Anda telah sepenuhnya otomatis dan siap melayani pengunjung web showroom Anda selamanya!*
+
+### 7. Konfigurasi Nginx Virtual Host
+Buat file konfigurasi Nginx untuk mengarahkan domain lokal Anda ke folder proyek:
 ```nginx
 server {
     listen 80;
-    server_name autoshow.local;
+    server_name hyundaisurabaya.com;
     root /var/www/ProjectSales/public;
 
     add_header X-Frame-Options "SAMEORIGIN";
@@ -277,8 +346,8 @@ server {
 }
 ```
 
-### 4. Swap Memory
-Jika STB Anda hanya memiliki RAM 1GB/2GB, tambahkan Swap untuk mencegah *Out of Memory*:
+### 8. Swap Memory
+Jika memori RAM terasa sesak, tambahkan swap virtual RAM 1GB:
 ```bash
 sudo fallocate -l 1G /swapfile
 sudo chmod 600 /swapfile
