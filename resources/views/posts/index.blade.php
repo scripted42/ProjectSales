@@ -4,6 +4,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Favicon -->
+    @if($logo = \App\Models\Setting::get('site_logo'))
+        <link rel="icon" type="image/png" href="{{ asset('storage/' . $logo) }}">
+    @endif
+
     <title>News & Insights - Hyundai Showroom</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

@@ -3,6 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Favicon -->
+    @if($logo = \App\Models\Setting::get('site_logo'))
+        <link rel="icon" type="image/png" href="{{ asset('storage/' . $logo) }}">
+    @endif
+
     <title>{{ $car->name }} - Hyundai Showroom</title>
 
     <!-- Fonts -->
