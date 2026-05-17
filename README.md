@@ -96,9 +96,9 @@ erDiagram
 
 ---
 
-## 🛠️ Panduan Instalasi & Deployment
+## 🛠️ Panduan Instalasi & Deployment Utama
 
-Pilih metode instalasi yang sesuai dengan lingkungan hosting Anda:
+Pilih metode instalasi yang sesuai dengan infrastruktur server Anda:
 
 ---
 
@@ -133,6 +133,7 @@ APP_NAME="Hyundai Showroom"
 APP_ENV=production
 APP_DEBUG=false
 APP_URL=https://namadomainanda.com
+SESSION_SECURE_COOKIE=true # Proteksi cookie sesi pada jaringan HTTPS
 
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
@@ -174,7 +175,7 @@ chown -R www-data:www-data .
 
 ### 📂 Metode B: Manual Tanpa SSH (Shared Hosting / cPanel File Manager)
 
-Gunakan metode ini jika hosting Anda adalah tipe Shared Hosting konvensional yang tidak menyediakan terminal SSH.
+Gunkan metode ini jika hosting Anda adalah tipe Shared Hosting konvensional yang tidak menyediakan terminal SSH.
 
 #### 1. Bundling Dependensi di Komputer Lokal (Sebelum Upload)
 Karena Shared Hosting tidak memiliki Composer/NPM, kita harus mempersiapkan berkasnya terlebih dahulu di komputer lokal Anda:
@@ -230,16 +231,16 @@ Karena Shared Hosting tidak memiliki akses terminal untuk menjalankan `php artis
 
 ---
 
-## 📺 Panduan Lengkap Oprek STB ZTE B860H Menjadi Server (Dari Awal)
+## 📺 Panduan Lengkap Oprek STB ZTE B860H Menjadi Server (Mulai Dari Nol)
 
-Jika Anda menggunakan STB **ZTE ZXV10 B860H v2.1 (2GB RAM)** untuk dijadikan server lokal mandiri di rumah, ikuti tutorial lengkap dari nol ini:
+Jika Anda menggunakan perangkat **STB ZTE ZXV10 B860H v2.1 (2GB RAM)** untuk dijadikan server lokal mandiri 24 jam dengan biaya listrik sangat irit, ikuti panduan lengkap di bawah ini:
 
 ### 1. Persiapan Alat & Bahan (Flashing OS)
-1. **Media Penyimpanan (Pilih Salah Satu):**
-   * **MicroSD Card (Sangat Disarankan):** Minimal ukuran **8GB** (disarankan Class 10 untuk kecepatan optimal). Keunggulan: Booting lebih cepat karena menggunakan bus SDIO internal STB, menyisakan port USB kosong untuk keperluan HDD/SSD eksternal tambahan.
-   * **USB Flashdisk:** Minimal ukuran **8GB** (gunakan merk tepercaya seperti SanDisk atau Kingston). Keunggulan: Sangat mudah ditemukan, murah, dan memiliki ketahanan tulis (*write endurance*) yang baik untuk operasi server 24 jam.
-2. **Perangkat Lunak Flashing:** Unduh dan pasang aplikasi **BalenaEtcher** atau **Rufus** di laptop Anda.
-3. **Image OS Armbian Linux:** Unduh berkas image Armbian khusus untuk chipset **Amlogic S905X** (bisa menggunakan distro berbasis Debian Bullseye atau Ubuntu Focal).
+* **Media Penyimpanan (Pilih Salah Satu):**
+  * **MicroSD Card (Sangat Disarankan):** Minimal ukuran **8GB** (disarankan Class 10 untuk kecepatan optimal). Keunggulan: Booting lebih cepat karena menggunakan bus SDIO internal STB, menyisakan port USB kosong untuk keperluan HDD/SSD eksternal tambahan.
+  * **USB Flashdisk:** Minimal ukuran **8GB** (gunakan merk tepercaya seperti SanDisk atau Kingston). Keunggulan: Sangat mudah ditemukan, murah, dan memiliki ketahanan tulis (*write endurance*) yang baik untuk operasi server 24 jam.
+* **Perangkat Lunak Flashing:** Unduh dan pasang aplikasi **BalenaEtcher** atau **Rufus** di laptop Anda.
+* **Image OS Armbian Linux:** Unduh berkas image Armbian khusus untuk chipset **Amlogic S905X** (bisa menggunakan distro berbasis Debian Bullseye atau Ubuntu Focal).
 
 ### 2. Proses Flashing OS Armbian ke Media Penyimpanan
 1. Hubungkan MicroSD (menggunakan Card Reader) atau USB Flashdisk ke laptop Anda.
@@ -255,7 +256,7 @@ Jika Anda menggunakan STB **ZTE ZXV10 B860H v2.1 (2GB RAM)** untuk dijadikan ser
 1. Cabut kabel adaptor daya dari STB ZTE B860H Anda.
 2. Hubungkan kabel **LAN** dari modem/router wifi ke port LAN STB (kabel LAN menjamin koneksi server stabil tanpa putus dibanding Wi-Fi).
 3. Hubungkan kabel **HDMI** dari STB ke TV atau monitor untuk melihat proses text terminal booting.
-4. Masukkan kartu MicroSD yang sudah terisi OS Armbian tadi ke slot MicroSD STB.
+4. Masukkan kartu MicroSD atau Flashdisk yang sudah terisi OS Armbian tadi ke slot STB (Flashdisk dicolokkan ke **Port USB 1**).
 5. **Metode Reset Jack AV:** 
    * Siapkan tusuk gigi atau klip kertas. Masukkan ke dalam lubang **jack AV** di belakang STB secara perlahan hingga menyentuh tombol klik kecil di dalamnya.
    * **Tekan dan tahan** tombol reset tersebut.
@@ -266,8 +267,17 @@ Jika Anda menggunakan STB **ZTE ZXV10 B860H v2.1 (2GB RAM)** untuk dijadikan ser
    * Masukkan password bawaan: **`1234`** atau **`password`** (sesuaikan dengan image Armbian yang Anda unduh).
    * Sistem akan langsung mewajibkan Anda membuat kata sandi root baru (masukkan sandi yang kuat dan mudah Anda ingat), membuat akun pengguna baru non-root, serta memilih setelan zona waktu lokal (pilih **`Asia/Jakarta`**).
 
-### 4. Metode Alternatif A: Instalasi Manual CLI (Nginx, PHP, MariaDB)
-Setelah masuk ke prompt terminal Armbian, jalankan perintah instalasi berikut:
+---
+
+### 🎛️ PILIH SALAH SATU JALUR INSTALASI WEB SERVER (METODE A ATAU METODE B):
+
+---
+
+### [JALUR A]: Instalasi Manual CLI (Sangat Ringan & Performa Maksimal)
+
+Gunakan metode ini jika Anda menginginkan performa server tercepat dengan konsumsi memory RAM sekecil mungkin.
+
+#### A1. Instalasi LEMP Stack di Terminal STB:
 ```bash
 # Perbarui daftar paket aplikasi server
 sudo apt update && sudo apt upgrade -y
@@ -276,7 +286,7 @@ sudo apt update && sudo apt upgrade -y
 sudo apt install nginx mariadb-server php-fpm php-mysql php-xml php-curl php-gd php-mbstring php-zip -y
 ```
 
-#### Optimasi Penggunaan RAM MariaDB (Penting untuk STB 2GB)
+#### A2. Optimasi Penggunaan RAM MariaDB (Penting untuk STB 2GB)
 Agar database MariaDB berjalan sangat ringan di STB Anda, batasi pemakaian memory-nya:
 1. Buka file konfigurasi server MariaDB:
    ```bash
@@ -290,12 +300,65 @@ Agar database MariaDB berjalan sangat ringan di STB Anda, batasi pemakaian memor
    ```
 3. Simpan dengan menekan `Ctrl + O` -> `Enter`, lalu keluar dengan `Ctrl + X`.
 
+#### A3. Konfigurasi Nginx Virtual Host
+1. Buat file konfigurasi Nginx untuk domain Anda:
+   ```bash
+   sudo nano /etc/nginx/sites-available/hyundai
+   ```
+2. Masukkan konfigurasi berikut:
+   ```nginx
+   server {
+       listen 80;
+       server_name hyundaisurabaya.com;
+       root /var/www/ProjectSales/public;
+
+       add_header X-Frame-Options "SAMEORIGIN";
+       add_header X-Content-Type-Options "nosniff";
+
+       index index.php;
+       charset utf-8;
+
+       location / {
+           try_files $uri $uri/ /index.php?$query_string;
+       }
+
+       location ~ \.php$ {
+           fastcgi_pass unix:/var/run/php/php-fpm.sock;
+           fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+           include fastcgi_params;
+       }
+   }
+   ```
+3. Aktifkan konfigurasi website:
+   ```bash
+   sudo ln -s /etc/nginx/sites-available/hyundai /etc/nginx/sites-enabled/
+   sudo systemctl restart nginx
+   ```
+
+#### A4. Pembuatan Swap Memory (Pencegah Crash RAM)
+Jika memori RAM terasa sesak, tambahkan swap virtual RAM 1GB agar server anti-crash:
+```bash
+sudo fallocate -l 1G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+```
+
+#### A5. Otomatisasi Auto-Start Layanan CLI saat Reboot / Listrik Padam
+Jalankan perintah pengaktifan layanan *Systemd* berikut agar web server menyala otomatis saat STB hidup kembali:
+```bash
+sudo systemctl enable nginx
+sudo systemctl enable mariadb
+sudo systemctl enable php8.2-fpm # Sesuaikan versi PHP Anda
+```
+
 ---
 
-### 5. Metode Alternatif B: Instalasi Praktis Menggunakan aaPanel (Web GUI - Sangat Direkomendasikan)
-Jika Anda tidak ingin ribet berurusan dengan baris perintah hitam (CLI) di terminal, gunakan **aaPanel** untuk mengelola server web, mengunggah berkas zip, mengedit file `.env`, dan mengelola database MySQL langsung lewat tampilan browser laptop Anda:
+### [JALUR B]: Instalasi Praktis via aaPanel (Web GUI - Sangat Direkomendasikan untuk Pemula)
 
-#### A. Langkah Instalasi aaPanel di Terminal STB:
+Gunakan metode ini jika Anda menginginkan kemudahan mengunggah berkas zip, mengedit file `.env`, dan mengelola database MySQL langsung lewat tampilan browser visual yang ramah pengguna.
+
+#### B1. Langkah Instalasi aaPanel di Terminal STB:
 1. Hubungkan SSH STB Anda lewat PuTTY/Termius.
 2. Jalankan perintah instalasi resmi aaPanel untuk Debian/Ubuntu ARM64 berikut:
    ```bash
@@ -304,7 +367,7 @@ Jika Anda tidak ingin ribet berurusan dengan baris perintah hitam (CLI) di termi
 3. Ketik **`y`** saat diminta konfirmasi instalasi, lalu tekan **Enter**. Proses instalasi berkisar 5 s/d 10 menit.
 4. Di akhir proses, terminal akan menampilkan **alamat IP Login Panel, Username, dan Password**. Catat detail tersebut dengan aman!
 
-#### B. Pemasangan Paket LNMP Ringan (Penting untuk STB RAM 2GB):
+#### B2. Pemasangan Paket LNMP Ringan (Penting untuk STB RAM 2GB):
 1. Buka browser laptop Anda, masuk ke alamat IP login aaPanel Anda (misalnya: `http://192.168.1.100:8888/login_key`).
 2. Masukkan username dan password panel Anda.
 3. Setelah masuk, jendela pop-up **One-Click Installation** akan mendeteksi server baru. **PILIH SETELAN BERIKUT AGAR SUPER RINGAN DI STB:**
@@ -315,7 +378,7 @@ Jika Anda tidak ingin ribet berurusan dengan baris perintah hitam (CLI) di termi
    * **SANGAT PENTING:** Pilih metode **`Fast` (RPM/Package)**. *JANGAN pernah memilih metode `Compiled` karena proses compile mandiri di STB memakan waktu berjam-jam dan memberatkan CPU.*
 4. Klik **One-Key Install** dan tunggu hingga indikator selesai semua.
 
-#### C. Menambahkan Website & Konfigurasi Laravel di aaPanel:
+#### B3. Menambahkan Website & Konfigurasi Laravel di aaPanel:
 1. Masuk ke menu **Website** di panel sebelah kiri -> klik **Add Site**.
 2. Masukkan domain utama Anda: `hyundaisurabaya.com`.
 3. Pada opsi **Database**, pilih **MySQL** (ini akan otomatis membuat database dan user baru untuk proyek Anda). Klik **Submit**.
@@ -329,75 +392,7 @@ Jika Anda tidak ingin ribet berurusan dengan baris perintah hitam (CLI) di termi
    * Pilih template preset **`laravel`** dari menu dropdown yang tersedia -> klik **Save** (ini wajib agar semua link halaman detail mobil, blog, dll. tidak menghasilkan error 404).
 
 > [!TIP]
-> Semua paket yang diinstal melalui aaPanel secara bawaan sudah langsung dikonfigurasi aktif secara otomatis saat booting (*auto-startenabled*). Anda hanya perlu mengaktifkan otomatisasi Cloudflare Tunnel saja lewat terminal SSH STB Anda:
-> `sudo systemctl enable cloudflared`
-
-### 6. Otomatisasi Service-Service (Auto-Start saat Mati Lampu / Reboot)
-Langkah krusial ini memastikan jika listrik mati lalu menyala kembali, atau jika STB di-restart, seluruh server web, database, dan Cloudflare Tunnel Anda **akan otomatis menyala sendiri di latar belakang tanpa Anda perlu mengetik perintah apapun lagi**:
-
-Jalankan perintah pengaktifan layanan *Systemd* berikut di terminal:
-```bash
-# 1. Mengaktifkan Nginx agar otomatis menyala saat booting
-sudo systemctl enable nginx
-
-# 2. Mengaktifkan MariaDB agar otomatis menyala saat booting
-sudo systemctl enable mariadb
-
-# 3. Mengaktifkan PHP-FPM (sesuaikan dengan versi PHP terinstal, misal php8.2-fpm atau php8.3-fpm)
-sudo systemctl enable php8.2-fpm
-
-# 4. Mengaktifkan Cloudflare Tunnel agar koneksi web domain otomatis tersambung kembali
-sudo systemctl enable cloudflared
-```
-
-#### Cara Menguji Status Layanan:
-Untuk memastikan semua layanan berjalan otomatis dan sehat, lakukan reboot pada STB Anda:
-```bash
-sudo reboot
-```
-Setelah STB menyala kembali, masuk via SSH dan cek status masing-masing layanan dengan perintah:
-```bash
-sudo systemctl status nginx
-sudo systemctl status mariadb
-sudo systemctl status php8.2-fpm
-sudo systemctl status cloudflared
-```
-*Jika statusnya berwarna hijau dan tertulis **active (running)**, berarti server STB mandiri Anda telah sepenuhnya otomatis dan siap melayani pengunjung web showroom Anda selamanya!*
-
-### 7. Konfigurasi Nginx Virtual Host
-Buat file konfigurasi Nginx untuk mengarahkan domain lokal Anda ke folder proyek:
-```nginx
-server {
-    listen 80;
-    server_name hyundaisurabaya.com;
-    root /var/www/ProjectSales/public;
-
-    add_header X-Frame-Options "SAMEORIGIN";
-    add_header X-Content-Type-Options "nosniff";
-
-    index index.php;
-    charset utf-8;
-
-    location / {
-        try_files $uri $uri/ /index.php?$query_string;
-    }
-
-    location ~ \.php$ {
-        fastcgi_pass unix:/var/run/php/php-fpm.sock;
-        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
-        include fastcgi_params;
-    }
-}
-```
-
-### 8. Swap Memory
-Jika memori RAM terasa sesak, tambahkan swap virtual RAM 1GB:
-```bash
-sudo fallocate -l 1G /swapfile
-sudo chmod 600 /swapfile
-sudo mkswap /swapfile
-sudo swapon /swapfile
-```
+> Semua paket yang diinstal melalui aaPanel secara bawaan sudah langsung dikonfigurasi aktif secara otomatis saat booting (*auto-startenabled*). Anda tidak perlu mengetik perintah `systemctl` manual lagi untuk Nginx/MySQL/PHP!
 
 ---
 
