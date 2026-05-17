@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -551,5 +551,79 @@
     @endif
 
     @livewireScripts
+
+    <!-- GSAP & Lenis Smooth Scroll -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Inisialisasi Lenis (Smooth Scroll)
+            const lenis = new Lenis({
+                duration: 1.2,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                direction: 'vertical',
+                gestureDirection: 'vertical',
+                smooth: true,
+                mouseMultiplier: 1,
+                smoothTouch: false,
+                touchMultiplier: 2,
+                infinite: false,
+            });
+
+            function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
+            requestAnimationFrame(raf);
+
+            // Integrasi Lenis dengan GSAP ScrollTrigger
+            lenis.on('scroll', ScrollTrigger.update);
+            gsap.ticker.add((time) => {
+                lenis.raf(time * 1000);
+            });
+            gsap.ticker.lagSmoothing(0);
+
+            // 2. Inisialisasi GSAP ScrollTrigger untuk Animasi "Break-the-Frame" Cards
+            gsap.registerPlugin(ScrollTrigger);
+
+            const cards = gsap.utils.toArray('#models .grid > a');
+
+            cards.forEach((card, index) => {
+                const img = card.querySelector('img');
+                const cardBody = card.querySelector('.relative.bg-gray-50');
+
+                if (img && cardBody) {
+                    // Set status awal sebelum scroll mendekat (tersembunyi di bawah)
+                    gsap.set(img, { y: 60, scale: 0.9, opacity: 0 });
+                    gsap.set(cardBody, { y: 40, opacity: 0 });
+
+                    // Buat timeline animasi scroll
+                    const tl = gsap.timeline({
+                        scrollTrigger: {
+                            trigger: card,
+                            start: 'top 85%', // Dimulai saat kartu berjarak 85% dari atas layar viewport
+                            toggleActions: 'play none none none',
+                        }
+                    });
+
+                    tl.to(cardBody, {
+                        y: 0,
+                        opacity: 1,
+                        duration: 0.8,
+                        ease: 'power3.out'
+                    })
+                    .to(img, {
+                        y: 0,
+                        scale: 1,
+                        opacity: 1,
+                        duration: 1.0,
+                        ease: 'back.out(1.4)' // Efek memantul premium saat muncul
+                    }, '-=0.5'); // Menumpuk animasi kartu dan mobil agar mengalir mulus
+                }
+            });
+        });
+    </script>
 </body>
 </html>
