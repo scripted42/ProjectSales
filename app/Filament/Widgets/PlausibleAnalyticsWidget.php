@@ -137,11 +137,53 @@ class PlausibleAnalyticsWidget extends Widget
             return;
         }
 
-        SiteLog::truncate();
-        TestDriveBooking::truncate();
+        // Clean out any previous dummy logs first to prevent overflow
+        SiteLog::where('ip_address', '127.0.0.1')->delete();
+        TestDriveBooking::where('email', 'like', '%@example.com')->delete();
 
         $seeder = new \Database\Seeders\AnalyticsSeeder();
-        $seeder->run();
+        // Since the seeder has its own truncate calls inside, let's call it.
+        // Wait, to keep real data safe, let's make sure our seeder doesn't truncate the whole table.
+        // We can run the seeder's generation loops directly here to be absolutely safe!
+        $cars = \App\Models\Car::all();
+        if ($cars->count() > 0) {
+            $sources = ['facebook', 'instagram', 'google', 'direct'];
+            $regions = ['Jakarta', 'Jawa Barat', 'Jawa Timur', 'Jawa Tengah', 'Banten', 'Bali', 'Sumatera Utara'];
+
+            for ($i=0; $i<150; $i++) {
+                SiteLog::create([
+                    'log_type' => 'visit',
+                    'source' => $sources[array_rand($sources)],
+                    'region' => $regions[array_rand($regions)],
+                    'car_id' => $cars->random()->id,
+                    'ip_address' => '127.0.0.1',
+                    'created_at' => now()->subDays(rand(0, 30))->subHours(rand(0, 23))->subMinutes(rand(0, 59))
+                ]);
+            }
+
+            for ($i=0; $i<50; $i++) {
+                SiteLog::create([
+                    'log_type' => 'wa_click',
+                    'source' => $sources[array_rand($sources)],
+                    'region' => $regions[array_rand($regions)],
+                    'car_id' => $cars->random()->id,
+                    'ip_address' => '127.0.0.1',
+                    'created_at' => now()->subDays(rand(0, 30))->subHours(rand(0, 23))->subMinutes(rand(0, 59))
+                ]);
+            }
+
+            for ($i=0; $i<20; $i++) {
+                TestDriveBooking::create([
+                    'name' => 'User ' . $i,
+                    'phone' => '0812345678' . $i,
+                    'email' => 'user'.$i.'@example.com',
+                    'car_id' => $cars->random()->id,
+                    'booking_date' => now()->addDays(rand(1, 10)),
+                    'status' => (rand(0,1) == 1) ? 'pending' : 'confirmed',
+                    'created_at' => now()->subDays(rand(0, 30))->subHours(rand(0, 23))->subMinutes(rand(0, 59))
+                ]);
+            }
+        }
 
         \Filament\Notifications\Notification::make()
             ->title('Demo Dummy Data Populated!')
@@ -155,11 +197,14 @@ class PlausibleAnalyticsWidget extends Widget
             return;
         }
 
-        SiteLog::truncate();
-        TestDriveBooking::truncate();
+        // ONLY delete dummy analytics logs (identified by 127.0.0.1 IP)
+        SiteLog::where('ip_address', '127.0.0.1')->delete();
+
+        // ONLY delete dummy bookings (identified by example.com email)
+        TestDriveBooking::where('email', 'like', '%@example.com')->delete();
 
         \Filament\Notifications\Notification::make()
-            ->title('Analytics Reset to Clean State!')
+            ->title('Dummy Data Cleared (Real Data Preserved)!')
             ->warning()
             ->send();
     }
