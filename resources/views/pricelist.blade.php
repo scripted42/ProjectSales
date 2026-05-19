@@ -124,7 +124,7 @@
         <div class="flex justify-between items-end">
             <div>
                 <h1 class="text-2xl font-black text-[#002c5f] tracking-widest uppercase">HYUNDAI PRICELIST</h1>
-                <p class="text-xs text-gray-500 font-bold uppercase tracking-wider">Harga OTR Surabaya & Wilayah Jawa Timur - Periode {{ date('F Y') }}</p>
+                <p class="text-xs text-gray-500 font-bold uppercase tracking-wider">Harga OTR Surabaya & Wilayah Jawa Timur - Periode {{ \Carbon\Carbon::now()->locale('id')->translatedFormat('F Y') }}</p>
             </div>
             <div class="text-right">
                 @if($consultant)
@@ -145,7 +145,7 @@
                     Daftar Harga OTR
                 </h1>
                 <p class="text-gray-500 text-xs md:text-sm font-semibold mt-3 leading-relaxed">
-                    Daftar harga resmi kendaraan Hyundai terlengkap untuk wilayah Surabaya, Sidoarjo, Gresik, dan seluruh Provinsi Jawa Timur. Berlaku per <span class="text-[#002c5f] font-bold">{{ date('F Y') }}</span>.
+                    Daftar harga resmi kendaraan Hyundai terlengkap untuk wilayah Surabaya, Sidoarjo, Gresik, dan seluruh Provinsi Jawa Timur. Berlaku per <span class="text-[#002c5f] font-bold">{{ \Carbon\Carbon::now()->locale('id')->translatedFormat('F Y') }}</span>.
                 </p>
             </div>
 
