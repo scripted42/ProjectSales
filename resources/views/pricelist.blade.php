@@ -67,14 +67,14 @@
         /* High-Definition Print Stylesheet overrides */
         @media print {
             @page {
-                size: A4;
-                margin: 15mm 15mm 15mm 15mm !important;
+                size: A4 portrait;
+                margin: 0 !important; /* Automatically suppresses browser's default print headers & footers */
             }
 
             body {
                 background-color: white !important;
                 color: black !important;
-                padding-top: 0 !important;
+                padding: 12mm 15mm 15mm 15mm !important; /* Pristine content spacing inside the page */
                 font-size: 11px !important;
             }
 
