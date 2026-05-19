@@ -249,6 +249,16 @@
             @foreach($cars as $car)
                 <div class="print-card-avoid bg-white rounded-[2.5rem] p-8 md:p-10 border border-gray-100/80 shadow-[0_8px_30px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_50px_rgba(0,44,95,0.06)] hover:border-blue-100/50 transition-all duration-500 flex flex-col justify-between group">
                     
+                    <!-- Title block placed at the top-left, above both photo and variant list -->
+                    <div class="mb-6">
+                        <span class="text-[9px] font-black text-blue-600 bg-blue-50/60 px-2.5 py-1 rounded-md uppercase tracking-wider">
+                            {{ $car->category }}
+                        </span>
+                        <h3 class="text-2xl md:text-3xl font-black text-[#002c5f] uppercase tracking-tight mt-2.5">
+                            {{ $car->name }}
+                        </h3>
+                    </div>
+
                     <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center print-card-avoid-grid">
                         
                         <!-- Left Column: Large, floating transparent car profile image -->
@@ -265,37 +275,25 @@
                             @endif
                         </div>
 
-                        <!-- Right Column: Vehicle titles and Variant lists -->
+                        <!-- Right Column: Variant lists -->
                         <div class="md:col-span-7 flex flex-col justify-between h-full">
-                            <div>
-                                <!-- Category and Car Name -->
-                                <div class="mb-4">
-                                    <span class="text-[9px] font-black text-blue-600 bg-blue-50/60 px-2.5 py-1 rounded-md uppercase tracking-wider">
-                                        {{ $car->category }}
-                                    </span>
-                                    <h3 class="text-2xl md:text-3xl font-black text-[#002c5f] uppercase tracking-tight mt-2.5">
-                                        {{ $car->name }}
-                                    </h3>
-                                </div>
-
-                                <!-- Variant Price List with Dotted Leaders -->
-                                <div class="space-y-3 mb-6">
-                                    @if($car->variants && count($car->variants) > 0)
-                                        @foreach($car->variants as $variant)
-                                            <div class="leader-line">
-                                                <span class="leader-text-left text-xs md:text-sm font-bold text-gray-800 uppercase bg-white">{{ $variant['name'] }}</span>
-                                                <div class="leader-dots"></div>
-                                                <span class="leader-text-right text-xs md:text-sm font-black text-[#002c5f] whitespace-nowrap bg-white">Rp {{ number_format($variant['price'], 0, ',', '.') }}</span>
-                                            </div>
-                                        @endforeach
-                                    @else
+                            <!-- Variant Price List with Dotted Leaders -->
+                            <div class="space-y-3">
+                                @if($car->variants && count($car->variants) > 0)
+                                    @foreach($car->variants as $variant)
                                         <div class="leader-line">
-                                            <span class="leader-text-left text-xs md:text-sm font-bold text-gray-800 uppercase bg-white">Standard</span>
+                                            <span class="leader-text-left text-xs md:text-sm font-bold text-gray-800 uppercase bg-white">{{ $variant['name'] }}</span>
                                             <div class="leader-dots"></div>
-                                            <span class="leader-text-right text-xs md:text-sm font-black text-[#002c5f] whitespace-nowrap bg-white">Rp {{ number_format($car->price, 0, ',', '.') }}</span>
+                                            <span class="leader-text-right text-xs md:text-sm font-black text-[#002c5f] whitespace-nowrap bg-white">Rp {{ number_format($variant['price'], 0, ',', '.') }}</span>
                                         </div>
-                                    @endif
-                                </div>
+                                    @endforeach
+                                @else
+                                    <div class="leader-line">
+                                        <span class="leader-text-left text-xs md:text-sm font-bold text-gray-800 uppercase bg-white">Standard</span>
+                                        <div class="leader-dots"></div>
+                                        <span class="leader-text-right text-xs md:text-sm font-black text-[#002c5f] whitespace-nowrap bg-white">Rp {{ number_format($car->price, 0, ',', '.') }}</span>
+                                    </div>
+                                @endif
                             </div>
                         </div>
 
