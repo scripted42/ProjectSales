@@ -142,7 +142,7 @@
             /* Force side-by-side layout: car image on the left, variant text on the right */
             .print-card-avoid-grid {
                 display: grid !important;
-                grid-template-columns: 3.2fr 8.8fr !important;
+                grid-template-columns: 3.8fr 8.2fr !important;
                 gap: 12px !important;
                 align-items: center !important;
             }
@@ -158,7 +158,7 @@
 
             /* Make car image compact and crisp in print */
             .print-card-avoid img {
-                max-height: 85px !important;
+                max-height: 105px !important;
                 width: auto !important;
                 margin: 0 auto !important;
             }
