@@ -142,8 +142,8 @@
             /* Force side-by-side layout: car image on the left, variant text on the right */
             .print-card-avoid-grid {
                 display: grid !important;
-                grid-template-columns: 4.5fr 7.5fr !important;
-                gap: 16px !important;
+                grid-template-columns: 3.2fr 8.8fr !important;
+                gap: 12px !important;
                 align-items: center !important;
             }
 
@@ -178,9 +178,14 @@
             .print-card-avoid .space-y-3 > * + * {
                 margin-top: 4px !important;
             }
-            .print-card-avoid .leader-text-left, 
+            .print-card-avoid .leader-text-left {
+                font-size: 8.5px !important;
+                white-space: nowrap !important;
+                background-color: white !important;
+            }
             .print-card-avoid .leader-text-right {
-                font-size: 10px !important;
+                font-size: 8.5px !important;
+                white-space: nowrap !important;
                 background-color: white !important;
             }
 
