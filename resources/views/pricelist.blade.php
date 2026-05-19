@@ -66,6 +66,11 @@
 
         /* High-Definition Print Stylesheet overrides */
         @media print {
+            @page {
+                size: A4;
+                margin: 15mm 15mm 15mm 15mm !important;
+            }
+
             body {
                 background-color: white !important;
                 color: black !important;
@@ -87,23 +92,68 @@
                 display: block !important;
                 border-bottom: 2px solid #002c5f !important;
                 padding-bottom: 12px !important;
-                margin-bottom: 24px !important;
+                margin-bottom: 20px !important;
             }
 
             .print-grid {
                 display: grid !important;
                 grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-                gap: 16px !important;
+                gap: 12px !important;
             }
 
-            /* Avoid card clipping across print pages */
+            /* Compact and elegant card styles for print layout */
             .print-card-avoid {
                 break-inside: avoid !important;
                 page-break-inside: avoid !important;
                 box-shadow: none !important;
                 border: 1px solid #e5e7eb !important;
                 background-color: white !important;
-                border-radius: 1.5rem !important;
+                border-radius: 1rem !important;
+                padding: 16px !important;
+            }
+
+            /* Subtly scale down grid gap inside card */
+            .print-card-avoid > div {
+                gap: 16px !important;
+            }
+
+            /* Hide absolute glows */
+            .print-card-avoid .absolute {
+                display: none !important;
+            }
+
+            /* Make car image compact and crisp in print */
+            .print-card-avoid img {
+                max-height: 85px !important;
+                width: auto !important;
+                margin: 0 auto !important;
+            }
+
+            /* Make car titles compact */
+            .print-card-avoid h3 {
+                font-size: 15px !important;
+                margin-top: 4px !important;
+                margin-bottom: 8px !important;
+                line-height: 1.2 !important;
+            }
+
+            /* Make variant items tighter */
+            .print-card-avoid .space-y-3 {
+                margin-bottom: 0 !important;
+            }
+            .print-card-avoid .space-y-3 > * + * {
+                margin-top: 4px !important;
+            }
+            .print-card-avoid .leader-text-left, 
+            .print-card-avoid .leader-text-right {
+                font-size: 10px !important;
+                background-color: white !important;
+            }
+
+            /* Compact footnote row */
+            .print-card-avoid .mt-6 {
+                margin-top: 10px !important;
+                padding-top: 8px !important;
             }
 
             .leader-text-left, 
