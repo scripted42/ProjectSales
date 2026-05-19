@@ -48,11 +48,11 @@ class CarResource extends Resource
                             ->schema([
                                 Forms\Components\Select::make('category')
                                     ->options([
-                                        'EV' => 'Electric Vehicle',
-                                        'SUV' => 'SUV',
-                                        'HEV' => 'Hybrid Electric Vehicle',
-                                        'MPV' => 'MPV',
-                                        'Sedan' => 'Sedan',
+                                        'MPV' => 'MPV (Multi Purpose Vehicle)',
+                                        'SUV' => 'SUV (Sport Utility Vehicle)',
+                                        'EV' => 'EV (Electric Vehicle)',
+                                        'Crossover' => 'Crossover',
+                                        'Luxury MPV' => 'Luxury MPV',
                                     ])
                                     ->required(),
                                 Forms\Components\TextInput::make('price')
@@ -65,6 +65,38 @@ class CarResource extends Resource
                         Forms\Components\TagsInput::make('features')
                             ->placeholder('Add a feature and press Enter')
                             ->columnSpanFull(),
+                        Forms\Components\Repeater::make('variants')
+                            ->label('Varian / Tipe Mobil')
+                            ->schema([
+                                Forms\Components\TextInput::make('name')
+                                    ->label('Nama Tipe')
+                                    ->placeholder('Contoh: Prime, Style, Trend')
+                                    ->required()
+                                    ->columnSpan(2),
+                                Forms\Components\TextInput::make('price')
+                                    ->label('Harga OTR')
+                                    ->numeric()
+                                    ->prefix('Rp')
+                                    ->required()
+                                    ->columnSpan(2),
+                                Forms\Components\TextInput::make('transmission')
+                                    ->label('Transmisi')
+                                    ->placeholder('Contoh: IVT, Manual 6-Speed, Automatic')
+                                    ->columnSpan(2),
+                                Forms\Components\TextInput::make('engine')
+                                    ->label('Mesin')
+                                    ->placeholder('Contoh: Smartstream G1.5')
+                                    ->columnSpan(2),
+                                Forms\Components\TagsInput::make('key_features')
+                                    ->label('Fitur Unggulan Varian Ini')
+                                    ->placeholder('Contoh: Hyundai SmartSense, Captain Seat, Bose Sound System')
+                                    ->columnSpanFull(),
+                            ])
+                            ->columns(4)
+                            ->columnSpanFull()
+                            ->default([])
+                            ->createItemButtonLabel('Tambah Varian Baru')
+                            ->reorderable(),
                     ])->columnSpan(2),
                 Forms\Components\Section::make('Media & Status')
                     ->schema([

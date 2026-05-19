@@ -13,6 +13,7 @@ Route::get('/news', [LandingPageController::class, 'postsIndex'])->name('posts.i
 Route::get('/news/{post:slug}', [LandingPageController::class, 'postsShow'])->name('posts.show');
 Route::get('/admin/otp', OtpChallenge::class)->name('filament.admin.auth.otp');
 Route::get('/car/{car:slug}', [LandingPageController::class, 'show'])->name('car.show');
+Route::get('/pricelist', [LandingPageController::class, 'pricelist'])->name('pricelist');
 
 Route::get('/track-wa', function (\Illuminate\Http\Request $request) {
     $referer = $request->header('referer');

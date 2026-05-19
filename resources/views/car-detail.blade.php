@@ -109,35 +109,105 @@
             @endif
 
             <!-- Content Section -->
-            <div>
+            <div x-data="{ 
+                hasVariants: {{ ($car->variants && count($car->variants) > 0) ? 'true' : 'false' }},
+                selectedVariant: 0,
+                variants: [
+                    @if($car->variants && count($car->variants) > 0)
+                        @foreach($car->variants as $variant)
+                            {
+                                name: '{{ $variant['name'] }}',
+                                price: 'Rp {{ number_format($variant['price'], 0, ',', '.') }}',
+                                transmission: '{{ $variant['transmission'] ?? '-' }}',
+                                engine: '{{ $variant['engine'] ?? '-' }}',
+                                features: [
+                                    @if(isset($variant['key_features']) && is_array($variant['key_features']))
+                                        @foreach($variant['key_features'] as $f)
+                                            '{{ $f }}',
+                                        @endforeach
+                                    @endif
+                                ]
+                            }{{ !$loop->last ? ',' : '' }}
+                        @endforeach
+                    @endif
+                ]
+            }">
                 <h2 class="text-3xl md:text-4xl font-black text-[#002c5f] mb-4">{{ $car->name }}</h2>
                 <div class="flex items-center gap-4 mb-8">
                     <span class="bg-blue-50 text-blue-600 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest">
                         {{ $car->category }}
                     </span>
                     <span class="text-2xl font-extrabold text-[#002c5f]">
-                        Rp {{ number_format($car->price, 0, ',', '.') }}
+                        <template x-if="hasVariants">
+                            <span x-text="variants[selectedVariant].price"></span>
+                        </template>
+                        <template x-if="!hasVariants">
+                            <span>Rp {{ number_format($car->price, 0, ',', '.') }}</span>
+                        </template>
                     </span>
                 </div>
 
-                <div class="prose max-w-none mb-12 text-gray-500 leading-relaxed">
+                <!-- Variant Button Selector -->
+                <div x-show="hasVariants" x-cloak class="mb-8 bg-gray-50 border border-gray-100 p-6 rounded-3xl">
+                    <label class="block text-[10px] font-black uppercase text-gray-400 mb-3 tracking-widest">Pilih Tipe / Varian</label>
+                    <div class="flex flex-wrap gap-2">
+                        <template x-for="(v, index) in variants" :key="index">
+                            <button @click="selectedVariant = index"
+                                    :class="selectedVariant === index ? 'bg-[#002c5f] text-white border-[#002c5f] shadow-lg shadow-blue-900/10' : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-100 hover:text-gray-900'"
+                                    class="px-4 py-2.5 rounded-xl border text-[11px] font-black uppercase tracking-widest transition-all duration-200">
+                                <span x-text="v.name"></span>
+                            </button>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Variant Specifications Box -->
+                <div x-show="hasVariants" x-cloak class="grid grid-cols-2 gap-4 bg-blue-50/50 p-5 rounded-2xl border border-blue-100/50 mb-8"
+                     x-transition:enter="transition ease-out duration-300">
+                    <div>
+                        <p class="text-[9px] font-black uppercase tracking-widest text-[#002c5f]/60 mb-0.5">Transmisi</p>
+                        <p class="text-xs font-bold text-gray-900" x-text="variants[selectedVariant].transmission"></p>
+                    </div>
+                    <div>
+                        <p class="text-[9px] font-black uppercase tracking-widest text-[#002c5f]/60 mb-0.5">Mesin / Kapasitas</p>
+                        <p class="text-xs font-bold text-gray-900" x-text="variants[selectedVariant].engine"></p>
+                    </div>
+                </div>
+
+                <div class="prose max-w-none mb-12 text-gray-500 leading-relaxed text-sm">
                     {!! $car->description !!}
                 </div>
 
                 <!-- Features -->
-                @if($car->features && count($car->features) > 0)
-                <div class="mb-12">
-                    <h3 class="text-lg font-black mb-6 uppercase tracking-widest text-gray-900 border-b border-gray-100 pb-3">Key Features</h3>
+                <!-- Dynamic Variant Features -->
+                <div x-show="hasVariants" x-cloak class="mb-12">
+                    <h3 class="text-xs font-black mb-6 uppercase tracking-widest text-gray-900 border-b border-gray-100 pb-3">Key Features (Tipe <span class="text-blue-600" x-text="variants[selectedVariant].name"></span>)</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        @foreach($car->features as $feature)
-                            <div class="flex items-center text-sm text-gray-600">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-green-500 mr-3 flex-shrink-0"><path d="M20 6 9 17l-5-5"/></svg>
-                                {{ $feature }}
+                        <template x-for="(feature, idx) in variants[selectedVariant].features" :key="idx">
+                            <div class="flex items-center text-xs text-gray-600" x-transition:enter="transition ease-out duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-green-500 mr-3 flex-shrink-0"><path d="M20 6 9 17l-5-5"/></svg>
+                                <span x-text="feature"></span>
                             </div>
-                        @endforeach
+                        </template>
                     </div>
                 </div>
-                @endif
+
+                <!-- Static Features (Fallback) -->
+                <div x-show="!hasVariants" class="mb-12">
+                    @if($car->features && count($car->features) > 0)
+                    <div>
+                        <h3 class="text-xs font-black mb-6 uppercase tracking-widest text-gray-900 border-b border-gray-100 pb-3">Key Features</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            @foreach($car->features as $feature)
+                                <div class="flex items-center text-xs text-gray-600">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-green-500 mr-3 flex-shrink-0"><path d="M20 6 9 17l-5-5"/></svg>
+                                    {{ $feature }}
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    @endif
+                </div>
 
                 <!-- Actions -->
                 <div x-data="{ promoCode: '' }" class="space-y-6">
@@ -164,6 +234,189 @@
                     </div>
         </div>
     </main>
+
+    <!-- Harga On The Road Section -->
+    <section class="py-16 bg-white border-t border-gray-100 pb-8">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left: Car Thumbnail Profile Image -->
+                <div class="lg:col-span-5 flex justify-center items-center">
+                    <div class="relative w-full max-w-md group">
+                        <!-- Soft Radiant Glow -->
+                        <div class="absolute -inset-4 bg-gradient-to-tr from-blue-500/10 to-indigo-500/10 rounded-[3rem] blur-2xl group-hover:scale-105 transition-all duration-700"></div>
+                        
+                        @if($car->image)
+                            <img src="{{ asset('storage/' . $car->image) }}" 
+                                 alt="{{ $car->name }}" 
+                                 class="relative z-10 w-full h-auto object-contain transform hover:scale-105 hover:-translate-y-2 transition-all duration-700 select-none drop-shadow-[0_20px_50px_rgba(0,44,95,0.15)]">
+                        @else
+                            <div class="relative z-10 w-full aspect-[4/3] bg-gray-50 border border-gray-100 rounded-3xl flex items-center justify-center text-gray-300">
+                                No Profile Photo
+                            </div>
+                        @endif
+                    </div>
+                </div>
+
+                <!-- Right: OTR Price Table & Disclaimer -->
+                <div class="lg:col-span-7">
+                    <div class="mb-6">
+                        <span class="text-[10px] font-black text-blue-600 uppercase tracking-[0.3em] block mb-2">Price List</span>
+                        <h3 class="text-3xl font-black text-[#002c5f] uppercase tracking-tight">Harga On The Road</h3>
+                        <p class="text-gray-400 text-xs mt-1 font-semibold">Daftar harga OTR Hyundai {{ $car->name }} terbaru</p>
+                    </div>
+
+                    <!-- Price Table -->
+                    <div class="bg-white rounded-[2rem] border border-gray-100 shadow-xl overflow-hidden mb-8">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-[#002c5f] text-white">
+                                    <th class="p-5 text-xs font-black uppercase tracking-wider w-1/2">Type / Varian</th>
+                                    <th class="p-5 text-xs font-black uppercase tracking-wider text-left w-1/2">Harga OTR</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if($car->variants && count($car->variants) > 0)
+                                    @foreach($car->variants as $variant)
+                                        <tr class="border-b border-gray-100 hover:bg-blue-50/40 transition-colors duration-200">
+                                            <td class="p-5 text-xs font-bold text-gray-900 uppercase tracking-wide w-1/2">{{ $variant['name'] }}</td>
+                                            <td class="p-5 text-left w-1/2">
+                                                <span class="text-sm font-black text-[#002c5f]">Rp {{ number_format($variant['price'], 0, ',', '.') }}</span>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr class="border-b border-gray-100">
+                                        <td class="p-5 text-xs font-bold text-gray-900 uppercase tracking-wide w-1/2">Standard</td>
+                                        <td class="p-5 text-left w-1/2">
+                                            <span class="text-sm font-black text-[#002c5f]">Rp {{ number_format($car->price, 0, ',', '.') }}</span>
+                                        </td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Disclaimer -->
+                    <div class="bg-gray-50 border border-gray-100 p-6 rounded-3xl">
+                        <h4 class="text-[10px] font-black uppercase text-gray-400 tracking-widest mb-3">Disclaimer / Catatan</h4>
+                        <ul class="space-y-2 text-[10px] text-gray-400 font-semibold leading-relaxed">
+                            <li class="flex items-start">
+                                <span class="text-blue-500 mr-2 flex-shrink-0">•</span>
+                                <span>Harga dan spesifikasi dapat berubah sewaktu-waktu tanpa pemberitahuan terlebih dahulu.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-blue-500 mr-2 flex-shrink-0">•</span>
+                                <span>Harga berlaku On The Road Surabaya, Sidoarjo, Gresik, dan wilayah Jawa Timur.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-blue-500 mr-2 flex-shrink-0">•</span>
+                                <span>Harga BBN tidak mengikat, apabila terjadi selisih BBN sepenuhnya menjadi beban konsumen.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-blue-500 mr-2 flex-shrink-0">•</span>
+                                <span>Harga BBN yang tertera hanya berlaku untuk kepemilikan kendaraan pertama (I).</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Side-by-Side Comparison Table Section -->
+    @if($car->variants && count($car->variants) > 0)
+    <section class="py-16 bg-gray-50 border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <span class="text-[10px] font-black text-blue-600 uppercase tracking-[0.3em] block mb-2">Lineup</span>
+                <h3 class="text-3xl font-black text-[#002c5f]">Perbandingan Spesifikasi & Fitur</h3>
+                <p class="text-gray-400 text-xs mt-2 font-medium">Bandingkan harga dan kelengkapan fitur dari setiap tipe {{ $car->name }}</p>
+                <div class="h-1 w-16 bg-[#002c5f] mx-auto rounded-full mt-4"></div>
+            </div>
+
+            <!-- Comparison Table Container -->
+            <div class="bg-white rounded-[2rem] border border-gray-100 shadow-xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse min-w-[700px]">
+                        <thead>
+                            <tr class="bg-gray-50 border-b border-gray-100">
+                                <th class="p-6 text-[10px] font-black uppercase tracking-widest text-gray-400 w-[200px]">Fitur / Spesifikasi</th>
+                                @foreach($car->variants as $variant)
+                                    <th class="p-6 text-center border-l border-gray-100 min-w-[150px]" style="width: calc((100% - 200px) / {{ count($car->variants) }})">
+                                        <span class="text-[9px] font-black text-blue-600 uppercase tracking-widest block mb-1">Tipe</span>
+                                        <h4 class="text-base font-black text-gray-900 uppercase">{{ $variant['name'] }}</h4>
+                                    </th>
+                                @endforeach
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Harga OTR -->
+                            <tr class="border-b border-gray-100 hover:bg-gray-50/50 transition-colors">
+                                <td class="p-6 text-[11px] font-bold text-gray-900 uppercase tracking-wider">Harga OTR mulai</td>
+                                @foreach($car->variants as $variant)
+                                    <td class="p-6 text-center border-l border-gray-100">
+                                        <span class="text-base font-black text-[#002c5f]">Rp {{ number_format($variant['price'], 0, ',', '.') }}</span>
+                                    </td>
+                                @endforeach
+                            </tr>
+
+                            <!-- Transmisi -->
+                            <tr class="border-b border-gray-100 hover:bg-gray-50/50 transition-colors">
+                                <td class="p-6 text-[11px] font-bold text-gray-900 uppercase tracking-wider">Transmisi</td>
+                                @foreach($car->variants as $variant)
+                                    <td class="p-6 text-center border-l border-gray-100 text-xs font-semibold text-gray-600">
+                                        {{ $variant['transmission'] ?? '-' }}
+                                    </td>
+                                @endforeach
+                            </tr>
+
+                            <!-- Mesin -->
+                            <tr class="border-b border-gray-100 hover:bg-gray-50/50 transition-colors">
+                                <td class="p-6 text-[11px] font-bold text-gray-900 uppercase tracking-wider">Mesin / Kapasitas</td>
+                                @foreach($car->variants as $variant)
+                                    <td class="p-6 text-center border-l border-gray-100 text-xs font-semibold text-gray-600">
+                                        {{ $variant['engine'] ?? '-' }}
+                                    </td>
+                                @endforeach
+                            </tr>
+
+                            <!-- Fitur Utama -->
+                            <tr class="hover:bg-gray-50/50 transition-colors">
+                                <td class="p-6 text-[11px] font-bold text-gray-900 uppercase tracking-wider align-top">Fitur Unggulan</td>
+                                @foreach($car->variants as $variant)
+                                    <td class="p-6 border-l border-gray-100 align-top">
+                                        <ul class="space-y-2">
+                                            @if(isset($variant['key_features']) && is_array($variant['key_features']))
+                                                @foreach($variant['key_features'] as $feature)
+                                                    <li class="flex items-start text-[11px] text-gray-600 text-left">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-green-500 mr-2 flex-shrink-0 mt-0.5"><path d="M20 6 9 17l-5-5"/></svg>
+                                                        <span>{{ $feature }}</span>
+                                                    </li>
+                                                @endforeach
+                                            @else
+                                                <li class="text-xs text-gray-400 italic text-center">-</li>
+                                            @endif
+                                        </ul>
+                                    </td>
+                                @endforeach
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="mt-12 flex justify-center">
+                <a href="{{ route('track.wa', ['car_id' => $car->id, 'text' => 'Halo sales Hyundai, saya ingin melakukan pemesanan/tanya tipe Pilihan untuk unit ' . $car->name]) }}" 
+                   class="bg-[#002c5f] text-white px-10 py-4 rounded-2xl font-bold hover:bg-blue-800 transition-all shadow-xl flex items-center justify-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                    Pesan Tipe Pilihan Sekarang
+                </a>
+            </div>
+        </div>
+    </section>
+    @endif
 
     <!-- Footer -->
     <footer class="bg-gray-50 py-12 border-t border-gray-100 mt-24">

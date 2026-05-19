@@ -30,3 +30,4 @@ yarn-error.log
 /errorlogs
 *.log
 *.zip
+/run-local.bat

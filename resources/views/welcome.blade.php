@@ -116,49 +116,99 @@
     <livewire:promo-section />
 
     <!-- Car Models - Break the Frame -->
-    <section id="models" class="py-12 md:py-16 bg-white">
+    <section id="models" class="py-12 md:py-16 bg-white" x-data="{ activeTab: 'ALL' }">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
+            <div class="text-center mb-10">
                 <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-4">{{ \App\Models\Setting::get('site_name', 'Hyundai') }} Models</h2>
                 <div class="h-1.5 w-24 bg-[#002c5f] mx-auto rounded-full"></div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10 justify-items-center">
+            <!-- Visual Category Tabs Selector -->
+            <div class="flex flex-wrap items-center justify-center gap-2 md:gap-3 mb-16 max-w-4xl mx-auto">
+                <button @click="activeTab = 'ALL'" 
+                        :class="activeTab === 'ALL' ? 'bg-[#002c5f] text-white shadow-xl shadow-blue-900/20 scale-105' : 'bg-gray-50 text-gray-500 hover:bg-gray-100 hover:text-gray-700'"
+                        class="px-5 py-3 rounded-2xl text-[10px] md:text-xs font-black uppercase tracking-widest transition-all duration-300 focus:outline-none">
+                    Semua
+                </button>
+                <button @click="activeTab = 'MPV'" 
+                        :class="activeTab === 'MPV' ? 'bg-[#002c5f] text-white shadow-xl shadow-blue-900/20 scale-105' : 'bg-gray-50 text-gray-500 hover:bg-gray-100 hover:text-gray-700'"
+                        class="px-5 py-3 rounded-2xl text-[10px] md:text-xs font-black uppercase tracking-widest transition-all duration-300 focus:outline-none">
+                    MPV
+                </button>
+                <button @click="activeTab = 'SUV'" 
+                        :class="activeTab === 'SUV' ? 'bg-[#002c5f] text-white shadow-xl shadow-blue-900/20 scale-105' : 'bg-gray-50 text-gray-500 hover:bg-gray-100 hover:text-gray-700'"
+                        class="px-5 py-3 rounded-2xl text-[10px] md:text-xs font-black uppercase tracking-widest transition-all duration-300 focus:outline-none">
+                    SUV
+                </button>
+                <button @click="activeTab = 'EV'" 
+                        :class="activeTab === 'EV' ? 'bg-[#002c5f] text-white shadow-xl shadow-blue-900/20 scale-105' : 'bg-gray-50 text-gray-500 hover:bg-gray-100 hover:text-gray-700'"
+                        class="px-5 py-3 rounded-2xl text-[10px] md:text-xs font-black uppercase tracking-widest transition-all duration-300 focus:outline-none">
+                    Electric Vehicle
+                </button>
+                <button @click="activeTab = 'Crossover'" 
+                        :class="activeTab === 'Crossover' ? 'bg-[#002c5f] text-white shadow-xl shadow-blue-900/20 scale-105' : 'bg-gray-50 text-gray-500 hover:bg-gray-100 hover:text-gray-700'"
+                        class="px-5 py-3 rounded-2xl text-[10px] md:text-xs font-black uppercase tracking-widest transition-all duration-300 focus:outline-none">
+                    Crossover
+                </button>
+                <button @click="activeTab = 'Luxury MPV'" 
+                        :class="activeTab === 'Luxury MPV' ? 'bg-[#002c5f] text-white shadow-xl shadow-blue-900/20 scale-105' : 'bg-gray-50 text-gray-500 hover:bg-gray-100 hover:text-gray-700'"
+                        class="px-5 py-3 rounded-2xl text-[10px] md:text-xs font-black uppercase tracking-widest transition-all duration-300 focus:outline-none">
+                    Luxury MPV
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12 justify-items-center">
                 @foreach($cars as $car)
-                    <a href="{{ route('car.show', $car->slug) }}" class="group block w-full max-w-[280px]">
-                        <div class="relative overflow-visible">
-                            <!-- Card with 9:11 aspect ratio -->
-                            <div class="relative bg-gray-50 rounded-[2rem] border border-gray-100 group-hover:border-blue-200 group-hover:shadow-2xl transition-all duration-500" style="aspect-ratio: 9/11;">
-                                
-                                <!-- Car Image - top 60%, breaks out of frame -->
-                                <div class="absolute inset-x-0 top-0 flex items-center justify-center pointer-events-none" style="height: 58%; overflow: visible;">
-                                    <img src="{{ $car->image ? asset('storage/'.$car->image) : '' }}" 
-                                         alt="{{ $car->name }}" 
-                                         class="w-[115%] max-w-none h-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.15)] transition-all duration-500 group-hover:scale-110 group-hover:-translate-y-2">
-                                </div>
+                    <div x-show="activeTab === 'ALL' || activeTab === '{{ $car->category }}'"
+                         x-cloak
+                         x-transition:enter="transition ease-out duration-500"
+                         x-transition:enter-start="opacity-0 scale-90 translate-y-6"
+                         x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                         x-transition:leave="transition ease-in duration-300"
+                         x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                         x-transition:leave-end="opacity-0 scale-90 translate-y-6"
+                         class="w-full max-w-[280px]">
+                        <a href="{{ route('car.show', $car->slug) }}" class="group block w-full">
+                            <div class="relative overflow-visible">
+                                <!-- Card with 9:11 aspect ratio -->
+                                <div class="relative bg-gray-50 rounded-[2rem] border border-gray-100 group-hover:border-blue-200 group-hover:shadow-2xl transition-all duration-500" style="aspect-ratio: 9/11;">
+                                    
+                                    <!-- Car Image - top 58%, breaks out of frame -->
+                                    <div class="absolute inset-x-0 top-0 flex items-center justify-center pointer-events-none" style="height: 58%; overflow: visible;">
+                                        @if($car->image)
+                                            <img src="{{ asset('storage/'.$car->image) }}" 
+                                                 alt="{{ $car->name }}" 
+                                                 class="w-[115%] max-w-none h-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.15)] transition-all duration-500 group-hover:scale-110 group-hover:-translate-y-2">
+                                        @else
+                                            <div class="w-[80%] h-[80%] bg-gray-200 rounded-2xl flex items-center justify-center text-gray-400 text-xs font-bold uppercase tracking-widest">No Image</div>
+                                        @endif
+                                    </div>
 
-                                <!-- Bottom Content - 42% height, all inside card -->
-                                <div class="absolute inset-x-0 bottom-0 px-5 pb-5 flex flex-col items-center justify-end" style="height: 42%;">
-                                    <!-- Name Badge -->
-                                    <span class="bg-[#002c5f] text-white text-[11px] font-black px-5 py-2 rounded-xl uppercase tracking-wider shadow-lg mb-2">
-                                        {{ $car->name }}
-                                    </span>
+                                    <!-- Bottom Content - 42% height, all inside card -->
+                                    <div class="absolute inset-x-0 bottom-0 px-5 pb-5 flex flex-col items-center justify-end" style="height: 42%;">
+                                        <!-- Name Badge -->
+                                        <span class="bg-[#002c5f] text-white text-[11px] font-black px-5 py-2 rounded-xl uppercase tracking-wider shadow-lg mb-2">
+                                            {{ $car->name }}
+                                        </span>
 
-                                    <!-- Category -->
-                                    <p class="text-[10px] text-gray-400 uppercase tracking-[0.15em] font-semibold mb-1">{{ $car->category }}</p>
+                                        <!-- Category -->
+                                        <p class="text-[10px] text-gray-400 uppercase tracking-[0.15em] font-bold mb-1">
+                                            @if($car->category === 'EV') Electric Vehicle @else {{ $car->category }} @endif
+                                        </p>
 
-                                    <!-- Price -->
-                                    <p class="text-base font-black text-gray-900 mb-3">Rp {{ number_format($car->price, 0, ',', '.') }}</p>
+                                        <!-- Price -->
+                                        <p class="text-sm font-black text-gray-900 mb-3">Rp {{ number_format($car->price, 0, ',', '.') }}</p>
 
-                                    <!-- CTA Button -->
-                                    <span class="bg-[#002c5f] text-white text-[11px] font-bold px-6 py-2 rounded-full uppercase tracking-wider group-hover:bg-blue-700 transition-all inline-flex items-center gap-1.5">
-                                        Lihat Detail
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-300 group-hover:translate-x-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                                    </span>
+                                        <!-- CTA Button -->
+                                        <span class="bg-[#002c5f] text-white text-[11px] font-bold px-6 py-2 rounded-full uppercase tracking-wider group-hover:bg-blue-700 transition-all inline-flex items-center gap-1.5">
+                                            Lihat Detail
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-300 group-hover:translate-x-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </a>
+                        </a>
+                    </div>
                 @endforeach
             </div>
         </div>

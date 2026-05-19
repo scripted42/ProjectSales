@@ -16,6 +16,7 @@ class Car extends Model
         'price',
         'description',
         'features',
+        'variants',
         'image',
         'hero_image',
         'images',
@@ -26,6 +27,7 @@ class Car extends Model
     protected $casts = [
         'features' => 'array',
         'images' => 'array',
+        'variants' => 'array',
         'is_available' => 'boolean',
     ];
 }

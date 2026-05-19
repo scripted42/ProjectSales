@@ -32,6 +32,13 @@ class LandingPageController extends Controller
         return view('car-detail', compact('car', 'consultant'));
     }
 
+    public function pricelist()
+    {
+        $cars = Car::where('is_available', true)->get();
+        $consultant = Consultant::first();
+        return view('pricelist', compact('cars', 'consultant'));
+    }
+
     public function postsIndex()
     {
         $posts = Post::where('is_published', true)
