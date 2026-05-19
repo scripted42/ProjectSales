@@ -101,6 +101,33 @@
                 gap: 12px !important;
             }
 
+            /* Default Layout Toggles */
+            .only-print {
+                display: none !important;
+            }
+
+            @media print {
+                .only-print {
+                    display: flex !important;
+                }
+
+                /* Compact footnote row spacing and horizontal layout */
+                .print-card-avoid .mt-6 {
+                    margin-top: 10px !important;
+                    padding-top: 8px !important;
+                    display: flex !important;
+                    flex-direction: row !important;
+                    justify-content: space-between !important;
+                    width: 100% !important;
+                }
+
+                .print-card-avoid .mt-6 > div {
+                    max-width: none !important;
+                    width: auto !important;
+                    white-space: nowrap !important;
+                }
+            }
+
             /* Compact and elegant card styles for print layout */
             .print-card-avoid {
                 break-inside: avoid !important;
@@ -113,14 +140,14 @@
             }
 
             /* Force side-by-side layout: car image on the left, variant text on the right */
-            .print-card-avoid > div {
+            .print-card-avoid-grid {
                 display: grid !important;
                 grid-template-columns: 4.5fr 7.5fr !important;
                 gap: 16px !important;
                 align-items: center !important;
             }
 
-            .print-card-avoid > div > div {
+            .print-card-avoid-grid > div {
                 grid-column: auto !important;
             }
 
@@ -177,20 +204,9 @@
     <x-navbar />
 
     <!-- Print Only Header (Visible only when PDF export / Print preview triggered) -->
-    <div class="print-header-block max-w-7xl mx-auto px-6">
-        <div class="flex justify-between items-end">
-            <div>
-                <h1 class="text-2xl font-black text-[#002c5f] tracking-widest uppercase">HYUNDAI PRICELIST</h1>
-                <p class="text-xs text-gray-500 font-bold uppercase tracking-wider">Harga OTR Surabaya & Wilayah Jawa Timur - Periode {{ \Carbon\Carbon::now()->locale('id')->translatedFormat('F Y') }}</p>
-            </div>
-            <div class="text-right">
-                @if($consultant)
-                    <p class="text-xs font-black text-gray-900 uppercase">{{ $consultant->name }}</p>
-                    <p class="text-[10px] text-blue-600 font-bold tracking-wider">{{ $consultant->formatted_phone }}</p>
-                    <p class="text-[9px] text-gray-400 font-semibold">{{ $consultant->office_address }}</p>
-                @endif
-            </div>
-        </div>
+    <div class="print-header-block max-w-7xl mx-auto px-6 text-center">
+        <h1 class="text-2xl font-black text-[#002c5f] tracking-widest uppercase">HYUNDAI PRICELIST</h1>
+        <p class="text-xs text-gray-500 font-bold uppercase tracking-wider mt-1">Harga OTR Surabaya & Wilayah Jawa Timur - Periode {{ \Carbon\Carbon::now()->locale('id')->translatedFormat('F Y') }}</p>
     </div>
 
     <!-- Elegant, Integrated White Header (Simple, Clean & Elegant) -->
@@ -228,7 +244,7 @@
             @foreach($cars as $car)
                 <div class="print-card-avoid bg-white rounded-[2.5rem] p-8 md:p-10 border border-gray-100/80 shadow-[0_8px_30px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_50px_rgba(0,44,95,0.06)] hover:border-blue-100/50 transition-all duration-500 flex flex-col justify-between group">
                     
-                    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center print-card-avoid-grid">
                         
                         <!-- Left Column: Large, floating transparent car profile image -->
                         <div class="md:col-span-5 flex justify-center items-center relative">
@@ -327,6 +343,29 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
                         Hubungi {{ $consultant->name }}
                     </a>
+                </div>
+            </div>
+        @endif
+
+        <!-- Print-Only Catalog Footer (visible only when printing) -->
+        @if($consultant)
+            <div class="only-print mt-12 border-t border-gray-200 pt-4 flex flex-row items-center justify-between w-full">
+                <!-- Left: Dealer Tagline -->
+                <div class="text-left">
+                    <span class="text-[9px] font-black text-[#002c5f] uppercase tracking-wider block">HYUNDAI SURABAYA</span>
+                    <span class="text-[7.5px] text-gray-400 font-bold uppercase tracking-widest leading-none mt-1.5 block">Printed on: {{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y, H:i') }} WIB</span>
+                </div>
+
+                <!-- Center: physical address -->
+                <div class="text-center">
+                    <p class="text-[9px] font-black text-gray-900 leading-tight">Hyundai HR Muhammad</p>
+                    <p class="text-[8px] text-gray-500 font-semibold leading-tight mt-1">{{ $consultant->office_address }}</p>
+                </div>
+
+                <!-- Right: Advisor Contact -->
+                <div class="text-right">
+                    <span class="text-[9px] font-black text-[#002c5f] uppercase block">{{ $consultant->name }}</span>
+                    <span class="text-[8.5px] text-blue-600 font-extrabold tracking-wider leading-none mt-1.5 block">{{ $consultant->formatted_phone }}</span>
                 </div>
             </div>
         @endif
