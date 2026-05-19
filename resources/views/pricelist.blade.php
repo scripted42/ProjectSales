@@ -106,15 +106,22 @@
                 break-inside: avoid !important;
                 page-break-inside: avoid !important;
                 box-shadow: none !important;
-                border: 1px solid #e5e7eb !important;
+                border: none !important;
                 background-color: white !important;
                 border-radius: 1rem !important;
                 padding: 16px !important;
             }
 
-            /* Subtly scale down grid gap inside card */
+            /* Force side-by-side layout: car image on the left, variant text on the right */
             .print-card-avoid > div {
+                display: grid !important;
+                grid-template-columns: 4.5fr 7.5fr !important;
                 gap: 16px !important;
+                align-items: center !important;
+            }
+
+            .print-card-avoid > div > div {
+                grid-column: auto !important;
             }
 
             /* Hide absolute glows */
