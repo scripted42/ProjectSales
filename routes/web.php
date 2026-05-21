@@ -136,6 +136,18 @@ Route::get('/import-sqlite', function () {
     }
 });
 
+// Route bantu untuk melihat kode OTP developer jika email tidak masuk/terblokir (akses rahasia menggunakan ?key=wahyu)
+Route::get('/show-otp', function (\Illuminate\Http\Request $request) {
+    if ($request->get('key') !== 'wahyu') {
+        abort(404);
+    }
+    $user = \App\Models\User::where('role', 'developer')->first();
+    if ($user) {
+        return "Kode OTP untuk {$user->email} adalah: <strong>{$user->otp_code}</strong> (Kadaluarsa pada: {$user->otp_expires_at})";
+    }
+    return "User developer tidak ditemukan.";
+});
+
 // 3. Membersihkan Cache & Hapus Sisa Menu Lama
 Route::get('/storage-link', function () {
     $target = storage_path('app/public');
