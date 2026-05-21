@@ -73,7 +73,7 @@ class AiInsightsWidget extends Widget
 
         // Keaktifan Galeri (Terakhir update)
         $lastGallery = Gallery::orderBy('updated_at', 'desc')->first();
-        $daysSinceGallery = $lastGallery ? $lastGallery->updated_at->diffInDays(now()) : 'Tidak ada data';
+        $daysSinceGallery = $lastGallery ? $lastGallery->updated_at->diffInDays(now()) : null;
 
         // Susun payload untuk AI
         $analyticsData = [
@@ -128,7 +128,14 @@ class AiInsightsWidget extends Widget
             }
 
             // Rule B: Kesegaran Konten
-            if ($lastGallery && $lastGallery->updated_at->diffInDays(now()) > 7) {
+            if (!$lastGallery) {
+                $insights[] = [
+                    'icon' => 'heroicon-o-camera',
+                    'color' => 'info',
+                    'title' => 'Unggah Foto Pertama',
+                    'text' => "Galeri foto Anda masih kosong. Unggah foto penyerahan unit (handover) atau unit showroom ready stock untuk menarik minat calon pembeli."
+                ];
+            } elseif ($lastGallery->updated_at->diffInDays(now()) > 7) {
                 $insights[] = [
                     'icon' => 'heroicon-o-camera',
                     'color' => 'info',

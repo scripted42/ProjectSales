@@ -143,9 +143,19 @@ class AiService
         $visits = $data['total_visits'] ?? 0;
         $bookings = $data['total_bookings'] ?? 0;
         $convRate = $data['conversion_rate'] ?? 0;
-        $peakHour = $data['peak_hour'] ?? 'Tidak ada data';
-        $trendingCar = $data['trending_car'] ?? 'Tidak ada data';
-        $daysSinceGallery = $data['days_since_gallery'] ?? 'Tidak ada data';
+
+        $peakHourVal = ($data['peak_hour'] === 'Tidak ada data')
+            ? 'Belum ada data kunjungan'
+            : "{$data['peak_hour']} WIB";
+
+        $trendingCar = ($data['trending_car'] === 'Tidak ada data')
+            ? 'Belum ada data kunjungan'
+            : $data['trending_car'];
+
+        $daysSinceGallery = $data['days_since_gallery'] ?? null;
+        $galleryStatus = is_null($daysSinceGallery)
+            ? 'Belum pernah mengunggah foto (Galeri kosong)'
+            : "{$daysSinceGallery} hari yang lalu";
 
         return "Anda adalah AutoShow AI, asisten analis bisnis otomotif profesional yang bertugas menganalisis data performa dealer mobil dan memberikan rekomendasi taktis bagi sales/dealer owner.
 Tugas Anda adalah menganalisis data berikut dan memberikan 3 hingga 4 saran pemasaran/penjualan taktis dalam Bahasa Indonesia yang alami, profesional, mudah dipahami, dan relevan dengan industri otomotif.
@@ -154,9 +164,9 @@ Tugas Anda adalah menganalisis data berikut dan memberikan 3 hingga 4 saran pema
 - Total Kunjungan Website (30 hari terakhir): {$visits}
 - Total Pengajuan Test Drive / Booking (30 hari terakhir): {$bookings}
 - Rasio Konversi Kunjungan ke Booking: {$convRate}%
-- Jam Kunjungan Terramai: {$peakHour} WIB
+- Jam Kunjungan Terramai: {$peakHourVal}
 - Mobil Paling Populer (paling sering dilihat minggu ini): {$trendingCar}
-- Terakhir Update Galeri Foto: {$daysSinceGallery} hari yang lalu
+- Terakhir Update Galeri Foto: {$galleryStatus}
 
 === ATURAN PENTING BAHASA & KONTEN ===
 1. Gunakan Bahasa Indonesia formal dan profesional yang alami untuk sales mobil (contoh: gunakan istilah seperti 'calon pembeli', 'prospek', 'konversi', 'tipe mobil', 'leads').
