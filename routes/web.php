@@ -136,6 +136,32 @@ Route::get('/import-sqlite', function () {
     }
 });
 
+// Route untuk mengimpor database MySQL lokal (database_backup.sql) ke MySQL VPS
+Route::get('/import-sql', function (\Illuminate\Http\Request $request) {
+    if ($request->get('key') !== 'wahyu') {
+        abort(404);
+    }
+    try {
+        $sqlPath = base_path('database_backup.sql');
+        if (!file_exists($sqlPath)) {
+            return "File database_backup.sql tidak ditemukan di base path server VPS.";
+        }
+        
+        // Nonaktifkan foreign key checks selama import
+        \DB::statement("SET FOREIGN_KEY_CHECKS=0;");
+        
+        // Jalankan perintah SQL dari file backup
+        \DB::unprepared(file_get_contents($sqlPath));
+        
+        // Aktifkan kembali foreign key checks
+        \DB::statement("SET FOREIGN_KEY_CHECKS=1;");
+        
+        return "Sukses Migrasi Database MySQL Lokal ke VPS!";
+    } catch (\Exception $e) {
+        return "Error: " . $e->getMessage();
+    }
+});
+
 // Route bantu untuk melihat kode OTP developer jika email tidak masuk/terblokir (akses rahasia menggunakan ?key=wahyu)
 Route::get('/show-otp', function (\Illuminate\Http\Request $request) {
     if ($request->get('key') !== 'wahyu') {
