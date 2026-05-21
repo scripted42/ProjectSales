@@ -186,6 +186,48 @@ Route::get('/extract-storage', function (\Illuminate\Http\Request $request) {
     }
 });
 
+// Route bantu diagnosa storage untuk memeriksa apakah media terekstrak & symlink berjalan
+Route::get('/check-storage', function (\Illuminate\Http\Request $request) {
+    if ($request->get('key') !== 'wahyu') {
+        abort(404);
+    }
+    
+    $diagnostics = [];
+    
+    $zipPath = base_path('storage_public.zip');
+    $diagnostics['zip_exists'] = file_exists($zipPath) ? 'Yes' : 'No';
+    if (file_exists($zipPath)) {
+        $diagnostics['zip_size'] = number_format(filesize($zipPath)) . ' bytes';
+    }
+    
+    $storagePublicPath = storage_path('app/public');
+    $diagnostics['storage_public_exists'] = file_exists($storagePublicPath) ? 'Yes' : 'No';
+    if (file_exists($storagePublicPath)) {
+        $files = scandir($storagePublicPath);
+        $diagnostics['storage_public_contents'] = array_diff($files, ['.', '..']);
+        
+        $carsPath = $storagePublicPath . '/cars';
+        if (file_exists($carsPath)) {
+            $carFiles = scandir($carsPath);
+            $diagnostics['cars_contents_count'] = count(array_diff($carFiles, ['.', '..']));
+            $diagnostics['cars_sample'] = array_slice(array_values(array_diff($carFiles, ['.', '..'])), 0, 5);
+        } else {
+            $diagnostics['cars_directory'] = 'Not found under storage/app/public';
+        }
+    }
+    
+    $publicStoragePath = public_path('storage');
+    $diagnostics['public_storage_exists'] = file_exists($publicStoragePath) ? 'Yes' : 'No';
+    $diagnostics['public_storage_is_link'] = is_link($publicStoragePath) ? 'Yes' : 'No';
+    if (is_link($publicStoragePath)) {
+        $diagnostics['public_storage_link_target'] = readlink($publicStoragePath);
+    } elseif (file_exists($publicStoragePath)) {
+        $diagnostics['public_storage_is_dir'] = is_dir($publicStoragePath) ? 'Yes' : 'No';
+    }
+    
+    return response()->json($diagnostics);
+});
+
 // Route bantu untuk melihat kode OTP developer jika email tidak masuk/terblokir (akses rahasia menggunakan ?key=wahyu)
 Route::get('/show-otp', function (\Illuminate\Http\Request $request) {
     if ($request->get('key') !== 'wahyu') {
