@@ -9,6 +9,7 @@ use App\Models\Setting;
 use App\Services\AiService;
 use Filament\Widgets\Widget;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class AiInsightsWidget extends Widget
 {
@@ -84,9 +85,22 @@ class AiInsightsWidget extends Widget
             'days_since_gallery' => $daysSinceGallery,
         ];
 
-        // 2. AMBIL DARI REAL AI SERVICE
-        $aiService = new AiService();
-        $insights = $aiService->generateInsights($analyticsData);
+        // 2. AMBIL DARI REAL AI SERVICE (Dengan Cache agar performa dashboard responsif)
+        $userId = auth()->id() ?? 'guest';
+        $cacheKey = "ai_insights_user_{$userId}";
+
+        $insights = Cache::get($cacheKey);
+
+        if ($insights === null) {
+            $aiService = new AiService();
+            $insights = $aiService->generateInsights($analyticsData);
+
+            if (!empty($insights)) {
+                // Simpan di cache selama 2 jam jika sukses
+                Cache::put($cacheKey, $insights, now()->addHours(2));
+            }
+        }
+
         $isRealAi = !empty($insights);
 
         // 3. FALLBACK STATIC RULES (Jika AI dimatikan atau request error)

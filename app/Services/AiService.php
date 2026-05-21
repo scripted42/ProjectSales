@@ -65,7 +65,7 @@ class AiService
                     'Content-Type' => 'application/json',
                     'HTTP-Referer' => url('/'),
                     'X-Title' => 'AutoShow Pro',
-                ])->timeout(7)->post('https://openrouter.ai/api/v1/chat/completions', [
+                ])->timeout(15)->post('https://openrouter.ai/api/v1/chat/completions', [
                     'model' => $model ?: 'openrouter/free',
                     'messages' => [
                         ['role' => 'user', 'content' => $prompt]
@@ -83,7 +83,7 @@ class AiService
                 $response = Http::withHeaders([
                     'Authorization' => "Bearer {$apiKey}",
                     'Content-Type' => 'application/json',
-                ])->timeout(7)->post('https://api.deepseek.com/chat/completions', [
+                ])->timeout(15)->post('https://api.deepseek.com/chat/completions', [
                     'model' => $model ?: 'deepseek-chat',
                     'messages' => [
                         ['role' => 'user', 'content' => $prompt]
@@ -99,7 +99,7 @@ class AiService
 
             } elseif ($provider === 'gemini') {
                 $modelName = $model ?: 'gemini-1.5-flash';
-                $response = Http::timeout(7)->post("https://generativelanguage.googleapis.com/v1beta/models/{$modelName}:generateContent?key={$apiKey}", [
+                $response = Http::timeout(15)->post("https://generativelanguage.googleapis.com/v1beta/models/{$modelName}:generateContent?key={$apiKey}", [
                     'contents' => [
                         [
                             'parts' => [

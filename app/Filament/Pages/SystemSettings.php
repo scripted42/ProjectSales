@@ -125,6 +125,10 @@ class SystemSettings extends Page
             );
         }
 
+        // Hapus cache AI insights untuk user ini agar langsung memuat ulang setelan baru
+        $userId = auth()->id() ?? 'guest';
+        \Illuminate\Support\Facades\Cache::forget("ai_insights_user_{$userId}");
+
         Notification::make()
             ->success()
             ->title('Settings saved successfully!')
