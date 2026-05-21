@@ -23,7 +23,7 @@ class AiService
             return [];
         }
 
-        $model = Setting::get('ai_model') ?: env('AI_DEFAULT_MODEL', 'qwen/qwen-2-7b-instruct:free');
+        $model = Setting::get('ai_model') ?: env('AI_DEFAULT_MODEL', 'qwen/qwen-2.5-7b-instruct:free');
         
         // 1. Resolve API Key (Database or Env fallback)
         $encryptedKey = Setting::get('ai_api_key');
@@ -66,7 +66,7 @@ class AiService
                     'HTTP-Referer' => url('/'),
                     'X-Title' => 'AutoShow Pro',
                 ])->timeout(7)->post('https://openrouter.ai/api/v1/chat/completions', [
-                    'model' => $model ?: 'qwen/qwen-2-7b-instruct:free',
+                    'model' => $model ?: 'qwen/qwen-2.5-7b-instruct:free',
                     'messages' => [
                         ['role' => 'user', 'content' => $prompt]
                     ],
