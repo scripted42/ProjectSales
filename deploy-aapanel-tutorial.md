@@ -180,7 +180,7 @@ SEED_MOCK_DATA=false                # Set ke false untuk database bersih tanpa d
 # ── AutoShow Real AI Settings ─────────────
 OPENROUTER_API_KEY=""                # API Key default OpenRouter (opsional)
 AI_DEFAULT_PROVIDER="openrouter"     # Pilihan: openrouter, deepseek, gemini, atau disabled
-AI_DEFAULT_MODEL="qwen/qwen-2.5-7b-instruct:free"
+AI_DEFAULT_MODEL="openrouter/free"
 ```
 
 5. Klik **Save** (Ctrl+S).

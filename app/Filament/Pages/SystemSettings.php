@@ -50,7 +50,7 @@ class SystemSettings extends Page
             'site_name' => Setting::get('site_name', 'Hyundai Showroom'),
             'site_logo' => Setting::get('site_logo'),
             'ai_provider' => Setting::get('ai_provider', 'openrouter'),
-            'ai_model' => Setting::get('ai_model', 'qwen/qwen-2.5-7b-instruct:free'),
+            'ai_model' => Setting::get('ai_model', 'openrouter/free'),
             'ai_api_key' => $decryptedKey,
         ]);
     }
@@ -88,7 +88,7 @@ class SystemSettings extends Page
                             ->reactive(),
                         TextInput::make('ai_model')
                             ->label('Model AI')
-                            ->placeholder('Contoh: qwen/qwen-2.5-7b-instruct:free')
+                            ->placeholder('Contoh: openrouter/free')
                             ->helperText('Tentukan nama model yang digunakan.')
                             ->required(fn ($get) => $get('ai_provider') !== 'disabled')
                             ->visible(fn ($get) => $get('ai_provider') !== 'disabled'),
