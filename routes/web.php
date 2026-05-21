@@ -162,6 +162,30 @@ Route::get('/import-sql', function (\Illuminate\Http\Request $request) {
     }
 });
 
+// Route untuk mengekstrak media/gambar (storage_public.zip) ke storage/app/public/ VPS
+Route::get('/extract-storage', function (\Illuminate\Http\Request $request) {
+    if ($request->get('key') !== 'wahyu') {
+        abort(404);
+    }
+    try {
+        $zipPath = base_path('storage_public.zip');
+        if (!file_exists($zipPath)) {
+            return "File storage_public.zip tidak ditemukan di base path server VPS.";
+        }
+        
+        $zip = new \ZipArchive;
+        if ($zip->open($zipPath) === TRUE) {
+            $zip->extractTo(storage_path('app/public'));
+            $zip->close();
+            return "Sukses mengekstrak semua media/gambar ke storage VPS!";
+        } else {
+            return "Gagal membuka file zip.";
+        }
+    } catch (\Exception $e) {
+        return "Error: " . $e->getMessage();
+    }
+});
+
 // Route bantu untuk melihat kode OTP developer jika email tidak masuk/terblokir (akses rahasia menggunakan ?key=wahyu)
 Route::get('/show-otp', function (\Illuminate\Http\Request $request) {
     if ($request->get('key') !== 'wahyu') {
