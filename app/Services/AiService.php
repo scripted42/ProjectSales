@@ -172,7 +172,7 @@ Tugas Anda adalah menganalisis data berikut dan memberikan 3 hingga 4 saran pema
 1. Gunakan Bahasa Indonesia formal dan profesional yang alami untuk sales mobil (contoh: gunakan istilah seperti 'calon pembeli', 'prospek', 'konversi', 'tipe mobil', 'leads').
 2. JANGAN gunakan kata-kata rancu atau hasil terjemahan harfiah dari bahasa asing (seperti: 'mengurangkan pertahanan user', 'penerangan', 'perjalanan berkuat ciri', 'kesempurnaan transaksi').
 3. Tulis rekomendasi yang konkret dan realistis. Contoh kalimat yang baik:
-   - 'Optimalkan Jam Padat Kunjungan': 'Posting brosur promo atau update foto mobil di media sosial pada pukul {$peakHour} untuk menjangkau prospek saat mereka sedang aktif browsing.'
+   - 'Optimalkan Jam Padat Kunjungan': 'Posting brosur promo atau update foto mobil di media sosial pada pukul {$peakHourVal} untuk menjangkau prospek saat mereka sedang aktif browsing.'
    - 'Fokus Promosi Unit Trending': 'Mobil {$trendingCar} sedang banyak diminati calon pembeli. Buat penawaran diskon khusus atau cicilan ringan untuk tipe ini di Instagram.'
    - 'Segarkan Konten Galeri': 'Update foto unit ready stock di galeri untuk meyakinkan calon pembeli bahwa unit yang mereka cari tersedia.'
 4. Setiap saran harus terdiri dari 'title' (judul singkat, maks 4 kata) dan 'text' (detail saran konkrit, maks 2 kalimat).
