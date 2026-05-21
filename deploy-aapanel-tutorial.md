@@ -1,12 +1,7 @@
 # 🚀 Tutorial Deploy ProjectSalesCars di aaPanel
 
-> **Domain**: `hyundaisurabaya.com`  
-> **IP VPS**: `129.212.232.10`  
-> **aaPanel URL**: [https://129.212.232.10:8910/nxvadmin](https://129.212.232.10:8910/nxvadmin)  
-> **User**: `script42`  
-> **Password**: `Script42hyu42`  
 > **Stack**: Laravel 12 + Filament 3 + MySQL + Vite/TailwindCSS  
-> **Repository Git**: `https://github.com/scripted42/ProjectSales.git`
+> **Repository Git**: `https://github.com/username/ProjectSales.git`
 >
 > *Catatan: Folder `mothership-app/` dan `manager/` yang ada di dalam repo tidak digunakan. Kita hanya perlu mengarahkan Nginx ke folder `public/` milik root app.*
 
@@ -31,9 +26,7 @@
 
 ## 1. Langkah 1: Persiapan Environment di aaPanel
 
-Login ke panel Anda di `https://129.212.232.10:8910/nxvadmin` menggunakan:
-*   **Username**: `script42`
-*   **Password**: `Script42hyu42`
+Login ke panel aaPanel Anda menggunakan alamat URL panel, username, dan password panel Anda sendiri.
 
 Buka menu **App Store** di sebelah kiri aaPanel, lalu cari dan install software berikut jika belum ada:
 
@@ -85,10 +78,10 @@ Fungsi-fungsi ini wajib dihapus dari daftar hitam agar Composer dan command Arti
 
 1. Masuk ke menu **Website** -> Klik **Add Site**.
 2. Konfigurasikan seperti berikut:
-   *   **Domain**: `hyundaisurabaya.com`
+   *   **Domain**: `domain-anda.com`
    *   **Create DB**: Pilih **MySQL**
-       *   **Database Name**: `hyundaisurabayadb`
-       *   **Username**: `hyundai_user`
+       *   **Database Name**: `nama_database_anda`
+       *   **Username**: `username_database_anda`
        *   **Password**: *(Tulis password yang kuat — **CATAT!**)*
    *   **PHP Version**: `PHP-82`
    *   **Site Category**: Default
@@ -98,20 +91,20 @@ Fungsi-fungsi ini wajib dihapus dari daftar hitam agar Composer dan command Arti
 
 ## 4. Langkah 4: Deploy Source Code via Git
 
-Kita akan meng-clone repository langsung ke folder direktori situs web Anda `/www/wwwroot/hyundaisurabaya.com`.
+Kita akan meng-clone repository langsung ke folder direktori situs web Anda `/www/wwwroot/domain-anda.com`.
 
 1. Buka menu **Terminal** di sebelah kiri aaPanel (atau masuk via SSH klien seperti PuTTY/Termius menggunakan IP VPS Anda).
 2. Jalankan perintah berikut secara berurutan:
 
 ```bash
 # Pindah ke direktori situs web Anda
-cd /www/wwwroot/hyundaisurabaya.com
+cd /www/wwwroot/domain-anda.com
 
 # Hapus file default bawaan aaPanel (seperti index.html, 404.html)
 rm -rf *
 
 # Clone repository langsung ke folder ini (tanda titik di akhir wajib)
-git clone https://github.com/scripted42/ProjectSales.git .
+git clone https://github.com/username/ProjectSales.git .
 ```
 
 Jika repository bersifat privat dan Anda menggunakan HTTPS, masukkan username GitHub dan Personal Access Token (PAT) Anda sebagai password.
@@ -121,16 +114,16 @@ Jika repository bersifat privat dan Anda menggunakan HTTPS, masukkan username Gi
 ## 5. Langkah 5: Konfigurasi File `.env`
 
 1. Masuk ke menu **Files** di aaPanel.
-2. Buka folder `/www/wwwroot/hyundaisurabaya.com`.
+2. Buka folder `/www/wwwroot/domain-anda.com`.
 3. Cari file bernama `.env.example`, klik kanan lalu pilih **Copy**, kemudian paste di tempat yang sama dengan nama `.env`.
 4. Klik double file `.env` untuk mengeditnya, lalu sesuaikan konfigurasi database dan email seperti berikut:
 
 ```env
-APP_NAME="Hyundai Surabaya"
+APP_NAME="Nama Aplikasi Anda"
 APP_ENV=production
 APP_KEY=                          # Biarkan kosong dulu, nanti di-generate otomatis
 APP_DEBUG=false
-APP_URL=https://hyundaisurabaya.com
+APP_URL=https://domain-anda.com
 
 APP_LOCALE=en
 APP_FALLBACK_LOCALE=en
@@ -144,9 +137,9 @@ LOG_LEVEL=error
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=hyundaisurabayadb       # Sesuai database yang dibuat di Langkah 3
-DB_USERNAME=hyundai_user            # Sesuai username database yang dibuat di Langkah 3
-DB_PASSWORD=PASSWORD_DATABASE_KAMU  # Sesuai password database yang dibuat di Langkah 3
+DB_DATABASE=nama_database_anda       # Sesuai database yang dibuat di Langkah 3
+DB_USERNAME=username_database_anda   # Sesuai username database yang dibuat di Langkah 3
+DB_PASSWORD=PASSWORD_DATABASE_ANDA  # Sesuai password database yang dibuat di Langkah 3
 
 # ── Session & Cache ───────────────────────
 SESSION_DRIVER=database
@@ -165,18 +158,18 @@ CACHE_STORE=database
 MAIL_MAILER=smtp
 MAIL_HOST=smtp.gmail.com
 MAIL_PORT=465
-MAIL_USERNAME="wahyukurniawan101630@gmail.com"
-MAIL_PASSWORD="qauwflvbwswlaouk"
+MAIL_USERNAME="email-pengirim@gmail.com"
+MAIL_PASSWORD="app-password-email-anda"
 MAIL_ENCRYPTION=ssl
-MAIL_FROM_ADDRESS="wahyukurniawan101630@gmail.com"
+MAIL_FROM_ADDRESS="email-pengirim@gmail.com"
 MAIL_FROM_NAME="AutoShow Pro Security"
 
 VITE_APP_NAME="${APP_NAME}"
 
 # ── Developer Setup & Deployment ──────────
-DEVELOPER_NAME="Super Developer"
-DEVELOPER_EMAIL="wahyukurniawan101630@gmail.com"
-DEVELOPER_PASSWORD="Script42hyu42"
+DEVELOPER_NAME="Nama Developer"
+DEVELOPER_EMAIL="email-developer-anda@gmail.com"
+DEVELOPER_PASSWORD="password-developer-anda"
 
 DEVELOPER_OTP_ENABLED=false         # Matikan OTP di server baru agar bypass verifikasi email
 DEVELOPER_OTP_STATIC=123456         # OTP statis alternatif jika dibutuhkan
@@ -197,7 +190,7 @@ SEED_MOCK_DATA=false                # Set ke false untuk database bersih tanpa d
 Kembali ke **Terminal** aaPanel atau SSH, lalu jalankan perintah berikut untuk menginstall library PHP, membangun aset CSS/JS, dan mengatur hak akses folder:
 
 ```bash
-cd /www/wwwroot/hyundaisurabaya.com
+cd /www/wwwroot/domain-anda.com
 
 # 1. Install Composer dependencies tanpa package development
 composer install --optimize-autoloader --no-dev
@@ -231,7 +224,7 @@ php artisan event:cache
 Laravel memerlukan pengaturan khusus pada web server agar point directory-nya mengarah ke folder `public`.
 
 ### 7a. Ubah Running Directory ke `/public`
-1. Buka menu **Website** -> Klik pada nama domain Anda (`hyundaisurabaya.com`).
+1. Buka menu **Website** -> Klik pada nama domain Anda (`domain-anda.com`).
 2. Masuk ke tab **Site directory**.
 3. Di bagian **Running directory**, pilih `/public` dari dropdown menu.
 4. Klik **Save**.
@@ -250,13 +243,13 @@ Laravel memerlukan pengaturan khusus pada web server agar point directory-nya me
 
 ## 8. Langkah 8: Setup SSL (HTTPS) Let's Encrypt
 
-Sebelum mengaktifkan SSL, pastikan domain `hyundaisurabaya.com` dan `www.hyundaisurabaya.com` sudah mengarah (pointing A record) ke IP VPS Anda `129.212.232.10` di DNS Manager domain Anda. Anda bisa memverifikasinya di [dnschecker.org](https://dnschecker.org).
+Sebelum mengaktifkan SSL, pastikan domain `domain-anda.com` dan `www.domain-anda.com` sudah mengarah (pointing A record) ke IP VPS Anda di DNS Manager domain Anda. Anda bisa memverifikasinya di [dnschecker.org](https://dnschecker.org).
 
 Jika sudah terpointing dengan benar:
-1. Buka menu **Website** -> Klik domain `hyundaisurabaya.com`.
+1. Buka menu **Website** -> Klik domain `domain-anda.com`.
 2. Pilih tab **SSL**.
 3. Pilih tab **Let's Encrypt**.
-4. Centang nama domain Anda (`hyundaisurabaya.com` dan `www.hyundaisurabaya.com`).
+4. Centang nama domain Anda (`domain-anda.com` dan `www.domain-anda.com`).
 5. Klik **Apply**.
 6. Setelah SSL berhasil terpasang, aktifkan opsi **Force HTTPS** di pojok kanan atas pengaturan SSL tersebut.
 
@@ -268,7 +261,7 @@ Aplikasi ini sudah dilengkapi dengan satu route inisialisasi terpadu yang aman u
 
 Akses URL berikut pada web browser Anda:
 
-`https://hyundaisurabaya.com/deploy/init?key=kunci-rahasia-anda`
+`https://domain-anda.com/deploy/init?key=kunci-rahasia-anda`
 
 *(Ganti `kunci-rahasia-anda` dengan nilai `DEPLOYMENT_KEY` yang Anda setel di berkas `.env`)*
 
@@ -279,11 +272,11 @@ Layar akan menampilkan status inisialisasi:
 3. **3. Configuration & View Cache Cleared!** (Membersihkan sisa cache aplikasi).
 
 ### Akun Developer Default:
-*   📧 **Email**: Sesuai dengan `DEVELOPER_EMAIL` di `.env` (default: `wahyukurniawan101630@gmail.com`)
-*   🔑 **Password**: Sesuai dengan `DEVELOPER_PASSWORD` di `.env` (default: `Script42hyu42`)
+*   📧 **Email**: Sesuai dengan `DEVELOPER_EMAIL` di `.env` (default: `email-developer-anda@gmail.com`)
+*   🔑 **Password**: Sesuai dengan `DEVELOPER_PASSWORD` di `.env` (default: `password-developer-anda`)
 *   🎭 **Role**: `developer`
 
-Akses panel admin di: `https://hyundaisurabaya.com/admin` dan masuk menggunakan akun Developer tersebut. Segera ganti password dan email admin default ini di halaman pengaturan profil setelah Anda login pertama kali!
+Akses panel admin di: `https://domain-anda.com/admin` dan masuk menggunakan akun Developer tersebut. Segera ganti password dan email admin default ini di halaman pengaturan profil setelah Anda login pertama kali!
 
 ---
 
@@ -296,7 +289,7 @@ Karena di dalam file `.env` kita menggunakan `QUEUE_CONNECTION=database`, antria
 3. Isi konfigurasi daemon seperti berikut:
    *   **Name**: `hyundai-queue`
    *   **Run User**: `www`
-   *   **Run Dir**: `/www/wwwroot/hyundaisurabaya.com`
+   *   **Run Dir**: `/www/wwwroot/domain-anda.com`
    *   **Start Command**: `/www/server/php/82/bin/php artisan queue:work --sleep=3 --tries=3 --max-time=3600`
    *   **Processes**: `1`
 4. Klik **Confirm**.
@@ -307,7 +300,7 @@ Karena di dalam file `.env` kita menggunakan `QUEUE_CONNECTION=database`, antria
 ## 11. Langkah 11: Checklist Pengujian & Troubleshooting
 
 ### Checklist Pengujian Utama:
-*   [ ] Akses `https://hyundaisurabaya.com` apakah halaman landing page terbuka sempurna dan responsif.
+*   [ ] Akses `https://domain-anda.com` apakah halaman landing page terbuka sempurna dan responsif.
 *   [ ] Cek ikon gembok SSL (HTTPS) apakah sudah terverifikasi aman.
 *   [ ] Periksa seluruh asset (CSS/JS) termuat dengan benar (halaman tidak terlihat hancur/blank).
 *   [ ] Masuk ke menu detail mobil (misal `/car/{slug}`) dan pastikan data dari database tampil.
@@ -320,9 +313,9 @@ Karena di dalam file `.env` kita menggunakan `QUEUE_CONNECTION=database`, antria
 #### ❌ Error 500 / Halaman Blank
 Periksa log error Laravel untuk mengetahui penyebab pastinya:
 ```bash
-tail -n 100 /www/wwwroot/hyundaisurabaya.com/storage/logs/laravel.log
+tail -n 100 /www/wwwroot/domain-anda.com/storage/logs/laravel.log
 ```
-Atau clear cache manual jika ada perubahan file konfigurasi:
+Or clear cache manual jika ada perubahan file konfigurasi:
 ```bash
 # Mengosongkan cache aplikasi via SSH
 /www/server/php/82/bin/php artisan optimize:clear
@@ -332,7 +325,7 @@ Atau clear cache manual jika ada perubahan file konfigurasi:
 Penyebabnya adalah folder build asset Vite belum dibuat atau gagal terkompilasi.
 Solusi: Jalankan kompilasi ulang melalui terminal VPS:
 ```bash
-cd /www/wwwroot/hyundaisurabaya.com
+cd /www/wwwroot/domain-anda.com
 npm install
 npm run build
 ```
@@ -340,7 +333,7 @@ npm run build
 #### ❌ Gambar Produk Tidak Muncul
 Pastikan symbolic link storage sudah benar. Jalankan via SSH:
 ```bash
-cd /www/wwwroot/hyundaisurabaya.com
+cd /www/wwwroot/domain-anda.com
 rm -rf public/storage
 /www/server/php/82/bin/php artisan storage:link
 ```
@@ -355,7 +348,7 @@ Jika di kemudian hari ada pembaruan kode aplikasi yang sudah di-push ke GitHub, 
 2. Jalankan perintah berikut:
 
 ```bash
-cd /www/wwwroot/hyundaisurabaya.com
+cd /www/wwwroot/domain-anda.com
 
 # 1. Aktifkan Mode Maintenance agar user tidak mengakses web selama update
 /www/server/php/82/bin/php artisan down
@@ -379,10 +372,10 @@ npm run build
 /www/server/php/82/bin/php artisan up
 ```
 
-Atau setelah melakukan `git pull`, Anda juga dapat membuka URL inisialisasi terpadu di browser untuk menyegarkan database dan cache:
-*   `https://hyundaisurabaya.com/deploy/init?key=kunci-rahasia-anda`
+Or setelah melakukan `git pull`, Anda juga dapat membuka URL inisialisasi terpadu di browser untuk menyegarkan database dan cache:
+*   `https://domain-anda.com/deploy/init?key=kunci-rahasia-anda`
 
 ---
 
-*Panduan deployment aaPanel ini dirancang khusus untuk Project **ProjectSalesCars** di server **hyundaisurabaya.com**.*  
-*Jika menemui kendala di tengah jalan, mohon periksa file log error di `/www/wwwroot/hyundaisurabaya.com/storage/logs/laravel.log`.*
+*Panduan deployment aaPanel ini dirancang khusus untuk Project **ProjectSalesCars**.*  
+*Jika menemui kendala di tengah jalan, mohon periksa file log error di `/www/wwwroot/domain-anda.com/storage/logs/laravel.log`.*

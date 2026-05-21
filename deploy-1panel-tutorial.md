@@ -1,8 +1,7 @@
 # 🚀 Tutorial Deploy ProjectSalesCars ke 1Panel
 
-> **Domain**: `hyundaisurabaya.com`  
 > **Stack**: Laravel 12 + Filament 3 + MySQL + Vite/TailwindCSS  
-> **Repo**: [github.com/scripted42/ProjectSales](https://github.com/scripted42/ProjectSales)  
+> **Repo**: [github.com/username/ProjectSales](https://github.com/username/ProjectSales)  
 >
 > **⚠️ Penting**: Folder `mothership-app/` dan `manager/` masih ada di repo tapi **sudah tidak digunakan**.  
 > Cukup clone seluruh repo, arahkan Nginx ke folder `public/` milik root app saja.
@@ -58,8 +57,8 @@ Di **1Panel → App Store → PHP 8.2 → Extensions**:
 
 1. **1Panel → Database → MySQL → Tambah Database**
 2. Isi:
-   - **Nama Database**: `hyundaisurabayadb`
-   - **Username**: `hyundai_user`
+   - **Nama Database**: `nama_database_anda`
+   - **Username**: `username_database_anda`
    - **Password**: *(buat password kuat — **catat!**)*
 3. Klik Simpan
 
@@ -68,10 +67,10 @@ Di **1Panel → App Store → PHP 8.2 → Extensions**:
 1. **1Panel → Website → Situs Web → Buat Situs**
 2. Isi:
    - **Tipe**: PHP
-   - **Domain**: `hyundaisurabaya.com`
-   - **Alias**: `www.hyundaisurabaya.com`
+   - **Domain**: `domain-anda.com`
+   - **Alias**: `www.domain-anda.com`
    - **PHP Version**: **8.2**
-   - **Root Directory**: biarkan default (misal `/www/wwwroot/hyundaisurabaya.com`)
+   - **Root Directory**: biarkan default (misal `/www/wwwroot/domain-anda.com`)
 3. Klik Simpan — **catat path direktorinya**
 
 > [!NOTE]
@@ -85,18 +84,18 @@ Buka **1Panel → Terminal** atau masuk via **SSH**:
 
 ```bash
 # Pergi ke direktori website
-cd /www/wwwroot/hyundaisurabaya.com
+cd /www/wwwroot/domain-anda.com
 
 # Hapus semua file placeholder default dari 1Panel
 rm -rf *
 
 # Clone repo (titik di akhir = clone langsung ke folder ini)
-git clone https://github.com/scripted42/ProjectSales.git .
+git clone https://github.com/username/ProjectSales.git .
 ```
 
 Setelah clone, struktur folder akan seperti ini:
 ```
-/www/wwwroot/hyundaisurabaya.com/
+/www/wwwroot/domain-anda.com/
 ├── app/               ← Kode utama Laravel
 ├── bootstrap/
 ├── config/
@@ -114,7 +113,7 @@ Setelah clone, struktur folder akan seperti ini:
 ```
 
 > [!IMPORTANT]
-> Nginx harus diarahkan ke `/www/wwwroot/hyundaisurabaya.com/public/` — bukan ke root folder. Ini langkah paling kritis!
+> Nginx harus diarahkan ke `/www/wwwroot/domain-anda.com/public/` — bukan ke root folder. Ini langkah paling kritis!
 
 ---
 
@@ -128,11 +127,11 @@ cp .env.example .env
 Edit file `.env` (bisa via **1Panel → File Manager** klik `.env` → Edit):
 
 ```env
-APP_NAME="Hyundai Surabaya"
+APP_NAME="Nama Aplikasi Anda"
 APP_ENV=production
 APP_KEY=                          # Kosongkan — akan di-generate otomatis
 APP_DEBUG=false
-APP_URL=https://hyundaisurabaya.com
+APP_URL=https://domain-anda.com
 
 APP_LOCALE=en
 APP_FALLBACK_LOCALE=en
@@ -149,9 +148,9 @@ LOG_LEVEL=error
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=hyundaisurabayadb
-DB_USERNAME=hyundai_user          # ← sesuaikan
-DB_PASSWORD=PASSWORD_KAMU         # ← isi password yang dibuat tadi
+DB_DATABASE=nama_database_anda
+DB_USERNAME=username_database_anda   # ← sesuaikan
+DB_PASSWORD=PASSWORD_DATABASE_ANDA    # ← isi password yang dibuat tadi
 
 # ── Session & Cache ───────────────────────
 SESSION_DRIVER=database
@@ -170,18 +169,18 @@ CACHE_STORE=database
 MAIL_MAILER=smtp
 MAIL_HOST=smtp.gmail.com
 MAIL_PORT=465
-MAIL_USERNAME="wahyukurniawan101630@gmail.com"
-MAIL_PASSWORD="qauwflvbwswlaouk"
+MAIL_USERNAME="email-pengirim@gmail.com"
+MAIL_PASSWORD="app-password-email-anda"
 MAIL_ENCRYPTION=ssl
-MAIL_FROM_ADDRESS="wahyukurniawan101630@gmail.com"
+MAIL_FROM_ADDRESS="email-pengirim@gmail.com"
 MAIL_FROM_NAME="AutoShow Pro Security"
 
 VITE_APP_NAME="${APP_NAME}"
 
 # ── Developer Setup & Deployment ──────────
-DEVELOPER_NAME="Super Developer"
-DEVELOPER_EMAIL="wahyukurniawan101630@gmail.com"
-DEVELOPER_PASSWORD="Script42hyu42"
+DEVELOPER_NAME="Nama Developer"
+DEVELOPER_EMAIL="email-developer-anda@gmail.com"
+DEVELOPER_PASSWORD="password-developer-anda"
 
 DEVELOPER_OTP_ENABLED=false         # Matikan OTP di server baru agar bypass verifikasi email
 DEVELOPER_OTP_STATIC=123456         # OTP statis alternatif jika dibutuhkan
@@ -200,7 +199,7 @@ SEED_MOCK_DATA=false                # Set ke false untuk database bersih tanpa d
 Jalankan semua perintah berikut:
 
 ```bash
-cd /www/wwwroot/hyundaisurabaya.com
+cd /www/wwwroot/domain-anda.com
 
 # 1. Install PHP dependencies (skip dev packages)
 composer install --optimize-autoloader --no-dev
@@ -231,13 +230,13 @@ php artisan event:cache
 
 ## 6. Konfigurasi Nginx
 
-Di **1Panel → Website → hyundaisurabaya.com → Konfigurasi → Nginx Config**:
+Di **1Panel → Website → domain-anda.com → Konfigurasi → Nginx Config**:
 
 ```nginx
 server {
     listen 80;
     listen [::]:80;
-    server_name hyundaisurabaya.com www.hyundaisurabaya.com;
+    server_name domain-anda.com www.domain-anda.com;
     # Redirect semua HTTP ke HTTPS
     return 301 https://$host$request_uri;
 }
@@ -245,14 +244,14 @@ server {
 server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
-    server_name hyundaisurabaya.com www.hyundaisurabaya.com;
+    server_name domain-anda.com www.domain-anda.com;
 
     # SSL — diisi otomatis oleh 1Panel setelah Let's Encrypt aktif
-    ssl_certificate /etc/letsencrypt/live/hyundaisurabaya.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/hyundaisurabaya.com/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/domain-anda.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/domain-anda.com/privkey.pem;
 
     # ⬇ Root WAJIB mengarah ke /public — bukan root project!
-    root /www/wwwroot/hyundaisurabaya.com/public;
+    root /www/wwwroot/domain-anda.com/public;
     index index.php;
 
     charset utf-8;
@@ -292,23 +291,23 @@ server {
     }
 
     # Logs
-    access_log /www/wwwlogs/hyundaisurabaya.com.log;
-    error_log /www/wwwlogs/hyundaisurabaya.com.error.log;
+    access_log /www/wwwlogs/domain-anda.com.log;
+    error_log /www/wwwlogs/domain-anda.com.error.log;
 }
 ```
 
 > [!CAUTION]
-> Pastikan baris `root` mengarah ke `…/public` bukan `…/hyundaisurabaya.com`. Salah satu ini adalah penyebab Error 500 terbanyak!
+> Pastikan baris `root` mengarah ke `…/public` bukan `…/domain-anda.com`. Salah satu ini adalah penyebab Error 500 terbanyak!
 
 ---
 
 ## 7. Setup SSL Let's Encrypt
 
-1. **1Panel → Website → hyundaisurabaya.com → HTTPS**
+1. **1Panel → Website → domain-anda.com → HTTPS**
 2. Pilih **Let's Encrypt**
 3. Centang domain:
-   - ✅ `hyundaisurabaya.com`
-   - ✅ `www.hyundaisurabaya.com`
+   - ✅ `domain-anda.com`
+   - ✅ `www.domain-anda.com`
 4. Klik **Konfirmasi** → tunggu 1–2 menit
 5. Aktifkan **Force HTTPS**
 
@@ -324,7 +323,7 @@ Aplikasi ini sudah dilengkapi dengan satu route inisialisasi terpadu yang aman u
 
 Akses URL berikut pada web browser Anda:
 
-`https://hyundaisurabaya.com/deploy/init?key=kunci-rahasia-anda`
+`https://domain-anda.com/deploy/init?key=kunci-rahasia-anda`
 
 *(Ganti `kunci-rahasia-anda` dengan nilai `DEPLOYMENT_KEY` yang Anda setel di berkas `.env`)*
 
@@ -335,11 +334,11 @@ Layar akan menampilkan status inisialisasi:
 3. **3. Configuration & View Cache Cleared!** (Membersihkan sisa cache aplikasi).
 
 ### Akun Developer Default:
-*   📧 **Email**: Sesuai dengan `DEVELOPER_EMAIL` di `.env` (default: `wahyukurniawan101630@gmail.com`)
-*   🔑 **Password**: Sesuai dengan `DEVELOPER_PASSWORD` di `.env` (default: `Script42hyu42`)
+*   📧 **Email**: Sesuai dengan `DEVELOPER_EMAIL` di `.env` (default: `email-developer-anda@gmail.com`)
+*   🔑 **Password**: Sesuai dengan `DEVELOPER_PASSWORD` di `.env` (default: `password-developer-anda`)
 *   🎭 **Role**: `developer`
 
-Akses panel admin di: `https://hyundaisurabaya.com/admin` dan masuk menggunakan akun Developer tersebut. Segera ganti password dan email admin default ini di halaman pengaturan profil setelah Anda login pertama kali!
+Akses panel admin di: `https://domain-anda.com/admin` dan masuk menggunakan akun Developer tersebut. Segera ganti password dan email admin default ini di halaman pengaturan profil setelah Anda login pertama kali!
 
 ---
 
@@ -354,7 +353,7 @@ Buat program baru dengan konfigurasi:
 ```ini
 [program:hyundai-queue]
 process_name=%(program_name)s_%(process_num)02d
-command=/usr/bin/php /www/wwwroot/hyundaisurabaya.com/artisan queue:work --sleep=3 --tries=3 --max-time=3600
+command=/usr/bin/php /www/wwwroot/domain-anda.com/artisan queue:work --sleep=3 --tries=3 --max-time=3600
 autostart=true
 autorestart=true
 stopasgroup=true
@@ -368,15 +367,12 @@ stopwaitsecs=3600
 
 Klik **Simpan → Start**.
 
-> [!NOTE]
-> Jika path `php` berbeda, cek dulu: `which php` di terminal
-
 ---
 
 ## 10. Checklist Final
 
 ### Halaman & Navigasi
-- [ ] `https://hyundaisurabaya.com` — landing page tampil sempurna
+- [ ] `https://domain-anda.com` — landing page tampil sempurna
 - [ ] SSL aktif — gembok hijau di browser
 - [ ] CSS/JS assets termuat (tidak blank/polos)
 - [ ] `/news` — halaman artikel tampil
@@ -390,15 +386,15 @@ Klik **Simpan → Start**.
 - [ ] Upload gambar di admin berfungsi
 
 ### Admin Panel
-- [ ] `https://hyundaisurabaya.com/admin` terbuka
+- [ ] `https://domain-anda.com/admin` terbuka
 - [ ] Login admin berhasil
 - [ ] Dashboard menampilkan data
 - [ ] Password sudah diganti dari default
 
 ### Server
 - [ ] Queue worker berjalan di Supervisor
-- [ ] Log bersih: `tail -f /www/wwwlogs/hyundaisurabaya.com.error.log`
-- [ ] Storage symlink aktif: `ls -la /www/wwwroot/hyundaisurabaya.com/public/storage`
+- [ ] Log bersih: `tail -f /www/wwwlogs/domain-anda.com.error.log`
+- [ ] Storage symlink aktif: `ls -la /www/wwwroot/domain-anda.com/public/storage`
 
 ---
 
@@ -407,18 +403,16 @@ Klik **Simpan → Start**.
 ### ❌ Error 500 / Blank Page
 ```bash
 # Lihat log detail
-tail -n 100 /www/wwwroot/hyundaisurabaya.com/storage/logs/laravel.log
+tail -n 100 /www/wwwroot/domain-anda.com/storage/logs/laravel.log
 
 # Clear cache via SSH:
-
-# Atau via SSH:
 php artisan optimize:clear
 ```
 
 ### ❌ Halaman tampil tapi CSS/JS tidak muncul (polos)
 ```bash
 # Assets belum di-build
-cd /www/wwwroot/hyundaisurabaya.com
+cd /www/wwwroot/domain-anda.com
 npm install && npm run build
 
 # Cek folder ada
@@ -462,7 +456,7 @@ chown -R www:www storage/ bootstrap/cache/
 Setiap ada perubahan yang sudah di-push ke GitHub:
 
 ```bash
-cd /www/wwwroot/hyundaisurabaya.com
+cd /www/wwwroot/domain-anda.com
 
 # 1. Aktifkan maintenance mode
 php artisan down
@@ -486,8 +480,8 @@ php artisan optimize
 php artisan up
 ```
 
-Atau setelah melakukan `git pull`, Anda juga dapat membuka URL inisialisasi terpadu di browser untuk menyegarkan database dan cache:
-*   `https://hyundaisurabaya.com/deploy/init?key=kunci-rahasia-anda`
+Or setelah melakukan `git pull`, Anda juga dapat membuka URL inisialisasi terpadu di browser untuk menyegarkan database dan cache:
+*   `https://domain-anda.com/deploy/init?key=kunci-rahasia-anda`
 
 ---
 
@@ -512,7 +506,7 @@ Atau setelah melakukan `git pull`, Anda juga dapat membuka URL inisialisasi terp
 
 ---
 
-> **Project**: ProjectSalesCars — `hyundaisurabaya.com`  
-> **Repo**: [github.com/scripted42/ProjectSales](https://github.com/scripted42/ProjectSales)  
+> **Project**: ProjectSalesCars  
+> **Repo**: [github.com/username/ProjectSales](https://github.com/username/ProjectSales)  
 > **Platform**: 1Panel + Nginx/OpenResty + PHP 8.2 + MySQL 8.0  
 > **Dibuat**: Mei 2026
