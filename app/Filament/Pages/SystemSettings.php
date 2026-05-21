@@ -26,10 +26,10 @@ class SystemSettings extends Page
     protected static ?string $slug = 'system-settings';
     protected static string $view = 'filament.pages.system-settings';
     
-    // Menu ini muncul untuk role developer dan admin
+    // Menu ini muncul untuk role developer dan sales (client)
     public static function shouldRegisterNavigation(): bool
     {
-        return in_array(auth()->user()?->role, ['developer', 'admin']);
+        return in_array(auth()->user()?->role, ['developer', 'sales']);
     }
 
     public ?array $data = [];
