@@ -117,9 +117,14 @@ Route::get('/import-sqlite', function () {
             \DB::table($table)->truncate();
             \DB::statement("SET FOREIGN_KEY_CHECKS=1;");
 
+            // Get columns of the MySQL table
+            $mysqlColumns = array_flip(\Illuminate\Support\Facades\Schema::getColumnListing($table));
+
             // Insert into MySQL
             foreach ($rows as $row) {
-                \DB::table($table)->insert($row);
+                // Filter row keys based on MySQL table columns
+                $filteredRow = array_intersect_key($row, $mysqlColumns);
+                \DB::table($table)->insert($filteredRow);
             }
 
             $output .= "Tabel {$table}: Sukses menyalin " . count($rows) . " data.<br>";
