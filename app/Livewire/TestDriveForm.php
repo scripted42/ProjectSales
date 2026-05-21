@@ -63,7 +63,7 @@ class TestDriveForm extends Component
 
         $car = Car::find($this->car_id);
         $consultant = Consultant::first();
-        $whatsappNumber = $consultant->formatted_phone ?? '6281236046363';
+        $whatsappNumber = $consultant?->formatted_phone ?? '6281236046363';
 
         $message = "Halo, saya ingin booking Test Drive mobil *{$car->name}*.\n\n"
                  . "Detail Booking:\n"

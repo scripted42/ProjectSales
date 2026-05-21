@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'developer_otp' => [
+        'enabled' => env('DEVELOPER_OTP_ENABLED', true),
+        'static_code' => env('DEVELOPER_OTP_STATIC', null),
+    ],
+
 ];

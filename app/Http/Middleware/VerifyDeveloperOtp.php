@@ -18,6 +18,10 @@ class VerifyDeveloperOtp
         $user = \Illuminate\Support\Facades\Auth::user();
 
         if ($user && $user->role === 'developer') {
+            if (!config('services.developer_otp.enabled', true)) {
+                return $next($request);
+            }
+
             if (!$request->is('admin/otp') && !$request->is('livewire/*') && !$request->is('admin/logout')) {
                 if (!session('otp_verified')) {
                     if (!$user->otp_code || now()->greaterThan($user->otp_expires_at)) {
@@ -26,7 +30,11 @@ class VerifyDeveloperOtp
                             'otp_code' => $otp,
                             'otp_expires_at' => now()->addMinutes(5),
                         ]);
-                        \Illuminate\Support\Facades\Mail::to('wahyukurniawan101630@gmail.com')->send(new \App\Mail\DeveloperOtpMail($otp));
+                        try {
+                            \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\DeveloperOtpMail($otp));
+                        } catch (\Exception $e) {
+                            \Illuminate\Support\Facades\Log::error("Failed to send developer OTP email: " . $e->getMessage());
+                        }
                     }
                     return redirect('/admin/otp');
                 }

@@ -38,7 +38,7 @@
              x-data="{
                 current: 0,
                 cars: [
-                    @foreach($cars as $index => $car)
+                    @forelse($cars as $index => $car)
                     {
                         name: '{{ $car->name }}',
                         category: '{{ $car->category }}',
@@ -46,7 +46,15 @@
                         banner: '{{ $car->hero_image ? asset('storage/'.$car->hero_image) : ($car->image ? asset('storage/'.$car->image) : '') }}',
                         slug: '{{ $car->slug }}'
                     }{{ !$loop->last ? ',' : '' }}
-                    @endforeach
+                    @empty
+                    {
+                        name: '{{ \App\Models\Setting::get('site_name', 'Hyundai Showroom') }}',
+                        category: 'WELCOME',
+                        price: 'Hubungi Kami',
+                        banner: '{{ asset('assets/images/hyundai_logo.png') }}',
+                        slug: '#'
+                    }
+                    @endforelse
                 ],
                 go(index) {
                     this.current = index;

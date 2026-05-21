@@ -15,24 +15,32 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $devEmail = env('DEVELOPER_EMAIL', 'wahyukurniawan101630@gmail.com');
+        $devPassword = env('DEVELOPER_PASSWORD', 'Script42hyu42');
+        $devName = env('DEVELOPER_NAME', 'Super Developer');
 
-        User::updateOrCreate(['email' => 'wahyukurniawan101630@gmail.com'], [
-            'name' => 'Super Developer',
-            'password' => bcrypt('Script42hyu42'),
+        User::updateOrCreate(['email' => $devEmail], [
+            'name' => $devName,
+            'password' => bcrypt($devPassword),
             'role' => 'developer',
             'plan' => 'pro',
+            'email_verified_at' => now(),
         ]);
 
-        User::updateOrCreate(['email' => 'sales@autoshow.id'], [
-            'name' => 'Sales Demo',
-            'password' => bcrypt('password'),
-            'role' => 'sales',
-            'plan' => 'regular',
-        ]);
+        if (env('SEED_MOCK_DATA', false) || app()->environment('local')) {
+            User::updateOrCreate(['email' => 'sales@autoshow.id'], [
+                'name' => 'Sales Demo',
+                'password' => bcrypt('password'),
+                'role' => 'sales',
+                'plan' => 'regular',
+                'email_verified_at' => now(),
+            ]);
 
-        $this->call([
-            \Database\Seeders\AnalyticsSeeder::class,
-        ]);
+            $this->call([
+                \Database\Seeders\ProjectSeeder::class,
+                \Database\Seeders\PostSeeder::class,
+                \Database\Seeders\AnalyticsSeeder::class,
+            ]);
+        }
     }
 }

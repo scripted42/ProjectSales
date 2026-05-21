@@ -92,6 +92,7 @@
                 <aside class="proper-sidebar space-y-24">
                     
                     <!-- Consultant Expert Card -->
+                    @if($consultant)
                     <div class="bg-white border border-gray-100 rounded-[2rem] p-8 text-gray-900 relative overflow-hidden shadow-xl shadow-gray-100">
                         <div class="relative z-10">
                             <div class="flex items-center gap-4 mb-6">
@@ -107,6 +108,7 @@
                             </a>
                         </div>
                     </div>
+                    @endif
 
                     <!-- Related Stories -->
                     <div class="mt-12">
