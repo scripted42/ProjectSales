@@ -173,11 +173,56 @@ Route::get('/extract-storage', function (\Illuminate\Http\Request $request) {
             return "File storage_public.zip tidak ditemukan di base path server VPS.";
         }
         
+        $baseExtractPath = storage_path('app/public');
+        
+        // Bersihkan sisa ekstraksi sebelumnya yang salah format (nama file dengan backslash)
+        if (file_exists($baseExtractPath)) {
+            $files = scandir($baseExtractPath);
+            foreach ($files as $file) {
+                if (str_contains($file, '\\')) {
+                    @unlink($baseExtractPath . '/' . $file);
+                }
+            }
+        }
+        
+        // Ekstrak ZIP secara manual untuk memperbaiki Windows backslash separator di Linux
         $zip = new \ZipArchive;
         if ($zip->open($zipPath) === TRUE) {
-            $zip->extractTo(storage_path('app/public'));
+            for ($i = 0; $i < $zip->numFiles; $i++) {
+                $stat = $zip->statIndex($i);
+                $originalName = $stat['name'];
+                
+                // Konversi path separator Windows (\) menjadi Linux (/)
+                $normalizedName = str_replace('\\', '/', $originalName);
+                $targetPath = $baseExtractPath . '/' . $normalizedName;
+                
+                if (str_ends_with($normalizedName, '/')) {
+                    if (!file_exists($targetPath)) {
+                        mkdir($targetPath, 0755, true);
+                    }
+                } else {
+                    $dirName = dirname($targetPath);
+                    if (!file_exists($dirName)) {
+                        mkdir($dirName, 0755, true);
+                    }
+                    copy("zip://{$zipPath}#{$originalName}", $targetPath);
+                }
+            }
             $zip->close();
-            return "Sukses mengekstrak semua media/gambar ke storage VPS!";
+            
+            // Perbaiki symlink public/storage
+            $link = public_path('storage');
+            $target = storage_path('app/public');
+            if (is_link($link) || file_exists($link)) {
+                @unlink($link);
+            }
+            try {
+                app('files')->link($target, $link);
+            } catch (\Exception $e) {
+                @symlink($target, $link);
+            }
+            
+            return "Sukses mengekstrak semua media/gambar dengan perbaikan separator path dan membuat link public/storage!";
         } else {
             return "Gagal membuka file zip.";
         }
