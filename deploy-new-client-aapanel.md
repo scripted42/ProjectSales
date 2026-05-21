@@ -87,6 +87,11 @@ DEVELOPER_OTP_STATIC=123456
 
 DEPLOYMENT_KEY="kunci-keamanan-sales-b"  # Buat token acak khusus untuk Sales B
 SEED_MOCK_DATA=false                 # ⚠️ WAJIB FALSE! Agar database Sales B bersih tanpa data dummy/Sales A
+
+# ── AutoShow Real AI Settings ─────────────
+OPENROUTER_API_KEY=""                # API Key default OpenRouter (opsional)
+AI_DEFAULT_PROVIDER="openrouter"     # Pilihan: openrouter, deepseek, gemini, atau disabled
+AI_DEFAULT_MODEL="qwen/qwen-2-7b-instruct:free"
 ```
 4. Klik **Save** (Ctrl+S).
 

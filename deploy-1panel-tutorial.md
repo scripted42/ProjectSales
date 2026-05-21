@@ -187,6 +187,11 @@ DEVELOPER_OTP_STATIC=123456         # OTP statis alternatif jika dibutuhkan
 
 DEPLOYMENT_KEY="kunci-rahasia-anda"  # Token keamanan untuk inisialisasi route
 SEED_MOCK_DATA=false                # Set ke false untuk database bersih tanpa data demo
+
+# ── AutoShow Real AI Settings ─────────────
+OPENROUTER_API_KEY=""                # API Key default OpenRouter (opsional)
+AI_DEFAULT_PROVIDER="openrouter"     # Pilihan: openrouter, deepseek, gemini, atau disabled
+AI_DEFAULT_MODEL="qwen/qwen-2-7b-instruct:free"
 ```
 
 > [!WARNING]

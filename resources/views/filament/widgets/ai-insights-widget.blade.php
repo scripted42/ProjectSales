@@ -10,7 +10,18 @@
                     <x-heroicon-s-sparkles class="h-6 w-6" />
                 </div>
                 <div>
-                    <h2 class="text-lg font-black tracking-tight text-gray-900 dark:text-white">AutoShow AI Insights</h2>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <h2 class="text-lg font-black tracking-tight text-gray-900 dark:text-white">AutoShow AI Insights</h2>
+                        @if($is_real_ai)
+                            <span class="inline-flex items-center rounded-full bg-indigo-100 px-2 py-0.5 text-[10px] font-bold text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300">
+                                ✨ Powered by Qwen AI
+                            </span>
+                        @else
+                            <span class="inline-flex items-center rounded-full bg-gray-150 px-2 py-0.5 text-[10px] font-bold text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                                📊 Rule-Based
+                            </span>
+                        @endif
+                    </div>
                     <p class="text-xs font-semibold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">Analitik & Kesimpulan Otomatis</p>
                 </div>
             </div>
