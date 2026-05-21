@@ -72,6 +72,65 @@ Route::get('/buat-admin', function () {
     return "User Developer Siap! Email: admin@showroom.com | Password: password";
 });
 
+// Route untuk menyalin data dari database.sqlite ke MySQL
+Route::get('/import-sqlite', function () {
+    try {
+        $sqlitePath = database_path('database.sqlite');
+        if (!file_exists($sqlitePath)) {
+            return "File database.sqlite tidak ditemukan di folder database/ di server VPS Anda. Silakan upload terlebih dahulu menggunakan aaPanel File Manager.";
+        }
+
+        // Connect to SQLite
+        $sqlite = new \PDO("sqlite:" . $sqlitePath);
+        $sqlite->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+        // List tables to copy
+        $tables = [
+            'users',
+            'cars',
+            'consultants',
+            'galleries',
+            'videos',
+            'promos',
+            'leads',
+            'test_drive_bookings',
+            'site_logs',
+            'settings',
+            'posts'
+        ];
+
+        $output = "";
+
+        // Truncate tables in MySQL and copy data
+        foreach ($tables as $table) {
+            // Get data from SQLite
+            $stmt = $sqlite->query("SELECT * FROM {$table}");
+            $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+            if (empty($rows)) {
+                $output .= "Tabel {$table}: Kosong, dilewati.<br>";
+                continue;
+            }
+
+            // Truncate MySQL table
+            \DB::statement("SET FOREIGN_KEY_CHECKS=0;");
+            \DB::table($table)->truncate();
+            \DB::statement("SET FOREIGN_KEY_CHECKS=1;");
+
+            // Insert into MySQL
+            foreach ($rows as $row) {
+                \DB::table($table)->insert($row);
+            }
+
+            $output .= "Tabel {$table}: Sukses menyalin " . count($rows) . " data.<br>";
+        }
+
+        return "<strong>Sukses Migrasi Data SQLite ke MySQL!</strong><br><br>" . $output;
+    } catch (\Exception $e) {
+        return "Error: " . $e->getMessage();
+    }
+});
+
 // 3. Membersihkan Cache & Hapus Sisa Menu Lama
 Route::get('/storage-link', function () {
     $target = storage_path('app/public');
