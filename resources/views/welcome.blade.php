@@ -322,6 +322,8 @@
             </div>
         </div>
     </section>
+    @endif
+
     @if(isset($testimonials) && $testimonials->count() > 0)
     <!-- Testimonials Section -->
     <section id="testimonials" class="py-16 md:py-24 bg-white overflow-hidden relative">
