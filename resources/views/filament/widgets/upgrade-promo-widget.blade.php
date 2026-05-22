@@ -1,5 +1,5 @@
 <x-filament-widgets::widget>
-    <div class="upgrade-promo-container">
+    <div class="upgrade-promo-container upgrade-promo-widget">
         <style>
             .upgrade-promo-container {
                 font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
