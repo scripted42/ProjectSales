@@ -22,8 +22,9 @@ class LandingPageController extends Controller
             ->where('published_at', '<=', now())
             ->latest('published_at')
             ->get();
+        $testimonials = \App\Models\Testimonial::where('is_active', true)->latest()->get();
 
-        return view('welcome', compact('cars', 'galleries', 'consultant', 'video', 'popupVideo', 'posts'));
+        return view('welcome', compact('cars', 'galleries', 'consultant', 'video', 'popupVideo', 'posts', 'testimonials'));
     }
 
     public function show(Car $car)
