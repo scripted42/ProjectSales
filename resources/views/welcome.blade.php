@@ -339,87 +339,176 @@
             <!-- Right Gradient Mask -->
             <div class="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
 
+            @php
+                // Ensure we have enough items to fill the screen width for a smooth loop
+                $baseItems = collect();
+                while($baseItems->count() < 8 && $testimonials->count() > 0) {
+                    $baseItems = $baseItems->merge($testimonials);
+                }
+            @endphp
+
             <!-- Top Row (Right to Left) -->
-            <div class="flex animate-marquee gap-8 hover:cursor-grab active:cursor-grabbing px-4" style="width: 200%; white-space: nowrap;">
-                @php
-                    $scrollingItems = $testimonials->merge($testimonials)->merge($testimonials);
-                @endphp
-                @foreach($scrollingItems as $testimonial)
-                    <div class="relative flex flex-col justify-between pt-14 pb-8 px-8 bg-[#f3f4f6] rounded shadow-sm hover:shadow-lg transition-all duration-300 flex-shrink-0" style="width: 350px; white-space: normal;">
-                        <!-- Overlapping Image -->
-                        <div class="absolute -top-12 left-1/2 transform -translate-x-1/2">
-                            <div class="w-24 h-24 rounded-full p-1.5 bg-white shadow-sm">
-                                @if($testimonial->image)
-                                    <img src="{{ asset('storage/' . $testimonial->image) }}" 
-                                         alt="{{ $testimonial->name }}" 
-                                         class="w-full h-full rounded-full object-cover"
-                                         onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name={{ urlencode($testimonial->name) }}&background=EBF8FF&color=2B6CB0';">
-                                @else
-                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($testimonial->name) }}&background=EBF8FF&color=2B6CB0" 
-                                         alt="{{ $testimonial->name }}" 
-                                         class="w-full h-full rounded-full object-cover">
+            <div class="flex w-max animate-marquee hover:cursor-grab active:cursor-grabbing">
+                <!-- Set 1 -->
+                <div class="flex gap-8 px-4 shrink-0">
+                    @foreach($baseItems as $testimonial)
+                        <div class="relative flex flex-col justify-between pt-14 pb-8 px-8 bg-[#f3f4f6] rounded shadow-sm hover:shadow-lg transition-all duration-300 flex-shrink-0" style="width: 350px; white-space: normal;">
+                            <!-- Overlapping Image -->
+                            <div class="absolute -top-12 left-1/2 transform -translate-x-1/2">
+                                <div class="w-24 h-24 rounded-full p-1.5 bg-white shadow-sm">
+                                    @if($testimonial->image)
+                                        <img src="{{ asset('storage/' . $testimonial->image) }}" 
+                                             alt="{{ $testimonial->name }}" 
+                                             class="w-full h-full rounded-full object-cover"
+                                             onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name={{ urlencode($testimonial->name) }}&background=EBF8FF&color=2B6CB0';">
+                                    @else
+                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($testimonial->name) }}&background=EBF8FF&color=2B6CB0" 
+                                             alt="{{ $testimonial->name }}" 
+                                             class="w-full h-full rounded-full object-cover">
+                                    @endif
+                                </div>
+                            </div>
+                            
+                            <div class="text-center mt-2 flex-grow">
+                                <p class="text-gray-600 text-[15px] leading-relaxed">
+                                    <span class="text-orange-500 text-3xl font-serif font-bold align-bottom leading-none mr-1">“</span>
+                                    {{ $testimonial->quote }}
+                                    <span class="text-orange-500 text-3xl font-serif font-bold align-bottom leading-none ml-1">”</span>
+                                </p>
+                            </div>
+                            
+                            <div class="text-center mt-6">
+                                <h4 class="font-bold text-orange-500 text-lg inline-block">{{ $testimonial->name }}</h4>
+                                @if($testimonial->title)
+                                    <span class="text-xs text-gray-500 font-semibold inline-block ml-1">{{ $testimonial->title }}</span>
                                 @endif
                             </div>
                         </div>
-                        
-                        <div class="text-center mt-2 flex-grow">
-                            <p class="text-gray-600 text-[15px] leading-relaxed">
-                                <span class="text-orange-500 text-3xl font-serif font-bold align-bottom leading-none mr-1">“</span>
-                                {{ $testimonial->quote }}
-                                <span class="text-orange-500 text-3xl font-serif font-bold align-bottom leading-none ml-1">”</span>
-                            </p>
+                    @endforeach
+                </div>
+                <!-- Set 2 (Duplicate for seamless loop) -->
+                <div class="flex gap-8 px-4 shrink-0">
+                    @foreach($baseItems as $testimonial)
+                        <div class="relative flex flex-col justify-between pt-14 pb-8 px-8 bg-[#f3f4f6] rounded shadow-sm hover:shadow-lg transition-all duration-300 flex-shrink-0" style="width: 350px; white-space: normal;">
+                            <!-- Overlapping Image -->
+                            <div class="absolute -top-12 left-1/2 transform -translate-x-1/2">
+                                <div class="w-24 h-24 rounded-full p-1.5 bg-white shadow-sm">
+                                    @if($testimonial->image)
+                                        <img src="{{ asset('storage/' . $testimonial->image) }}" 
+                                             alt="{{ $testimonial->name }}" 
+                                             class="w-full h-full rounded-full object-cover"
+                                             onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name={{ urlencode($testimonial->name) }}&background=EBF8FF&color=2B6CB0';">
+                                    @else
+                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($testimonial->name) }}&background=EBF8FF&color=2B6CB0" 
+                                             alt="{{ $testimonial->name }}" 
+                                             class="w-full h-full rounded-full object-cover">
+                                    @endif
+                                </div>
+                            </div>
+                            
+                            <div class="text-center mt-2 flex-grow">
+                                <p class="text-gray-600 text-[15px] leading-relaxed">
+                                    <span class="text-orange-500 text-3xl font-serif font-bold align-bottom leading-none mr-1">“</span>
+                                    {{ $testimonial->quote }}
+                                    <span class="text-orange-500 text-3xl font-serif font-bold align-bottom leading-none ml-1">”</span>
+                                </p>
+                            </div>
+                            
+                            <div class="text-center mt-6">
+                                <h4 class="font-bold text-orange-500 text-lg inline-block">{{ $testimonial->name }}</h4>
+                                @if($testimonial->title)
+                                    <span class="text-xs text-gray-500 font-semibold inline-block ml-1">{{ $testimonial->title }}</span>
+                                @endif
+                            </div>
                         </div>
-                        
-                        <div class="text-center mt-6">
-                            <h4 class="font-bold text-orange-500 text-lg inline-block">{{ $testimonial->name }}</h4>
-                            @if($testimonial->title)
-                                <span class="text-xs text-gray-500 font-semibold inline-block ml-1">{{ $testimonial->title }}</span>
-                            @endif
-                        </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
 
             <!-- Bottom Row (Left to Right) -->
             @if($testimonials->count() > 3)
-            <div class="flex animate-marquee-reverse gap-8 hover:cursor-grab active:cursor-grabbing px-4" style="width: 200%; white-space: nowrap; margin-left: -50%; margin-top: 40px;">
-                @php
-                    $scrollingItemsReverse = $testimonials->reverse()->merge($testimonials->reverse())->merge($testimonials->reverse());
-                @endphp
-                @foreach($scrollingItemsReverse as $testimonial)
-                    <div class="relative flex flex-col justify-between pt-14 pb-8 px-8 bg-[#f3f4f6] rounded shadow-sm hover:shadow-lg transition-all duration-300 flex-shrink-0" style="width: 350px; white-space: normal;">
-                        <!-- Overlapping Image -->
-                        <div class="absolute -top-12 left-1/2 transform -translate-x-1/2">
-                            <div class="w-24 h-24 rounded-full p-1.5 bg-white shadow-sm">
-                                @if($testimonial->image)
-                                    <img src="{{ asset('storage/' . $testimonial->image) }}" 
-                                         alt="{{ $testimonial->name }}" 
-                                         class="w-full h-full rounded-full object-cover"
-                                         onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name={{ urlencode($testimonial->name) }}&background=EBF8FF&color=2B6CB0';">
-                                @else
-                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($testimonial->name) }}&background=EBF8FF&color=2B6CB0" 
-                                         alt="{{ $testimonial->name }}" 
-                                         class="w-full h-full rounded-full object-cover">
+            @php
+                $baseItemsReverse = collect();
+                $reversedOriginal = $testimonials->reverse();
+                while($baseItemsReverse->count() < 8 && $reversedOriginal->count() > 0) {
+                    $baseItemsReverse = $baseItemsReverse->merge($reversedOriginal);
+                }
+            @endphp
+            <div class="flex w-max animate-marquee-reverse hover:cursor-grab active:cursor-grabbing" style="margin-top: 40px;">
+                <!-- Set 1 -->
+                <div class="flex gap-8 px-4 shrink-0">
+                    @foreach($baseItemsReverse as $testimonial)
+                        <div class="relative flex flex-col justify-between pt-14 pb-8 px-8 bg-[#f3f4f6] rounded shadow-sm hover:shadow-lg transition-all duration-300 flex-shrink-0" style="width: 350px; white-space: normal;">
+                            <!-- Overlapping Image -->
+                            <div class="absolute -top-12 left-1/2 transform -translate-x-1/2">
+                                <div class="w-24 h-24 rounded-full p-1.5 bg-white shadow-sm">
+                                    @if($testimonial->image)
+                                        <img src="{{ asset('storage/' . $testimonial->image) }}" 
+                                             alt="{{ $testimonial->name }}" 
+                                             class="w-full h-full rounded-full object-cover"
+                                             onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name={{ urlencode($testimonial->name) }}&background=EBF8FF&color=2B6CB0';">
+                                    @else
+                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($testimonial->name) }}&background=EBF8FF&color=2B6CB0" 
+                                             alt="{{ $testimonial->name }}" 
+                                             class="w-full h-full rounded-full object-cover">
+                                    @endif
+                                </div>
+                            </div>
+                            
+                            <div class="text-center mt-2 flex-grow">
+                                <p class="text-gray-600 text-[15px] leading-relaxed">
+                                    <span class="text-orange-500 text-3xl font-serif font-bold align-bottom leading-none mr-1">“</span>
+                                    {{ $testimonial->quote }}
+                                    <span class="text-orange-500 text-3xl font-serif font-bold align-bottom leading-none ml-1">”</span>
+                                </p>
+                            </div>
+                            
+                            <div class="text-center mt-6">
+                                <h4 class="font-bold text-orange-500 text-lg inline-block">{{ $testimonial->name }}</h4>
+                                @if($testimonial->title)
+                                    <span class="text-xs text-gray-500 font-semibold inline-block ml-1">{{ $testimonial->title }}</span>
                                 @endif
                             </div>
                         </div>
-                        
-                        <div class="text-center mt-2 flex-grow">
-                            <p class="text-gray-600 text-[15px] leading-relaxed">
-                                <span class="text-orange-500 text-3xl font-serif font-bold align-bottom leading-none mr-1">“</span>
-                                {{ $testimonial->quote }}
-                                <span class="text-orange-500 text-3xl font-serif font-bold align-bottom leading-none ml-1">”</span>
-                            </p>
+                    @endforeach
+                </div>
+                <!-- Set 2 (Duplicate for seamless loop) -->
+                <div class="flex gap-8 px-4 shrink-0">
+                    @foreach($baseItemsReverse as $testimonial)
+                        <div class="relative flex flex-col justify-between pt-14 pb-8 px-8 bg-[#f3f4f6] rounded shadow-sm hover:shadow-lg transition-all duration-300 flex-shrink-0" style="width: 350px; white-space: normal;">
+                            <!-- Overlapping Image -->
+                            <div class="absolute -top-12 left-1/2 transform -translate-x-1/2">
+                                <div class="w-24 h-24 rounded-full p-1.5 bg-white shadow-sm">
+                                    @if($testimonial->image)
+                                        <img src="{{ asset('storage/' . $testimonial->image) }}" 
+                                             alt="{{ $testimonial->name }}" 
+                                             class="w-full h-full rounded-full object-cover"
+                                             onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name={{ urlencode($testimonial->name) }}&background=EBF8FF&color=2B6CB0';">
+                                    @else
+                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($testimonial->name) }}&background=EBF8FF&color=2B6CB0" 
+                                             alt="{{ $testimonial->name }}" 
+                                             class="w-full h-full rounded-full object-cover">
+                                    @endif
+                                </div>
+                            </div>
+                            
+                            <div class="text-center mt-2 flex-grow">
+                                <p class="text-gray-600 text-[15px] leading-relaxed">
+                                    <span class="text-orange-500 text-3xl font-serif font-bold align-bottom leading-none mr-1">“</span>
+                                    {{ $testimonial->quote }}
+                                    <span class="text-orange-500 text-3xl font-serif font-bold align-bottom leading-none ml-1">”</span>
+                                </p>
+                            </div>
+                            
+                            <div class="text-center mt-6">
+                                <h4 class="font-bold text-orange-500 text-lg inline-block">{{ $testimonial->name }}</h4>
+                                @if($testimonial->title)
+                                    <span class="text-xs text-gray-500 font-semibold inline-block ml-1">{{ $testimonial->title }}</span>
+                                @endif
+                            </div>
                         </div>
-                        
-                        <div class="text-center mt-6">
-                            <h4 class="font-bold text-orange-500 text-lg inline-block">{{ $testimonial->name }}</h4>
-                            @if($testimonial->title)
-                                <span class="text-xs text-gray-500 font-semibold inline-block ml-1">{{ $testimonial->title }}</span>
-                            @endif
-                        </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
             @endif
         </div>
