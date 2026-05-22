@@ -32,12 +32,19 @@ class TrackVisits
             }
 
             $ip = $request->ip();
+            $region = SiteLog::getRegionFromIp($ip);
+            
+            // Skip logging for foreign visitors (bots/VPNs outside target ID market)
+            if ($region === 'Foreign') {
+                return $next($request);
+            }
+            
             SiteLog::create([
                 'log_type' => 'visit',
                 'source' => $source,
                 'ip_address' => $ip,
                 'user_agent' => $request->userAgent(),
-                'region' => SiteLog::getRegionFromIp($ip),
+                'region' => $region,
                 'created_at' => now(),
             ]);
         }

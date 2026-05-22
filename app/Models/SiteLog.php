@@ -31,6 +31,10 @@ class SiteLog extends Model
                 if ($response->successful()) {
                     $data = $response->json();
                     if (($data['status'] ?? '') === 'success') {
+                        $countryCode = $data['countryCode'] ?? '';
+                        if ($countryCode !== 'ID') {
+                            return 'Foreign';
+                        }
                         return $data['regionName'] ?? $data['city'] ?? 'Unknown';
                     }
                 }

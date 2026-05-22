@@ -29,13 +29,18 @@ Route::get('/track-wa', function (\Illuminate\Http\Request $request) {
     }
 
     $ip = $request->ip();
+    $region = \App\Models\SiteLog::getRegionFromIp($ip);
+    if ($region === 'Foreign') {
+        $region = 'Luar Negeri';
+    }
+
     \App\Models\SiteLog::create([
         'log_type' => 'wa_click',
         'source' => $source,
         'car_id' => $request->car_id,
         'ip_address' => $ip,
         'user_agent' => $request->userAgent(),
-        'region' => \App\Models\SiteLog::getRegionFromIp($ip),
+        'region' => $region,
         'created_at' => now(),
     ]);
 

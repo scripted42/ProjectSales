@@ -54,12 +54,16 @@ class TestDriveForm extends Component
         ]);
 
         $ip = request()->ip();
+        $region = \App\Models\SiteLog::getRegionFromIp($ip);
+        if ($region === 'Foreign') {
+            $region = 'Luar Negeri';
+        }
         \App\Models\SiteLog::create([
             'log_type' => 'test_drive',
             'car_id' => $this->car_id,
             'ip_address' => $ip,
             'user_agent' => request()->userAgent(),
-            'region' => \App\Models\SiteLog::getRegionFromIp($ip),
+            'region' => $region,
             'created_at' => now(),
         ]);
 
