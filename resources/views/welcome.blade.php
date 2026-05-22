@@ -322,8 +322,6 @@
             </div>
         </div>
     </section>
-    @endif
-
     @if(isset($testimonials) && $testimonials->count() > 0)
     <!-- Testimonials Section -->
     <section id="testimonials" class="py-16 md:py-24 bg-white overflow-hidden relative">
@@ -332,19 +330,19 @@
             <div class="h-1.5 w-24 bg-[#002c5f] mx-auto rounded-full mt-6"></div>
         </div>
 
-        <div class="relative w-full flex flex-col gap-6">
+        <div class="relative w-full flex flex-col gap-6" style="overflow: hidden;">
             <!-- Left Gradient Mask -->
             <div class="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
             <!-- Right Gradient Mask -->
             <div class="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
 
             <!-- Top Row (Right to Left) -->
-            <div class="flex whitespace-nowrap animate-marquee w-[200%] gap-6 hover:cursor-grab active:cursor-grabbing">
+            <div class="flex animate-marquee gap-6 hover:cursor-grab active:cursor-grabbing" style="width: 200%; white-space: nowrap;">
                 @php
                     $scrollingItems = $testimonials->merge($testimonials)->merge($testimonials);
                 @endphp
                 @foreach($scrollingItems as $testimonial)
-                    <div class="inline-flex flex-col justify-between w-[350px] p-8 bg-gray-50 border border-gray-100 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 flex-shrink-0 whitespace-normal">
+                    <div class="flex flex-col justify-between p-8 bg-gray-50 border border-gray-100 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 flex-shrink-0" style="width: 350px; white-space: normal;">
                         <div>
                             <svg class="w-8 h-8 text-blue-500 mb-6" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
                             <p class="text-gray-700 text-[15px] font-medium leading-relaxed mb-8">
@@ -353,11 +351,14 @@
                         </div>
                         <div class="flex items-center gap-4 mt-auto">
                             @if($testimonial->image)
-                                <img src="{{ asset('storage/' . $testimonial->image) }}" alt="{{ $testimonial->name }}" class="w-12 h-12 rounded-full object-cover shadow-sm">
+                                <img src="{{ asset('storage/' . $testimonial->image) }}" 
+                                     alt="{{ $testimonial->name }}" 
+                                     class="w-12 h-12 rounded-full object-cover shadow-sm"
+                                     onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name={{ urlencode($testimonial->name) }}&background=EBF8FF&color=2B6CB0';">
                             @else
-                                <div class="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-lg shadow-sm">
-                                    {{ substr($testimonial->name, 0, 1) }}
-                                </div>
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode($testimonial->name) }}&background=EBF8FF&color=2B6CB0" 
+                                     alt="{{ $testimonial->name }}" 
+                                     class="w-12 h-12 rounded-full object-cover shadow-sm">
                             @endif
                             <div>
                                 <h4 class="font-bold text-gray-900 text-sm">{{ $testimonial->name }}</h4>
@@ -372,12 +373,12 @@
 
             <!-- Bottom Row (Left to Right) -->
             @if($testimonials->count() > 3)
-            <div class="flex whitespace-nowrap animate-marquee-reverse w-[200%] gap-6 hover:cursor-grab active:cursor-grabbing" style="margin-left: -50%;">
+            <div class="flex animate-marquee-reverse gap-6 hover:cursor-grab active:cursor-grabbing" style="width: 200%; white-space: nowrap; margin-left: -50%;">
                 @php
                     $scrollingItemsReverse = $testimonials->reverse()->merge($testimonials->reverse())->merge($testimonials->reverse());
                 @endphp
                 @foreach($scrollingItemsReverse as $testimonial)
-                    <div class="inline-flex flex-col justify-between w-[350px] p-8 bg-gray-50 border border-gray-100 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 flex-shrink-0 whitespace-normal">
+                    <div class="flex flex-col justify-between p-8 bg-gray-50 border border-gray-100 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 flex-shrink-0" style="width: 350px; white-space: normal;">
                         <div>
                             <svg class="w-8 h-8 text-blue-500 mb-6" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
                             <p class="text-gray-700 text-[15px] font-medium leading-relaxed mb-8">
@@ -386,11 +387,14 @@
                         </div>
                         <div class="flex items-center gap-4 mt-auto">
                             @if($testimonial->image)
-                                <img src="{{ asset('storage/' . $testimonial->image) }}" alt="{{ $testimonial->name }}" class="w-12 h-12 rounded-full object-cover shadow-sm">
+                                <img src="{{ asset('storage/' . $testimonial->image) }}" 
+                                     alt="{{ $testimonial->name }}" 
+                                     class="w-12 h-12 rounded-full object-cover shadow-sm"
+                                     onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name={{ urlencode($testimonial->name) }}&background=EBF8FF&color=2B6CB0';">
                             @else
-                                <div class="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-lg shadow-sm">
-                                    {{ substr($testimonial->name, 0, 1) }}
-                                </div>
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode($testimonial->name) }}&background=EBF8FF&color=2B6CB0" 
+                                     alt="{{ $testimonial->name }}" 
+                                     class="w-12 h-12 rounded-full object-cover shadow-sm">
                             @endif
                             <div>
                                 <h4 class="font-bold text-gray-900 text-sm">{{ $testimonial->name }}</h4>
