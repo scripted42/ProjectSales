@@ -100,7 +100,7 @@ class SystemSettings extends Page
                             ->placeholder('Masukkan API Key Anda')
                             ->helperText('Biarkan kosong jika ingin menggunakan API Key default dari sistem (.env)')
                             ->visible(fn ($get) => auth()->user()?->role === 'sales' || (auth()->user()?->role === 'developer' && $get('ai_provider') !== 'disabled')),
-                    ])->columns(fn () => auth()->user()?->role === 'developer' ? 3 : 1),
+                    ])->columns(auth()->user()?->role === 'developer' ? 3 : 1),
             ])
             ->statePath('data');
     }
