@@ -121,6 +121,19 @@
                         </div>
                     @endforeach
                 </div>
+                <div class="p-4 border-b border-gray-100 dark:border-gray-800">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xs font-bold tracking-wider text-gray-500 uppercase">Top Locations</h2>
+                        <span class="text-xs text-gray-400">Visitors</span>
+                    </div>
+                    @foreach($locations as $l)
+                        <div class="relative flex items-center justify-between p-1.5 mb-1 rounded text-sm">
+                            <div class="absolute left-0 top-0 bottom-0 bg-amber-50 dark:bg-amber-900/20 rounded" style="width: {{ $l->percentage }}%; z-index: 0;"></div>
+                            <span class="relative z-10 text-gray-700 dark:text-gray-300">{{ $l->region_name }}</span>
+                            <span class="relative z-10 font-bold">{{ $l->total }}</span>
+                        </div>
+                    @endforeach
+                </div>
                 <div class="p-4">
                     <h2 class="text-xs font-bold tracking-wider text-gray-500 uppercase mb-4">Devices</h2>
                     @foreach($devices as $d)

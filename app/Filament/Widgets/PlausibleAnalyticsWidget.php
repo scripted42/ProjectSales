@@ -97,6 +97,21 @@ class PlausibleAnalyticsWidget extends Widget
             (object)['name' => 'Mobile', 'total' => $mobileCount, 'percentage' => $totalDevices > 0 ? ($mobileCount / $totalDevices) * 100 : 0]
         ])->sortByDesc('total');
 
+        // --- TOP LOCATIONS ---
+        $locationsQuery = SiteLog::where('log_type', 'visit')
+            ->select('region', DB::raw('count(*) as total'))
+            ->groupBy('region')
+            ->orderBy('total', 'desc')
+            ->limit(5)
+            ->get();
+            
+        $totalAllTimeLocations = $locationsQuery->sum('total');
+        $locations = $locationsQuery->map(function($item) use ($totalAllTimeLocations) {
+            $item->region_name = $item->region ?: 'Tidak Diketahui';
+            $item->percentage = $totalAllTimeLocations > 0 ? ($item->total / $totalAllTimeLocations) * 100 : 0;
+            return $item;
+        });
+
         return [
             'chartData' => json_encode([
                 'labels' => $labels,
@@ -127,7 +142,8 @@ class PlausibleAnalyticsWidget extends Widget
                 ]
             ],
             'sources' => $sources,
-            'devices' => $devices
+            'devices' => $devices,
+            'locations' => $locations
         ];
     }
 

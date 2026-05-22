@@ -53,11 +53,13 @@ class TestDriveForm extends Component
             })(),
         ]);
 
+        $ip = request()->ip();
         \App\Models\SiteLog::create([
             'log_type' => 'test_drive',
             'car_id' => $this->car_id,
-            'ip_address' => request()->ip(),
+            'ip_address' => $ip,
             'user_agent' => request()->userAgent(),
+            'region' => \App\Models\SiteLog::getRegionFromIp($ip),
             'created_at' => now(),
         ]);
 

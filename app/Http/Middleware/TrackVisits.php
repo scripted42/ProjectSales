@@ -31,11 +31,13 @@ class TrackVisits
                 elseif (str_contains($referer, 'tiktok.com')) $source = 'tiktok';
             }
 
+            $ip = $request->ip();
             SiteLog::create([
                 'log_type' => 'visit',
                 'source' => $source,
-                'ip_address' => $request->ip(),
+                'ip_address' => $ip,
                 'user_agent' => $request->userAgent(),
+                'region' => SiteLog::getRegionFromIp($ip),
                 'created_at' => now(),
             ]);
         }

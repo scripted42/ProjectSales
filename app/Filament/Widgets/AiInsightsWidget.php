@@ -75,6 +75,18 @@ class AiInsightsWidget extends Widget
         $lastGallery = Gallery::orderBy('updated_at', 'desc')->first();
         $daysSinceGallery = $lastGallery ? $lastGallery->updated_at->diffInDays(now()) : null;
 
+        // Top 3 Wilayah Kunjungan
+        $topRegions = SiteLog::where('log_type', 'visit')
+            ->whereNotNull('region')
+            ->select('region', DB::raw('count(*) as total'))
+            ->groupBy('region')
+            ->orderBy('total', 'desc')
+            ->limit(3)
+            ->pluck('region')
+            ->toArray();
+
+        $topRegionsStr = !empty($topRegions) ? implode(', ', $topRegions) : 'Tidak ada data';
+
         // Susun payload untuk AI
         $analyticsData = [
             'total_visits' => $totalVisits,
@@ -83,6 +95,7 @@ class AiInsightsWidget extends Widget
             'peak_hour' => $peakHourRange,
             'trending_car' => $trendingCarName,
             'days_since_gallery' => $daysSinceGallery,
+            'top_regions' => $topRegionsStr,
         ];
 
         // 2. AMBIL DARI REAL AI SERVICE (Dengan Cache agar performa dashboard responsif)

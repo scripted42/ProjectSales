@@ -28,12 +28,14 @@ Route::get('/track-wa', function (\Illuminate\Http\Request $request) {
         elseif (str_contains($referer, 'tiktok.com')) $source = 'tiktok';
     }
 
+    $ip = $request->ip();
     \App\Models\SiteLog::create([
         'log_type' => 'wa_click',
         'source' => $source,
         'car_id' => $request->car_id,
-        'ip_address' => $request->ip(),
+        'ip_address' => $ip,
         'user_agent' => $request->userAgent(),
+        'region' => \App\Models\SiteLog::getRegionFromIp($ip),
         'created_at' => now(),
     ]);
 

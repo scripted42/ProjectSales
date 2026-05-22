@@ -157,6 +157,8 @@ class AiService
             ? 'Belum pernah mengunggah foto (Galeri kosong)'
             : "{$daysSinceGallery} hari yang lalu";
 
+        $topRegions = $data['top_regions'] ?? 'Tidak ada data';
+
         return "Anda adalah AutoShow AI, asisten analis bisnis otomotif profesional yang bertugas menganalisis data performa dealer mobil dan memberikan rekomendasi taktis bagi sales/dealer owner.
 Tugas Anda adalah menganalisis data berikut dan memberikan 3 hingga 4 saran pemasaran/penjualan taktis dalam Bahasa Indonesia yang alami, profesional, mudah dipahami, dan relevan dengan industri otomotif.
 
@@ -167,6 +169,7 @@ Tugas Anda adalah menganalisis data berikut dan memberikan 3 hingga 4 saran pema
 - Jam Kunjungan Terramai: {$peakHourVal}
 - Mobil Paling Populer (paling sering dilihat minggu ini): {$trendingCar}
 - Terakhir Update Galeri Foto: {$galleryStatus}
+- Wilayah Asal Pengunjung Terbanyak: {$topRegions}
 
 === ATURAN PENTING BAHASA & KONTEN ===
 1. Gunakan Bahasa Indonesia formal dan profesional yang alami untuk sales mobil (contoh: gunakan istilah seperti 'calon pembeli', 'prospek', 'konversi', 'tipe mobil', 'leads').
@@ -175,6 +178,7 @@ Tugas Anda adalah menganalisis data berikut dan memberikan 3 hingga 4 saran pema
    - 'Optimalkan Jam Padat Kunjungan': 'Posting brosur promo atau update foto mobil di media sosial pada pukul {$peakHourVal} untuk menjangkau prospek saat mereka sedang aktif browsing.'
    - 'Fokus Promosi Unit Trending': 'Mobil {$trendingCar} sedang banyak diminati calon pembeli. Buat penawaran diskon khusus atau cicilan ringan untuk tipe ini di Instagram.'
    - 'Segarkan Konten Galeri': 'Update foto unit ready stock di galeri untuk meyakinkan calon pembeli bahwa unit yang mereka cari tersedia.'
+   - 'Target Promosi Wilayah': 'Sebagian besar pengunjung Anda berasal dari {$topRegions}. Lakukan pendekatan promosi lokal atau iklan terarah ke area tersebut.'
 4. Setiap saran harus terdiri dari 'title' (judul singkat, maks 4 kata) dan 'text' (detail saran konkrit, maks 2 kalimat).
 
 === FORMAT KELUARAN ===
