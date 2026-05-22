@@ -86,21 +86,20 @@ class SystemSettings extends Page
                                 'gemini' => 'Google Gemini 1.5',
                             ])
                             ->required()
-                            ->reactive()
-                            ->visible(fn () => auth()->user()?->role === 'developer'),
+                            ->reactive(),
                         TextInput::make('ai_model')
                             ->label('Model AI')
                             ->placeholder('Contoh: openrouter/free')
                             ->helperText('Tentukan nama model yang digunakan.')
                             ->required(fn ($get) => $get('ai_provider') !== 'disabled')
-                            ->visible(fn ($get) => auth()->user()?->role === 'developer' && $get('ai_provider') !== 'disabled'),
+                            ->visible(fn ($get) => $get('ai_provider') !== 'disabled'),
                         TextInput::make('ai_api_key')
                             ->label('API Key')
                             ->password()
                             ->placeholder('Masukkan API Key Anda')
                             ->helperText('Biarkan kosong jika ingin menggunakan API Key default dari sistem (.env)')
-                            ->visible(fn ($get) => auth()->user()?->role === 'sales' || (auth()->user()?->role === 'developer' && $get('ai_provider') !== 'disabled')),
-                    ])->columns(auth()->user()?->role === 'developer' ? 3 : 1),
+                            ->visible(fn ($get) => $get('ai_provider') !== 'disabled'),
+                    ])->columns(3),
             ])
             ->statePath('data');
     }
@@ -110,15 +109,24 @@ class SystemSettings extends Page
         $data = $this->form->getState();
 
         if (auth()->user()?->role === 'sales') {
-            // Khusus client/sales, hanya simpan/update API Key
-            $value = $data['ai_api_key'] ?? '';
-            if (empty($value)) {
-                Setting::where('key', 'ai_api_key')->delete();
-            } else {
-                Setting::updateOrCreate(
-                    ['key' => 'ai_api_key'],
-                    ['value' => Crypt::encryptString($value)]
-                );
+            // Khusus client/sales, simpan semua field AI yang diubah
+            $aiKeys = ['ai_provider', 'ai_model', 'ai_api_key'];
+            foreach ($aiKeys as $key) {
+                if (array_key_exists($key, $data)) {
+                    $value = $data[$key];
+                    if ($key === 'ai_api_key') {
+                        if (empty($value)) {
+                            Setting::where('key', 'ai_api_key')->delete();
+                            continue;
+                        } else {
+                            $value = Crypt::encryptString($value);
+                        }
+                    }
+                    Setting::updateOrCreate(
+                        ['key' => $key],
+                        ['value' => $value]
+                    );
+                }
             }
         } else {
             // Untuk developer, simpan semua setelan
