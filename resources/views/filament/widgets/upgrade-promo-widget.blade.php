@@ -308,7 +308,7 @@
                         <svg class="upgrade-feature-icon icon-check" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                         </svg>
-                        <span>Pencadangan Data: <strong>Bulanan</strong></span>
+                        <span>Backup Data: <strong>Bulanan</strong></span>
                     </li>
                     <li class="upgrade-feature-item">
                         <svg class="upgrade-feature-icon icon-check" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor">
@@ -407,7 +407,7 @@
                         <svg class="upgrade-feature-icon icon-star" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                         </svg>
-                        <span>Pencadangan Data: <strong style="color: #f59e0b;">Mingguan (Lebih Aman)</strong></span>
+                        <span>Backup Data: <strong style="color: #f59e0b;">Mingguan (Lebih Aman)</strong></span>
                     </li>
                     <li class="upgrade-feature-item">
                         <svg class="upgrade-feature-icon icon-check" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor">
@@ -461,7 +461,7 @@
                     </li>
                 </ul>
 
-                <a href="https://wa.me/6281330135013?text=Halo%20Developer%2C%20saya%20tertarik%20upgrade%20ke%20paket%20PRO%20untuk%20aplikasi%20AutoShow%20Pro." 
+                <a href="https://wa.me/6285859444349?text=Halo%20Developer%2C%20saya%20tertarik%20upgrade%20ke%20paket%20PRO%20untuk%20aplikasi%20AutoShow%20Pro." 
                    target="_blank"
                    class="upgrade-button upgrade-button-pro">
                     UPGRADE SEKARANG 🚀
