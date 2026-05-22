@@ -61,6 +61,7 @@ class SystemSettings extends Page
             ->schema([
                 Section::make('Branding')
                     ->description('Atur identitas utama website di sini.')
+                    ->visible(fn () => auth()->user()?->role === 'developer')
                     ->schema([
                         TextInput::make('site_name')
                             ->label('Nama Showroom / Brand')
@@ -85,20 +86,21 @@ class SystemSettings extends Page
                                 'gemini' => 'Google Gemini 1.5',
                             ])
                             ->required()
-                            ->reactive(),
+                            ->reactive()
+                            ->visible(fn () => auth()->user()?->role === 'developer'),
                         TextInput::make('ai_model')
                             ->label('Model AI')
                             ->placeholder('Contoh: openrouter/free')
                             ->helperText('Tentukan nama model yang digunakan.')
                             ->required(fn ($get) => $get('ai_provider') !== 'disabled')
-                            ->visible(fn ($get) => $get('ai_provider') !== 'disabled'),
+                            ->visible(fn ($get) => auth()->user()?->role === 'developer' && $get('ai_provider') !== 'disabled'),
                         TextInput::make('ai_api_key')
                             ->label('API Key')
                             ->password()
                             ->placeholder('Masukkan API Key Anda')
                             ->helperText('Biarkan kosong jika ingin menggunakan API Key default dari sistem (.env)')
-                            ->visible(fn ($get) => $get('ai_provider') !== 'disabled'),
-                    ])->columns(3),
+                            ->visible(fn ($get) => auth()->user()?->role === 'sales' || (auth()->user()?->role === 'developer' && $get('ai_provider') !== 'disabled')),
+                    ])->columns(fn () => auth()->user()?->role === 'developer' ? 3 : 1),
             ])
             ->statePath('data');
     }
@@ -107,22 +109,34 @@ class SystemSettings extends Page
     {
         $data = $this->form->getState();
 
-        foreach ($data as $key => $value) {
-            if ($key === 'ai_api_key') {
-                if (empty($value)) {
-                    // Hapus jika kosong agar fallback ke env
-                    Setting::where('key', 'ai_api_key')->delete();
-                    continue;
-                } else {
-                    // Enkripsi API Key sebelum disimpan
-                    $value = Crypt::encryptString($value);
-                }
+        if (auth()->user()?->role === 'sales') {
+            // Khusus client/sales, hanya simpan/update API Key
+            $value = $data['ai_api_key'] ?? '';
+            if (empty($value)) {
+                Setting::where('key', 'ai_api_key')->delete();
+            } else {
+                Setting::updateOrCreate(
+                    ['key' => 'ai_api_key'],
+                    ['value' => Crypt::encryptString($value)]
+                );
             }
+        } else {
+            // Untuk developer, simpan semua setelan
+            foreach ($data as $key => $value) {
+                if ($key === 'ai_api_key') {
+                    if (empty($value)) {
+                        Setting::where('key', 'ai_api_key')->delete();
+                        continue;
+                    } else {
+                        $value = Crypt::encryptString($value);
+                    }
+                }
 
-            Setting::updateOrCreate(
-                ['key' => $key],
-                ['value' => $value]
-            );
+                Setting::updateOrCreate(
+                    ['key' => $key],
+                    ['value' => $value]
+                );
+            }
         }
 
         // Hapus cache AI insights untuk user ini agar langsung memuat ulang setelan baru
