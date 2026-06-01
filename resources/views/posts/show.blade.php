@@ -31,6 +31,15 @@
         }
     </style>
     @livewireStyles
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18166240942"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'AW-18166240942');
+    </script>
 </head>
 <body class="bg-white text-gray-900 antialiased overflow-x-hidden pt-24">
     
