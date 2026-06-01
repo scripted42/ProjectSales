@@ -30,6 +30,7 @@
             .proper-sidebar { position: sticky; top: 120px; }
         }
     </style>
+    @livewireStyles
 </head>
 <body class="bg-white text-gray-900 antialiased overflow-x-hidden pt-24">
     
@@ -150,5 +151,6 @@
         </div>
     </footer>
 
+    @livewireScripts
 </body>
 </html>

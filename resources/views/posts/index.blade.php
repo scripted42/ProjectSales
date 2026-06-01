@@ -23,6 +23,7 @@
             font-family: 'Outfit', sans-serif;
         }
     </style>
+    @livewireStyles
 </head>
 
 <body class="bg-white text-gray-900 antialiased overflow-x-hidden pt-24">
@@ -123,6 +124,7 @@
         </div>
     </footer>
 
+    @livewireScripts
 </body>
 
 </html>
