@@ -338,8 +338,8 @@
     <!-- Testimonials Section -->
     <section id="testimonials" class="py-16 md:py-24 bg-white overflow-hidden relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 text-center">
-            <h2 class="text-3xl md:text-5xl font-black mb-4 text-orange-500 uppercase tracking-widest">Testimonials</h2>
-            <div class="h-1 w-24 bg-orange-500 mx-auto mb-6"></div>
+            <h2 class="text-3xl md:text-5xl font-black mb-4 text-[#002c5f] uppercase tracking-widest">Testimonials</h2>
+            <div class="h-1 w-24 bg-[#002c5f] mx-auto mb-6"></div>
             <p class="text-gray-600">Apa kata mereka yang telah merasakan pelayanan terbaik kami.</p>
         </div>
 
@@ -381,14 +381,14 @@
                             
                             <div class="text-center mt-2 flex-grow">
                                 <p class="text-gray-600 text-[15px] leading-relaxed">
-                                    <span class="text-orange-500 text-3xl font-serif font-bold align-bottom leading-none mr-1">“</span>
+                                    <span class="text-[#002c5f] text-3xl font-serif font-bold align-bottom leading-none mr-1">“</span>
                                     {{ $testimonial->quote }}
-                                    <span class="text-orange-500 text-3xl font-serif font-bold align-bottom leading-none ml-1">”</span>
+                                    <span class="text-[#002c5f] text-3xl font-serif font-bold align-bottom leading-none ml-1">”</span>
                                 </p>
                             </div>
                             
                             <div class="text-center mt-6">
-                                <h4 class="font-bold text-orange-500 text-lg inline-block">{{ $testimonial->name }}</h4>
+                                <h4 class="font-bold text-[#002c5f] text-lg inline-block">{{ $testimonial->name }}</h4>
                                 @if($testimonial->title)
                                     <span class="text-xs text-gray-500 font-semibold inline-block ml-1">{{ $testimonial->title }}</span>
                                 @endif
@@ -418,14 +418,14 @@
                             
                             <div class="text-center mt-2 flex-grow">
                                 <p class="text-gray-600 text-[15px] leading-relaxed">
-                                    <span class="text-orange-500 text-3xl font-serif font-bold align-bottom leading-none mr-1">“</span>
+                                    <span class="text-[#002c5f] text-3xl font-serif font-bold align-bottom leading-none mr-1">“</span>
                                     {{ $testimonial->quote }}
-                                    <span class="text-orange-500 text-3xl font-serif font-bold align-bottom leading-none ml-1">”</span>
+                                    <span class="text-[#002c5f] text-3xl font-serif font-bold align-bottom leading-none ml-1">”</span>
                                 </p>
                             </div>
                             
                             <div class="text-center mt-6">
-                                <h4 class="font-bold text-orange-500 text-lg inline-block">{{ $testimonial->name }}</h4>
+                                <h4 class="font-bold text-[#002c5f] text-lg inline-block">{{ $testimonial->name }}</h4>
                                 @if($testimonial->title)
                                     <span class="text-xs text-gray-500 font-semibold inline-block ml-1">{{ $testimonial->title }}</span>
                                 @endif
