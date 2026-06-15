@@ -40,4 +40,8 @@ return [
         'static_code' => env('DEVELOPER_OTP_STATIC', null),
     ],
 
+    'google' => [
+        'ads_id' => env('GOOGLE_ADS_ID'),
+    ],
+
 ];

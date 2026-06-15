@@ -201,7 +201,7 @@
             }
         }
     </style>
-    @if($googleAdsId = env('GOOGLE_ADS_ID'))
+    @if($googleAdsId = config('services.google.ads_id'))
         <!-- Google tag (gtag.js) -->
         <script async src="https://www.googletagmanager.com/gtag/js?id={{ $googleAdsId }}"></script>
         <script>
