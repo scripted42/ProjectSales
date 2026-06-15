@@ -40,6 +40,7 @@ class DatabaseSeeder extends Seeder
                 \Database\Seeders\ProjectSeeder::class,
                 \Database\Seeders\PostSeeder::class,
                 \Database\Seeders\AnalyticsSeeder::class,
+                \Database\Seeders\TestimonialSeeder::class,
             ]);
         }
     }
